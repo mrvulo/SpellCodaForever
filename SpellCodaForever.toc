@@ -4,11 +4,11 @@
 ## Notes-frFR: Tout sur les sorts !
 ## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
 ## Author: Vulo
-## Version: 0.44
+## Version: 0.45
 ## X-Curse-Project-ID: 1716723
 ## IconTexture: Interface\Icons\spell_fire_elementaldevastation
-## SavedVariablesPerCharacter: __sc_p_char
-## SavedVariables: __sc_p_acc
+## SavedVariablesPerCharacter: SpellCodaForeverCharDB
+## SavedVariables: SpellCodaForeverDB
 ## OptionalDeps: LibStub, CallbackHandler-1.0, LibUIDropDownMenu
 
 lib/LibStub/LibStub.lua

@@ -735,73 +735,98 @@ for k, v in ipairs(ui_tabs_order) do
     ui_tabs_idx[v] = k;
 end
 
--- Flat window and tab look. The Mainline tab and frame templates of this
--- client are sized for retail panels and overlap the addon's layout.
+-- Blizzard window look: the metal frame of the client's own panels over the
+-- rock background, a gold title in the metal's top band, red panel buttons as
+-- tabs. All art is loaded by Forever's own FrameXML. The Mainline tab
+-- templates are sized for retail panels and overlap the addon's layout, so the
+-- tabs are plain buttons wearing the panel button art.
+local blizz_window = {
+    layout      = "ButtonFrameTemplateNoPortrait",
+    rock        = "Interface\\FrameGeneral\\UI-Background-Rock",
+    -- the metal's left rim sits inside its frame; the frame reaches out on
+    -- the left so the rim does not cover the content, the rock goes under it
+    reach       = 11,
+    rock_reach  = 8,
+    band        = 22,       -- the metal's top band, the title lives in it
+    wash        = 0.40,     -- black over the rock behind the content, for the text
+    art_level   = 30,       -- the metal over the window's children ...
+    top_level   = 35,       -- ... and title and close button over the metal
+};
 local flat_backdrop = {
     bgFile = "Interface\\Buttons\\WHITE8x8",
     edgeFile = "Interface\\Buttons\\WHITE8x8",
     edgeSize = 1,
 };
-local flat_colors = {
-    window          = {0.05, 0.05, 0.06, 0.96},
-    window_border   = {0.22, 0.22, 0.26, 1.00},
-    title_bar       = {0.10, 0.10, 0.12, 1.00},
-    tab             = {0.09, 0.09, 0.11, 0.95},
-    tab_hover       = {0.15, 0.15, 0.18, 0.95},
-    tab_selected    = {0.19, 0.16, 0.27, 1.00},
-    tab_border      = {0.28, 0.28, 0.32, 1.00},
-    accent          = {0.61, 0.42, 1.00, 1.00},
+
+-- UIPanelButtonTemplate's art: one texture cut into left cap, middle and
+-- right cap.
+local panel_button_art = {
+    up          = "Interface\\Buttons\\UI-Panel-Button-Up",
+    highlight   = "Interface\\Buttons\\UI-Panel-Button-Highlight",
+    coords      = { { 0, 0.09375 }, { 0.09375, 0.53125 }, { 0.53125, 0.625 } },
 };
 
-local function flat_tab_paint(tab)
+local function blizz_tab_paint(tab)
     if tab.selected then
-        tab:SetBackdropColor(unpack(flat_colors.tab_selected));
-        tab:SetBackdropBorderColor(unpack(flat_colors.accent));
-        tab:GetFontString():SetTextColor(1, 1, 1);
-        tab.accent:Show();
-    else
-        if tab:IsMouseOver() then
-            tab:SetBackdropColor(unpack(flat_colors.tab_hover));
-            tab:GetFontString():SetTextColor(1, 0.82, 0);
-        else
-            tab:SetBackdropColor(unpack(flat_colors.tab));
-            tab:GetFontString():SetTextColor(0.78, 0.78, 0.78);
+        for _, t in ipairs(tab.art_parts) do
+            t:SetVertexColor(1, 1, 1);
         end
-        tab:SetBackdropBorderColor(unpack(flat_colors.tab_border));
-        tab.accent:Hide();
+        tab:GetFontString():SetTextColor(1, 1, 1);
+    else
+        for _, t in ipairs(tab.art_parts) do
+            t:SetVertexColor(0.6, 0.6, 0.6);
+        end
+        tab:GetFontString():SetTextColor(1, 0.82, 0);
     end
 end
 
 -- Button with the calls the tab code already uses: SetText, GetFontString,
 -- LockHighlight/UnlockHighlight mark the selected tab.
-local function create_flat_tab(parent, name)
-    local tab = CreateFrame("Button", name, parent, "BackdropTemplate");
-    tab:SetHeight(24);
-    tab:SetBackdrop(flat_backdrop);
+local function create_blizz_tab(parent, name)
+    local tab = CreateFrame("Button", name, parent);
+    tab:SetHeight(22);
     tab:SetPushedTextOffset(0, 0);
+
+    local parts = {};
+    for i, c in ipairs(panel_button_art.coords) do
+        local t = tab:CreateTexture(nil, "BACKGROUND", nil, 1);
+        t:SetTexture(panel_button_art.up);
+        t:SetTexCoord(c[1], c[2], 0, 0.6875);
+        parts[i] = t;
+    end
+    local left, mid, right = parts[1], parts[2], parts[3];
+    left:SetPoint("TOPLEFT");
+    left:SetPoint("BOTTOMLEFT");
+    left:SetWidth(12);
+    right:SetPoint("TOPRIGHT");
+    right:SetPoint("BOTTOMRIGHT");
+    right:SetWidth(12);
+    mid:SetPoint("TOPLEFT", left, "TOPRIGHT");
+    mid:SetPoint("BOTTOMRIGHT", right, "BOTTOMLEFT");
+    tab.art_parts = parts;
+
+    -- HIGHLIGHT layer: shown on hover, and held by LockHighlight on the
+    -- selected tab
+    local hl = tab:CreateTexture(nil, "HIGHLIGHT");
+    hl:SetTexture(panel_button_art.highlight);
+    hl:SetTexCoord(0, 0.625, 0, 0.6875);
+    hl:SetBlendMode("ADD");
+    hl:SetAllPoints(tab);
 
     local fs = tab:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall");
     fs:SetPoint("CENTER", 0, 0);
     tab:SetFontString(fs);
 
-    tab.accent = tab:CreateTexture(nil, "OVERLAY");
-    tab.accent:SetColorTexture(unpack(flat_colors.accent));
-    tab.accent:SetPoint("BOTTOMLEFT", 1, 1);
-    tab.accent:SetPoint("BOTTOMRIGHT", -1, 1);
-    tab.accent:SetHeight(2);
-
     tab.selected = false;
-    tab:HookScript("OnEnter", flat_tab_paint);
-    tab:HookScript("OnLeave", flat_tab_paint);
     hooksecurefunc(tab, "LockHighlight", function(self)
         self.selected = true;
-        flat_tab_paint(self);
+        blizz_tab_paint(self);
     end);
     hooksecurefunc(tab, "UnlockHighlight", function(self)
         self.selected = false;
-        flat_tab_paint(self);
+        blizz_tab_paint(self);
     end);
-    flat_tab_paint(tab);
+    blizz_tab_paint(tab);
 
     return tab;
 end
@@ -3750,7 +3775,7 @@ local function save_calculator_plan(plan_name)
         plan.buffs.target_buffs[k] = v;
     end
 
-    __sc_p_char.calculator_saves[plan_name] = plan;
+    SpellCodaForeverCharDB.calculator_saves[plan_name] = plan;
 
     pframe.plan_dd.init_func(plan_name);
 end
@@ -4813,8 +4838,8 @@ local function create_calculator_items_subframe(pframe)
 
         if new_name ~= "" and working_name ~= new_name then
 
-            __sc_p_char.calculator_saves[new_name] = __sc_p_char.calculator_saves[working_name];
-            __sc_p_char.calculator_saves[working_name] = nil;
+            SpellCodaForeverCharDB.calculator_saves[new_name] = SpellCodaForeverCharDB.calculator_saves[working_name];
+            SpellCodaForeverCharDB.calculator_saves[working_name] = nil;
 
             pframe.plan_dd.init_func(new_name);
 
@@ -4893,7 +4918,7 @@ local function create_calculator_items_subframe(pframe)
     f:SetScript("OnClick", function(self)
         if working_name ~= "" then
 
-            __sc_p_char.calculator_saves[working_name] = nil;
+            SpellCodaForeverCharDB.calculator_saves[working_name] = nil;
             pframe.save_plan_btn:Disable();
 
             pframe.items.plan_rename_fstr:Hide();
@@ -5575,7 +5600,7 @@ local function create_sw_ui_calculator_frame(pframe)
     do
         local strwidth_total = 0;
         for k, v in pairs(tabs) do
-            local tab = create_flat_tab(pframe);
+            local tab = create_blizz_tab(pframe);
 
             tab:SetText(v[2]);
             local w = tab:GetFontString():GetWidth();
@@ -5814,7 +5839,7 @@ local function create_sw_ui_calculator_frame(pframe)
             libDD:UIDropDownMenu_SetWidth(pframe.plan_dd, 90);
             libDD:UIDropDownMenu_SetText(pframe.plan_dd, plan_name);
 
-            for name, plan in pairs(__sc_p_char.calculator_saves) do
+            for name, plan in pairs(SpellCodaForeverCharDB.calculator_saves) do
 
                 libDD:UIDropDownMenu_AddButton({
                     text = name,
@@ -6537,7 +6562,7 @@ local function update_profile_frame()
     pframe.delete_profile_label:Hide();
 
     local cnt = 0;
-    for _, _ in pairs(__sc_p_acc.profiles) do
+    for _, _ in pairs(SpellCodaForeverDB.profiles) do
         cnt = cnt + 1;
         if cnt > 1 then
             break;
@@ -6586,17 +6611,17 @@ local function create_sw_ui_profile_frame(pframe)
     pframe.primary_spec:SetPoint("TOPLEFT", rhs_offset-20, pframe.y_offset+6);
     pframe.primary_spec.init_func = function()
 
-        libDD:UIDropDownMenu_SetText(pframe.primary_spec, __sc_p_char.main_spec_profile);
+        libDD:UIDropDownMenu_SetText(pframe.primary_spec, SpellCodaForeverCharDB.main_spec_profile);
         libDD:UIDropDownMenu_Initialize(pframe.primary_spec, function()
 
             libDD:UIDropDownMenu_SetWidth(pframe.primary_spec, 130);
 
-            for k, _ in pairs(__sc_p_acc.profiles) do
+            for k, _ in pairs(SpellCodaForeverDB.profiles) do
                 libDD:UIDropDownMenu_AddButton({
                         text = k,
-                        checked = __sc_p_char.main_spec_profile == k,
+                        checked = SpellCodaForeverCharDB.main_spec_profile == k,
                         func = function()
-                            __sc_p_char.main_spec_profile = k;
+                            SpellCodaForeverCharDB.main_spec_profile = k;
                             libDD:UIDropDownMenu_SetText(pframe.primary_spec, k);
                             update_profile_frame();
                             sc.config.activate_settings();
@@ -6627,18 +6652,18 @@ local function create_sw_ui_profile_frame(pframe)
     pframe.second_spec:SetPoint("TOPLEFT", rhs_offset-20, pframe.y_offset+6);
     pframe.second_spec.init_func = function()
 
-        libDD:UIDropDownMenu_SetText(pframe.second_spec, __sc_p_char.second_spec_profile);
+        libDD:UIDropDownMenu_SetText(pframe.second_spec, SpellCodaForeverCharDB.second_spec_profile);
         libDD:UIDropDownMenu_Initialize(pframe.second_spec, function()
 
             libDD:UIDropDownMenu_SetWidth(pframe.second_spec, 130);
 
-            for k, _ in pairs(__sc_p_acc.profiles) do
+            for k, _ in pairs(SpellCodaForeverDB.profiles) do
 
                 libDD:UIDropDownMenu_AddButton({
                         text = k,
-                        checked = __sc_p_char.second_spec_profile == k,
+                        checked = SpellCodaForeverCharDB.second_spec_profile == k,
                         func = function()
-                            __sc_p_char.second_spec_profile = k;
+                            SpellCodaForeverCharDB.second_spec_profile = k;
                             libDD:UIDropDownMenu_SetText(pframe.second_spec, k);
                             update_profile_frame();
                             sc.config.activate_settings();
@@ -6672,11 +6697,11 @@ local function create_sw_ui_profile_frame(pframe)
         local txt = self:GetText();
         local k = sc.config.spec_keys[sc.core.active_spec];
 
-        if __sc_p_char[k] ~= txt then
+        if SpellCodaForeverCharDB[k] ~= txt then
 
-            __sc_p_acc.profiles[txt] = __sc_p_acc.profiles[__sc_p_char[k]];
-            __sc_p_acc.profiles[__sc_p_char[k]] = nil
-            __sc_p_char[k] = txt;
+            SpellCodaForeverDB.profiles[txt] = SpellCodaForeverDB.profiles[SpellCodaForeverCharDB[k]];
+            SpellCodaForeverDB.profiles[SpellCodaForeverCharDB[k]] = nil
+            SpellCodaForeverCharDB[k] = txt;
         end
         update_profile_frame()
     end
@@ -6912,13 +6937,13 @@ local function create_sw_ui_settings_frame(pframe)
         getglobal(f:GetName()..'Text'):SetText(L["Localization (requires /reload)"]);
 
         -- bypass profile storage for this one, make account wide
-        if __sc_p_acc.localization_use then
+        if SpellCodaForeverDB.localization_use then
             f:SetChecked(true);
         else
             f:SetChecked(false);
         end
         f:SetScript("OnClick", function(self)
-            __sc_p_acc.localization_use = self:GetChecked();
+            SpellCodaForeverDB.localization_use = self:GetChecked();
         end);
 
         pframe.y_offset = pframe.y_offset - 25;
@@ -7118,33 +7143,54 @@ end
 local function create_sw_base_ui()
 
     __sc_frame = CreateFrame("Frame", "__sc_frame", UIParent, "BackdropTemplate");
-    __sc_frame:SetBackdrop(flat_backdrop);
-    __sc_frame:SetBackdropColor(unpack(flat_colors.window));
-    __sc_frame:SetBackdropBorderColor(unpack(flat_colors.window_border));
+    -- strata before the art levels below are taken from it
+    __sc_frame:SetFrameStrata("HIGH");
     __sc_frame:SetClampedToScreen(true);
 
-    __sc_frame.TitleBg = __sc_frame:CreateTexture(nil, "BACKGROUND", nil, 1);
-    __sc_frame.TitleBg:SetColorTexture(unpack(flat_colors.title_bar));
-    __sc_frame.TitleBg:SetPoint("TOPLEFT", 1, -1);
-    __sc_frame.TitleBg:SetPoint("TOPRIGHT", -1, -1);
-    __sc_frame.TitleBg:SetHeight(22);
+    local rock = __sc_frame:CreateTexture(nil, "BACKGROUND", nil, -8);
+    rock:SetTexture(blizz_window.rock, "REPEAT", "REPEAT");
+    rock:SetHorizTile(true);
+    rock:SetVertTile(true);
+    rock:SetPoint("TOPLEFT", -blizz_window.rock_reach, 0);
+    rock:SetPoint("BOTTOMRIGHT", 0, 0);
 
-    local title_line = __sc_frame:CreateTexture(nil, "BORDER");
-    title_line:SetColorTexture(unpack(flat_colors.accent));
-    title_line:SetAlpha(0.6);
-    title_line:SetPoint("TOPLEFT", __sc_frame.TitleBg, "BOTTOMLEFT", 0, 0);
-    title_line:SetPoint("TOPRIGHT", __sc_frame.TitleBg, "BOTTOMRIGHT", 0, 0);
-    title_line:SetHeight(1);
+    local wash = __sc_frame:CreateTexture(nil, "BACKGROUND", nil, -7);
+    wash:SetColorTexture(0, 0, 0, blizz_window.wash);
+    wash:SetPoint("TOPLEFT", 0, -blizz_window.band);
+    wash:SetPoint("BOTTOMRIGHT", 0, 0);
 
-    local close = CreateFrame("Button", nil, __sc_frame, "UIPanelCloseButton");
-    close:SetSize(22, 22);
-    close:SetPoint("TOPRIGHT", 0, 0);
+    -- The metal takes no mouse, so everything under it still clicks and the
+    -- window still drags.
+    local art = CreateFrame("Frame", nil, __sc_frame);
+    art:SetPoint("TOPLEFT", -blizz_window.reach, 0);
+    art:SetPoint("BOTTOMRIGHT", 0, 0);
+    art:SetFrameLevel(__sc_frame:GetFrameLevel() + blizz_window.art_level);
+    art:EnableMouse(false);
+    local art_ok = NineSliceUtil and NineSliceUtil.ApplyLayoutByName and
+        pcall(NineSliceUtil.ApplyLayoutByName, art, blizz_window.layout);
+    if not art_ok then
+        -- no metal on this client: a plain border instead of none
+        __sc_frame:SetBackdrop(flat_backdrop);
+        __sc_frame:SetBackdropColor(0, 0, 0, 0);
+        __sc_frame:SetBackdropBorderColor(0.48, 0.39, 0.21, 1);
+    end
+    __sc_frame.art = art;
+
+    local top = CreateFrame("Frame", nil, __sc_frame);
+    top:SetPoint("TOPLEFT", 0, 0);
+    top:SetPoint("TOPRIGHT", 0, 0);
+    top:SetHeight(blizz_window.band);
+    top:SetFrameLevel(__sc_frame:GetFrameLevel() + blizz_window.top_level);
+    top:EnableMouse(false);
+    __sc_frame.top = top;
+
+    local close = CreateFrame("Button", nil, top, "UIPanelCloseButton");
+    close:SetPoint("TOPRIGHT", __sc_frame, "TOPRIGHT", 1, 0);
     close:SetScript("OnClick", function()
         __sc_frame:Hide();
     end);
     __sc_frame.close_button = close;
 
-    __sc_frame:SetFrameStrata("HIGH");
     __sc_frame:SetMovable(true);
     __sc_frame:EnableMouse(true);
     __sc_frame:RegisterForDrag("LeftButton");
@@ -7164,10 +7210,10 @@ local function create_sw_base_ui()
     __sc_frame:SetHeight(height);
     __sc_frame:SetPoint("TOPLEFT", 400, -30);
 
-    __sc_frame.title = __sc_frame:CreateFontString(nil, "OVERLAY");
-    __sc_frame.title:SetFontObject(font)
+    __sc_frame.title = __sc_frame.top:CreateFontString(nil, "OVERLAY");
+    __sc_frame.title:SetFontObject(GameFontNormal);
     __sc_frame.title:SetText(sc.core.addon_name.." v"..sc.core.version);
-    __sc_frame.title:SetPoint("CENTER", __sc_frame.TitleBg, "CENTER", 0, 0);
+    __sc_frame.title:SetPoint("CENTER", __sc_frame.top, "CENTER", 0, 0);
 
     __sc_frame:Hide();
 
@@ -7182,10 +7228,11 @@ local function create_sw_base_ui()
         __sc_frame[v] = CreateFrame("ScrollFrame", "__sc_frame_"..v, __sc_frame);
         __sc_frame[v]:SetPoint("TOP", __sc_frame, 0, -tabbed_child_frames_y_offset-35);
         __sc_frame[v]:SetWidth(width-x_margin*2);
-        __sc_frame[v]:SetHeight(height-tabbed_child_frames_y_offset-35-5);
+        -- clear of the metal's bottom rim
+        __sc_frame[v]:SetHeight(height-tabbed_child_frames_y_offset-35-9);
         __sc_frame[v].y_offset = 0;
 
-        __sc_frame.tabs[i] = create_flat_tab(__sc_frame, "__sc_frame_tab_button"..i);
+        __sc_frame.tabs[i] = create_blizz_tab(__sc_frame, "__sc_frame_tab_button"..i);
         __sc_frame.tabs[i].frame_to_open = __sc_frame[v];
 
         i = i + 1;
@@ -7226,7 +7273,7 @@ local function load_sw_ui()
     -- one row over the full width; tabs with an icon get room for it
     local icon_tabs = { [1] = true, [2] = true, [3] = true };
     local icon_space = 16;
-    local x_margin, gap = 6, 2;
+    local x_margin, gap = 8, 2;
     local natural = {};
     local natural_total = 0;
     for k, tab_name in ipairs(ui_tabs_order) do
@@ -7242,7 +7289,7 @@ local function load_sw_ui()
         local v = __sc_frame.tabs[k];
         local w = usable * natural[k]/natural_total;
         v:SetWidth(w);
-        v:SetPoint("TOPLEFT", x, -26);
+        v:SetPoint("TOPLEFT", x, -28);
         if icon_tabs[k] then
             v:GetFontString():ClearAllPoints();
             v:GetFontString():SetPoint("CENTER", icon_space/2, 0);
@@ -7464,7 +7511,7 @@ local function locale_warning_popup()
             __sc__localization_notifiedButton:SetDisabledFontObject("GameFontDisable");
             __sc__localization_notifiedButton:SetHighlightFontObject("GameFontHighlight");
             __sc__localization_notifiedButton:SetScript("OnClick", function()
-                __sc_p_acc.localization_notified = true;
+                SpellCodaForeverDB.localization_notified = true;
                 frame:Hide();
             end)
             frame:Show()

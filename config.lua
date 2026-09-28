@@ -426,12 +426,12 @@ local function misc_modify_existing()
     -- for specific version transitions.
     -- Can be removed at some point in the future
 
-    if __sc_p_acc and
-        __sc_p_acc.version_saved and
-        __sc_p_acc.version_saved < 800000 and
-        __sc_p_acc.profiles then
+    if SpellCodaForeverDB and
+        SpellCodaForeverDB.version_saved and
+        SpellCodaForeverDB.version_saved < 800000 and
+        SpellCodaForeverDB.profiles then
 
-        for k, v in pairs(__sc_p_acc.profiles) do
+        for k, v in pairs(SpellCodaForeverDB.profiles) do
             if v.settings then
                 if v.settings.spell_calc_list then
                     v.settings.spell_calc_list[81] = 81; -- dodge passive as EHP
@@ -440,12 +440,12 @@ local function misc_modify_existing()
 
         end
     end
-    if __sc_p_acc and
-        __sc_p_acc.version_saved and
-        __sc_p_acc.version_saved < 900000 and
-        __sc_p_acc.profiles then
+    if SpellCodaForeverDB and
+        SpellCodaForeverDB.version_saved and
+        SpellCodaForeverDB.version_saved < 900000 and
+        SpellCodaForeverDB.profiles then
 
-        for k, v in pairs(__sc_p_acc.profiles) do
+        for k, v in pairs(SpellCodaForeverDB.profiles) do
             if v.settings then
                 -- not applying gems by default for tbc items leads to confusion
                 -- force this into existing profiles during this version transition into 0.9
@@ -461,32 +461,32 @@ local function load_config()
 
     misc_modify_existing();
 
-    if not __sc_p_acc then
+    if not SpellCodaForeverDB then
         --sc.core.use_acc_defaults = true;
-        __sc_p_acc = {};
+        SpellCodaForeverDB = {};
     end
-    load_persistent_data(__sc_p_acc, default_p_acc());
+    load_persistent_data(SpellCodaForeverDB, default_p_acc());
     -- translation is on by default in SpellCoda Forever; switch it on once for accounts
     -- that still carry the old default
-    if not __sc_p_acc.localization_default_forever then
-        __sc_p_acc.localization_use = true;
-        __sc_p_acc.localization_default_forever = true;
+    if not SpellCodaForeverDB.localization_default_forever then
+        SpellCodaForeverDB.localization_use = true;
+        SpellCodaForeverDB.localization_default_forever = true;
     end
-    for _, v in pairs(__sc_p_acc.profiles) do
+    for _, v in pairs(SpellCodaForeverDB.profiles) do
         load_persistent_data(v, default_profile());
     end
-    for _, v in pairs(__sc_p_acc.profiles) do
+    for _, v in pairs(SpellCodaForeverDB.profiles) do
         load_persistent_data(v.settings, default_settings);
     end
 
     -- load settings
-    if not __sc_p_char then
+    if not SpellCodaForeverCharDB then
         --sc.core.use_char_defaults = true;
-        __sc_p_char = {};
+        SpellCodaForeverCharDB = {};
     end
-    load_persistent_data(__sc_p_char, default_p_char());
+    load_persistent_data(SpellCodaForeverCharDB, default_p_char());
 
-    for _, v in pairs(__sc_p_char.calculator_saves) do
+    for _, v in pairs(SpellCodaForeverCharDB.calculator_saves) do
         load_persistent_data(v, default_calculator_save_config);
     end
 end
@@ -498,15 +498,15 @@ local spec_keys = {
 
 local function set_active_settings()
     for k, v in pairs(spec_keys) do
-        if not __sc_p_acc.profiles[__sc_p_char[v]] then
-            __sc_p_char[v] = next(__sc_p_acc.profiles);
+        if not SpellCodaForeverDB.profiles[SpellCodaForeverCharDB[v]] then
+            SpellCodaForeverCharDB[v] = next(SpellCodaForeverDB.profiles);
         end
 
         if sc.core.active_spec == k then
-            config.settings = __sc_p_acc.profiles[__sc_p_char[v]].settings;
+            config.settings = SpellCodaForeverDB.profiles[SpellCodaForeverCharDB[v]].settings;
         end
     end
-    config.active_profile_name = __sc_p_char[spec_keys[sc.core.active_spec]];
+    config.active_profile_name = SpellCodaForeverCharDB[spec_keys[sc.core.active_spec]];
 end
 
 local function activate_config(config_type, prefix)
@@ -554,25 +554,25 @@ end
 
 local function save_config()
 
-    __sc_p_acc.version_saved = sc.core.version_id;
-    __sc_p_char.version_saved = sc.core.version_id;
+    SpellCodaForeverDB.version_saved = sc.core.version_id;
+    SpellCodaForeverCharDB.version_saved = sc.core.version_id;
     if sc.core.use_acc_defaults then
-        __sc_p_acc = nil;
+        SpellCodaForeverDB = nil;
     end
     if sc.core.use_char_defaults then
-        __sc_p_char = nil;
+        SpellCodaForeverCharDB = nil;
     end
 end
 
 local function new_profile(profile_name, profile_to_copy)
-    if __sc_p_acc.profiles[profile_name] or profile_name == "" then
+    if SpellCodaForeverDB.profiles[profile_name] or profile_name == "" then
         return false;
     end
-    __sc_p_acc.profiles[profile_name] = {};
-    load_persistent_data(__sc_p_acc.profiles[profile_name], profile_to_copy);
-    __sc_p_acc.profiles[profile_name].settings = sc.utils.deep_table_copy(profile_to_copy.settings);
+    SpellCodaForeverDB.profiles[profile_name] = {};
+    load_persistent_data(SpellCodaForeverDB.profiles[profile_name], profile_to_copy);
+    SpellCodaForeverDB.profiles[profile_name].settings = sc.utils.deep_table_copy(profile_to_copy.settings);
     -- switch to new profile
-    __sc_p_char[spec_keys[sc.core.active_spec]] = profile_name;
+    SpellCodaForeverCharDB[spec_keys[sc.core.active_spec]] = profile_name;
     set_active_settings()
     activate_settings();
     return true;
@@ -581,21 +581,21 @@ end
 local function delete_profile()
 
         local cnt = 0;
-        for _, _ in pairs(__sc_p_acc.profiles) do
+        for _, _ in pairs(SpellCodaForeverDB.profiles) do
             cnt = cnt + 1;
             if cnt > 1 then
                 break;
             end
         end
         if cnt > 1 then
-            __sc_p_acc.profiles[__sc_p_char[sc.config.spec_keys[sc.core.active_spec]]] = nil;
+            SpellCodaForeverDB.profiles[SpellCodaForeverCharDB[sc.config.spec_keys[sc.core.active_spec]]] = nil;
         end
 end
 local function reset_profile()
 
-    local profile_name = __sc_p_char[sc.config.spec_keys[sc.core.active_spec]];
-    __sc_p_acc.profiles[profile_name].settings = {};
-    load_persistent_data(__sc_p_acc.profiles[profile_name].settings, default_settings);
+    local profile_name = SpellCodaForeverCharDB[sc.config.spec_keys[sc.core.active_spec]];
+    SpellCodaForeverDB.profiles[profile_name].settings = {};
+    load_persistent_data(SpellCodaForeverDB.profiles[profile_name].settings, default_settings);
     set_active_settings()
     activate_settings();
 end
@@ -605,7 +605,7 @@ local function new_profile_from_default(profile_name)
 end
 
 local function new_profile_from_active_copy(profile_name)
-    return new_profile(profile_name, __sc_p_acc.profiles[config.active_profile_name]);
+    return new_profile(profile_name, SpellCodaForeverDB.profiles[config.active_profile_name]);
 end
 
 --------------------------------------------------------------------------------

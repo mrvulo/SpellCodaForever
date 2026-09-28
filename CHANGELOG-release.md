@@ -1,8 +1,4 @@
-# SpellCoda Forever 0.44
+# SpellCoda Forever 0.45
 
-First release for World of Warcraft: Forever.
-
-- SpellCoda ported to the Forever client (Interface 16001)
-- Talents are read through the modern talent API
-- Handles restricted values in combat without errors
-- Spell and item data generated from the Forever client
+- New: the SpellCoda window now uses the Blizzard look – metal frame, stone background, gold title and Blizzard buttons as tabs
+- Changed: settings are now saved under their own names (SpellCodaForeverDB / SpellCodaForeverCharDB), so SpellCoda Forever no longer shares them with the original SpellCoda. Settings from 0.44 are not carried over.

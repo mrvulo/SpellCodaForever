@@ -28,7 +28,7 @@ end
 
 local function load_localization()
 
-    if not locale_found or not __sc_p_acc.localization_use then
+    if not locale_found or not SpellCodaForeverDB.localization_use then
         sc.L = sc.L or {};
         for k, _ in pairs(sc.localizable_strings) do
             sc.L[k] = k;

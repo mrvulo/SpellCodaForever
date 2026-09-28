@@ -44,7 +44,7 @@ sc.core                         = core;
 core.addon_name                 = "SpellCodaForever";
 
 local version_major             = 0;
-local version_minor             = 44;
+local version_minor             = 45;
 local version_build             = sc.addon_build_id;
 
 core.version_id                 = version_build + version_minor*100000 + version_major*100000000;
@@ -343,7 +343,7 @@ local event_dispatch = {
         end
 
         -- the notice explains how to turn translation on; not needed while it is on
-        if not __sc_p_acc.localization_notified and sc.loc.locale_found and not __sc_p_acc.localization_use then
+        if not SpellCodaForeverDB.localization_notified and sc.loc.locale_found and not SpellCodaForeverDB.localization_use then
             locale_warning_popup();
         end
 
