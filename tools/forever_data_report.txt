@@ -1,0 +1,3453 @@
+Forever 1.60.1.70009 vs Era 1.15.9.69547
+
+== changed (537)
+5179 Wrath: direct.min 63 -> 35, direct.max 73 -> 41, direct.per_lvl 1 -> 0.9, cost 70 -> 50
+9888 Healing Touch: direct.min 1516 -> 1388, direct.max 1796 -> 1644, cost 600 -> 630
+9839 Rejuvenation: periodic.min 122 -> 94, periodic.max 122 -> 94
+9876 Starfire: direct.min 445 -> 309, direct.max 525 -> 365, direct.per_lvl 3 -> 2.3
+9857 Regrowth: direct.min 809 -> 771, direct.max 905 -> 863, periodic.min 123 -> 113, periodic.max 123 -> 113, cost 740 -> 445
+26179 Charge: lvl_max 40.0 -> 48
+8939 Regrowth: direct.min 240 -> 219, direct.max 274 -> 251, periodic.min 37 -> 32, periodic.max 37 -> 32, cost 280 -> 170
+774 Rejuvenation: periodic.coef 0.08 -> 0.2
+9840 Rejuvenation: periodic.min 152 -> 124, periodic.max 152 -> 124
+2090 Rejuvenation: periodic.min 45 -> 32, periodic.max 45 -> 32
+8951 Starfire: direct.min 280 -> 181, direct.max 334 -> 215, direct.per_lvl 2.3 -> 1.8
+24976 Insect Swarm: periodic.min 44 -> 25, periodic.max 44 -> 25
+6780 Wrath: direct.min 139 -> 51, direct.max 157 -> 57, direct.per_lvl 1.6 -> 0.9, cost 125 -> 80
+26201 Charge: lvl_max 54.0 -> 60
+9750 Regrowth: direct.min 511 -> 474, direct.max 575 -> 534, periodic.min 78 -> 68, periodic.max 78 -> 68, cost 510 -> 305
+3627 Rejuvenation: periodic.min 76 -> 51, periodic.max 76 -> 51
+1058 Rejuvenation: periodic.min 14 -> 12, periodic.max 14 -> 12, periodic.coef 0.125 -> 0.2
+26177 Charge: lvl_max 18.0 -> 24
+9834 Moonfire: direct.min 157 -> 102, direct.max 185 -> 120, direct.per_lvl 3 -> 2.1, periodic.min 80 -> 49, periodic.max 80 -> 49
+1062 Entangling Roots: periodic.min 10 -> 9, periodic.max 10 -> 9, periodic.coef 0.056 -> 0.06
+414644 Lacerate: direct.min 20 -> 10, direct.max 20 -> 10, lvl_req 1.0 -> 42, cost 10 -> 15
+8949 Starfire: direct.min 137 -> 99, direct.max 167 -> 121, direct.per_lvl 1.6 -> 1.5
+9912 Wrath: direct.min 236 -> 86, direct.max 264 -> 96, direct.per_lvl 2.1 -> 1, cost 180 -> 120
+5178 Wrath: direct.min 44 -> 27, direct.max 52 -> 33, direct.coef 0.443 -> 0.571, direct.per_lvl 0.8 -> 0.7, cost 55 -> 40
+8928 Moonfire: direct.min 81 -> 54, direct.max 97 -> 64, direct.per_lvl 2.1 -> 1.6, periodic.min 41 -> 23, periodic.max 41 -> 23
+9904 Rake: direct.min 58 -> 61, direct.max 58 -> 61, periodic.min 32 -> 34, periodic.max 32 -> 34
+339 Entangling Roots: periodic.coef 0.033 -> 0.06
+9833 Moonfire: direct.min 130 -> 83, direct.max 154 -> 99, periodic.min 66 -> 39, periodic.max 66 -> 39
+9852 Entangling Roots: periodic.min 25 -> 21, periodic.max 25 -> 21, periodic.coef 0.038 -> 0.06
+5176 Wrath: direct.min 12 -> 14, direct.max 14 -> 16, direct.coef 0.123 -> 0.429, cost 20 -> 10
+25298 Starfire: direct.min 496 -> 350, direct.max 584 -> 412, direct.per_lvl 3.1 -> 2.4
+8936 Regrowth: direct.min 84 -> 80, direct.max 98 -> 94, direct.coef 0.2 -> 0.286, periodic.min 14 -> 13, periodic.max 14 -> 13, periodic.coef 0.05 -> 0.071, cost 120 -> 70
+8910 Rejuvenation: periodic.min 97 -> 71, periodic.max 97 -> 71
+2091 Rejuvenation: periodic.min 61 -> 42, periodic.max 61 -> 42
+8938 Regrowth: direct.min 164 -> 153, direct.max 188 -> 175, direct.coef 0.264 -> 0.286, periodic.min 25 -> 22, periodic.max 25 -> 22, periodic.coef 0.066 -> 0.071, cost 205 -> 125
+8924 Moonfire: direct.min 13 -> 11, direct.max 17 -> 15, direct.coef 0.094 -> 0.15, periodic.min 8 -> 6, periodic.max 8 -> 6, periodic.coef 0.081 -> 0.13
+437138 Revive: lvl_req 1.0 -> 12
+8925 Moonfire: direct.min 25 -> 20, direct.max 31 -> 24, direct.coef 0.128 -> 0.15, direct.per_lvl 1.1 -> 1, periodic.min 13 -> 9, periodic.max 13 -> 9, periodic.coef 0.111 -> 0.13
+407988 Savage Roar: lvl_req 1.0 -> 44
+22842 Frenzied Regeneration: periodic.min 10 -> 1, periodic.max 10 -> 1
+2912 Starfire: direct.min 89 -> 73, direct.max 109 -> 89, direct.per_lvl 1.2 -> 1.3
+8918 Tranquility: periodic.min 138 -> 129, periodic.max 138 -> 129
+8903 Healing Touch: direct.min 936 -> 818, direct.max 1120 -> 978, cost 405 -> 425
+9853 Entangling Roots: periodic.min 30 -> 26, periodic.max 30 -> 26, periodic.coef 0.033 -> 0.06
+9875 Starfire: direct.min 362 -> 244, direct.max 428 -> 288, direct.per_lvl 2.7 -> 2.2
+5195 Entangling Roots: periodic.min 15 -> 12, periodic.max 15 -> 12, periodic.coef 0.05 -> 0.06
+24977 Insect Swarm: periodic.min 54 -> 31, periodic.max 54 -> 31
+9856 Regrowth: direct.min 646 -> 608, direct.max 724 -> 682, periodic.min 98 -> 88, periodic.max 98 -> 88, cost 615 -> 370
+5185 Healing Touch: direct.coef 0.123 -> 0.429
+8905 Wrath: direct.min 188 -> 64, direct.max 210 -> 72, direct.per_lvl 1.8 -> 0.9, cost 155 -> 100
+8927 Moonfire: direct.min 61 -> 43, direct.max 73 -> 51, direct.per_lvl 1.8 -> 1.5, periodic.min 31 -> 19, periodic.max 31 -> 19
+9889 Healing Touch: direct.min 1890 -> 1762, direct.max 2230 -> 2078, cost 720 -> 755
+9894 Rip: periodic.min 12 -> 11, periodic.max 12 -> 11
+9758 Healing Touch: direct.min 1199 -> 1071, direct.max 1427 -> 1275, cost 495 -> 520
+407995 Primal Bite: lvl_req 1.0 -> 25, cost 15 -> 20
+5186 Healing Touch: direct.coef 0.314 -> 0.571
+740 Tranquility: periodic.min 94 -> 87, periodic.max 94 -> 87
+25299 Rejuvenation: periodic.min 222 -> 194, periodic.max 222 -> 194
+5177 Wrath: direct.min 25 -> 21, direct.max 29 -> 25, direct.coef 0.231 -> 0.486, cost 35 -> 20
+5187 Healing Touch: direct.min 195 -> 179, direct.max 243 -> 223, direct.coef 0.554 -> 0.714
+9862 Tranquility: periodic.min 205 -> 196, periodic.max 205 -> 196
+1823 Rake: direct.min 28 -> 31, direct.max 28 -> 31, periodic.min 19 -> 21, periodic.max 19 -> 21
+5188 Healing Touch: direct.min 363 -> 325, direct.max 445 -> 399, cost 185 -> 190
+1430 Rejuvenation: periodic.min 29 -> 23, periodic.max 29 -> 23, periodic.coef 0.17 -> 0.2
+24974 Insect Swarm: periodic.min 23 -> 15, periodic.max 23 -> 15
+8929 Moonfire: direct.min 105 -> 67, direct.max 125 -> 79, direct.per_lvl 2.4 -> 1.7, periodic.min 53 -> 31, periodic.max 53 -> 31
+8950 Starfire: direct.min 201 -> 131, direct.max 241 -> 157, direct.per_lvl 1.9 -> 1.6
+8921 Moonfire: direct.coef 0.06 -> 0.15, periodic.coef 0.052 -> 0.13
+9858 Regrowth: direct.min 1003 -> 965, direct.max 1119 -> 1077, periodic.min 152 -> 142, periodic.max 152 -> 142, cost 880 -> 525
+1824 Rake: direct.min 43 -> 45, direct.max 43 -> 45, periodic.min 25 -> 26, periodic.max 25 -> 26
+5180 Wrath: direct.min 101 -> 42, direct.max 115 -> 48, direct.per_lvl 1.3 -> 0.9, cost 100 -> 70
+24975 Insect Swarm: periodic.min 29 -> 20, periodic.max 29 -> 20
+9752 Rip: periodic.min 9 -> 8, periodic.max 9 -> 8
+7371 Charge: lvl_max 6.0 -> 12
+9841 Rejuvenation: periodic.min 189 -> 161, periodic.max 189 -> 161
+9863 Tranquility: periodic.min 294 -> 285, periodic.max 294 -> 285
+8941 Regrowth: direct.min 405 -> 370, direct.max 457 -> 418, periodic.min 61 -> 52, periodic.max 61 -> 52, cost 420 -> 250
+5570 Insect Swarm: periodic.min 11 -> 8, periodic.max 11 -> 8
+1822 Rake: direct.min 19 -> 23, direct.max 19 -> 23, periodic.min 13 -> 16, periodic.max 13 -> 16
+9896 Rip: periodic.min 17 -> 15, periodic.max 17 -> 15
+408120 Wild Growth: lvl_req 1.0 -> 40
+9835 Moonfire: direct.min 189 -> 124, direct.max 221 -> 146, direct.per_lvl 3.3 -> 2.3, periodic.min 96 -> 60, periodic.max 96 -> 60
+8940 Regrowth: direct.min 318 -> 292, direct.max 360 -> 330, periodic.min 49 -> 42, periodic.max 49 -> 42, cost 350 -> 210
+5189 Healing Touch: direct.min 572 -> 493, direct.max 694 -> 599, cost 270 -> 280
+8926 Moonfire: direct.min 40 -> 29, direct.max 48 -> 35, direct.per_lvl 1.4 -> 1.5, periodic.min 20 -> 13, periodic.max 20 -> 13
+26178 Charge: lvl_max 28.0 -> 36
+25297 Healing Touch: direct.min 2267 -> 2139, direct.max 2677 -> 2525, cost 800 -> 840
+5196 Entangling Roots: periodic.min 20 -> 16, periodic.max 20 -> 16, periodic.coef 0.043 -> 0.06
+6778 Healing Touch: direct.min 742 -> 641, direct.max 894 -> 773, cost 335 -> 350
+20902 Aimed Shot: cast_time 3 -> 2
+25011 Lightning Breath: direct.min 78 -> 71, direct.max 90 -> 81, direct.coef 0.429 -> 0, direct.per_lvl 0.35 -> 0
+20903 Aimed Shot: cast_time 3 -> 2
+13550 Serpent Sting: periodic.min 16 -> 12, periodic.max 16 -> 12, periodic.coef 0.185 -> 0
+14281 Arcane Shot: direct.min 21 -> 26, direct.max 21 -> 26, direct.coef 0.3 -> 0
+26090 Thunderstomp: direct.min 67 -> 53, direct.max 77 -> 61, direct.per_lvl 0.75 -> 0
+25012 Lightning Breath: direct.min 99 -> 86, direct.max 113 -> 98, direct.coef 0.429 -> 0, direct.per_lvl 0.442 -> 0
+14282 Arcane Shot: direct.min 33 -> 39, direct.max 33 -> 39, direct.coef 0.429 -> 0
+19434 Aimed Shot: cast_time 3 -> 2
+24844 Lightning Breath: direct.min 11 -> 8, direct.max 13 -> 10, direct.coef 0.429 -> 0, direct.per_lvl 0.05 -> 0
+26187 Thunderstomp: direct.min 87 -> 69, direct.max 99 -> 79, direct.per_lvl 1 -> 0
+24587 Scorpid Poison: periodic.min 8 -> 5, periodic.max 8 -> 5, periodic.coef 1 -> 0
+14285 Arcane Shot: direct.min 115 -> 134, direct.max 115 -> 134, direct.coef 0.429 -> 0
+25295 Serpent Sting: periodic.coef 0.2 -> 0
+25008 Lightning Breath: direct.min 21 -> 20, direct.max 23 -> 22, direct.coef 0.429 -> 0, direct.per_lvl 0.092 -> 0
+13553 Serpent Sting: periodic.min 58 -> 48, periodic.max 58 -> 48, periodic.coef 0.2 -> 0
+19503 Scatter Shot: direct.min 0.5 -> 0, direct.max 0.5 -> 0
+25010 Lightning Breath: direct.min 51 -> 46, direct.max 59 -> 54, direct.coef 0.429 -> 0, direct.per_lvl 0.229 -> 0
+13549 Serpent Sting: periodic.min 8 -> 6, periodic.max 8 -> 6, periodic.coef 0.125 -> 0
+24586 Scorpid Poison: periodic.min 6 -> 4, periodic.max 6 -> 4, periodic.coef 1 -> 0
+25009 Lightning Breath: direct.min 36 -> 32, direct.max 40 -> 36, direct.coef 0.429 -> 0, direct.per_lvl 0.158 -> 0
+13552 Serpent Sting: periodic.min 42 -> 34, periodic.max 42 -> 34, periodic.coef 0.2 -> 0
+13551 Serpent Sting: periodic.min 28 -> 22, periodic.max 28 -> 22, periodic.coef 0.2 -> 0
+14287 Arcane Shot: direct.min 183 -> 217, direct.max 183 -> 217, direct.coef 0.429 -> 0
+19306 Counterattack: cost 45 -> 30
+2643 Multi-Shot: cost 100 -> 0
+20904 Aimed Shot: cast_time 3 -> 2
+26188 Thunderstomp: direct.min 115 -> 92, direct.max 133 -> 106, direct.per_lvl 2 -> 0
+20900 Aimed Shot: cast_time 3 -> 2
+13555 Serpent Sting: periodic.min 98 -> 83, periodic.max 98 -> 83, periodic.coef 0.2 -> 0
+3043 Scorpid Sting: cost 70 -> 0
+14284 Arcane Shot: direct.min 83 -> 94, direct.max 83 -> 94, direct.coef 0.429 -> 0
+20901 Aimed Shot: cast_time 3 -> 2
+14286 Arcane Shot: direct.min 145 -> 170, direct.max 145 -> 170, direct.coef 0.429 -> 0
+13554 Serpent Sting: periodic.min 77 -> 64, periodic.max 77 -> 64, periodic.coef 0.2 -> 0
+1978 Serpent Sting: periodic.min 4 -> 2, periodic.max 4 -> 2, periodic.coef 0.08 -> 0
+2973 Raptor Strike: cost 15 -> 10
+24640 Scorpid Poison: periodic.min 2 -> 1, periodic.max 2 -> 1, periodic.coef 1 -> 0
+14283 Arcane Shot: direct.min 59 -> 65, direct.max 59 -> 65, direct.coef 0.429 -> 0
+3044 Arcane Shot: direct.min 13 -> 20, direct.max 13 -> 20, direct.coef 0.204 -> 0
+24583 Scorpid Poison: periodic.min 3 -> 2, periodic.max 3 -> 2, periodic.coef 1 -> 0
+10201 Arcane Explosion: direct.min 186 -> 175, direct.max 202 -> 191
+10151 Fireball: direct.min 561 -> 397, direct.max 715 -> 505, direct.per_lvl 3.7 -> 3, periodic.min 18 -> 14, periodic.max 18 -> 14
+10199 Fire Blast: direct.min 431 -> 402, direct.max 509 -> 474
+10202 Arcane Explosion: direct.min 243 -> 232, direct.max 263 -> 252
+8492 Cone of Cold: direct.min 146 -> 137, direct.max 160 -> 151
+8400 Fireball: direct.min 139 -> 92, direct.max 187 -> 124, direct.per_lvl 1.8 -> 1.5, periodic.min 5 -> 4, periodic.max 5 -> 4
+122 Frost Nova: direct.coef 0.018 -> 0.029
+10149 Fireball: direct.min 392 -> 262, direct.max 506 -> 338, direct.per_lvl 3 -> 2.4, periodic.min 13 -> 10, periodic.max 13 -> 10
+8457 Fire Ward: direct.min 290 -> 285, direct.max 290 -> 285
+8439 Arcane Explosion: direct.min 139 -> 129, direct.max 151 -> 141
+6131 Frost Nova: direct.min 52 -> 50, direct.max 58 -> 56
+12524 Pyroblast: direct.min 407 -> 275, direct.max 515 -> 347, direct.per_lvl 3.4 -> 2.7, periodic.min 39 -> 31, periodic.max 39 -> 31
+10180 Frostbolt: direct.min 353 -> 295, direct.max 383 -> 321
+8407 Frostbolt: direct.min 174 -> 128, direct.max 190 -> 140
+8437 Arcane Explosion: direct.min 57 -> 52, direct.max 63 -> 58
+400574 Arcane Blast: lvl_req 1.0 -> 20
+10148 Fireball: direct.min 318 -> 204, direct.max 414 -> 266, direct.per_lvl 2.7 -> 2.2, periodic.min 10 -> 8, periodic.max 10 -> 8
+10223 Fire Ward: direct.min 675 -> 668, direct.max 675 -> 668
+25304 Frostbolt: direct.min 515 -> 457, direct.max 555 -> 493
+12522 Pyroblast: direct.min 255 -> 167, direct.max 327 -> 215, direct.per_lvl 2.6 -> 2.1, periodic.min 24 -> 19, periodic.max 24 -> 19
+133 Fireball: direct.coef 0.123 -> 0.429
+2137 Fire Blast: direct.min 57 -> 52, direct.max 71 -> 64, direct.coef 0.332 -> 0.429
+25306 Fireball: direct.min 596 -> 425, direct.max 760 -> 541, direct.per_lvl 3.8 -> 3, periodic.min 19 -> 15, periodic.max 19 -> 15
+12525 Pyroblast: direct.min 503 -> 350, direct.max 631 -> 438, direct.per_lvl 3.8 -> 3, periodic.min 47 -> 38, periodic.max 47 -> 38
+8438 Arcane Explosion: direct.min 97 -> 90, direct.max 105 -> 98
+8461 Frost Ward: direct.min 290 -> 284, direct.max 290 -> 284
+10177 Frost Ward: direct.min 675 -> 668, direct.max 675 -> 668
+120 Cone of Cold: direct.min 98 -> 92, direct.max 108 -> 102
+13018 Blast Wave: direct.min 201 -> 193, direct.max 241 -> 231
+10207 Scorch: direct.min 233 -> 163, direct.max 275 -> 193, direct.per_lvl 2.1 -> 1.7
+10160 Cone of Cold: direct.min 264 -> 254, direct.max 290 -> 280
+543 Fire Ward: direct.min 165 -> 162, direct.max 165 -> 162
+1449 Arcane Explosion: direct.min 32 -> 30, direct.max 36 -> 34, direct.coef 0.111 -> 0.143
+12526 Pyroblast: direct.min 600 -> 428, direct.max 750 -> 534, direct.per_lvl 4.2 -> 3.4, periodic.min 57 -> 46, periodic.max 57 -> 46
+7322 Frostbolt: direct.min 74 -> 57, direct.max 82 -> 63
+13019 Blast Wave: direct.min 277 -> 268, direct.max 329 -> 318
+8406 Frostbolt: direct.min 126 -> 91, direct.max 138 -> 99
+865 Frost Nova: direct.min 33 -> 32, direct.max 37 -> 36
+400640 Ice Lance: lvl_req 1.0 -> 28
+10206 Scorch: direct.min 200 -> 137, direct.max 239 -> 163, direct.per_lvl 1.9 -> 1.5
+2136 Fire Blast: direct.coef 0.204 -> 0.429
+428741 Molten Armor: direct.min 0.1 -> 0, direct.max 0.1 -> 0, periodic.min 0.1 -> 0, periodic.max 0.1 -> 0
+143 Fireball: direct.min 31 -> 30, direct.max 45 -> 44, direct.coef 0.271 -> 0.571, direct.per_lvl 0.8 -> 0.7
+6143 Frost Ward: direct.min 165 -> 162, direct.max 165 -> 162
+12523 Pyroblast: direct.min 329 -> 216, direct.max 419 -> 274, direct.per_lvl 3 -> 2.4, periodic.min 31 -> 25, periodic.max 31 -> 25
+3140 Fireball: direct.min 84 -> 62, direct.max 116 -> 86, direct.coef 0.793 -> 0.857, direct.per_lvl 1.3 -> 1.1
+11426 Ice Barrier: direct.min 438 -> 431, direct.max 438 -> 431
+145 Fireball: direct.min 53 -> 45, direct.max 73 -> 61, direct.coef 0.5 -> 0.714, direct.per_lvl 1 -> 0.9
+2120 Flamestrike: direct.coef 0.134 -> 0.157
+13032 Ice Barrier: direct.min 678 -> 671, direct.max 678 -> 671
+10197 Fire Blast: direct.min 332 -> 303, direct.max 394 -> 359
+8462 Frost Ward: direct.min 470 -> 463, direct.max 470 -> 463
+205 Frostbolt: direct.coef 0.269 -> 0.489
+8446 Scorch: direct.min 133 -> 85, direct.max 159 -> 101, direct.per_lvl 1.5 -> 1.2
+10179 Frostbolt: direct.min 292 -> 234, direct.max 316 -> 254
+8458 Fire Ward: direct.min 470 -> 463, direct.max 470 -> 463
+13020 Blast Wave: direct.min 365 -> 356, direct.max 433 -> 422
+12505 Pyroblast: direct.min 180 -> 116, direct.max 236 -> 152, direct.per_lvl 2.2 -> 1.7, periodic.min 18 -> 14, periodic.max 18 -> 14
+13033 Ice Barrier: direct.min 818 -> 811, direct.max 818 -> 811
+10150 Fireball: direct.min 475 -> 328, direct.max 609 -> 420, direct.per_lvl 3.4 -> 2.7, periodic.min 15 -> 12, periodic.max 15 -> 12
+10205 Scorch: direct.min 162 -> 106, direct.max 192 -> 126, direct.per_lvl 1.7 -> 1.4
+8401 Fireball: direct.min 199 -> 131, direct.max 265 -> 175, direct.per_lvl 2.1 -> 1.8, periodic.min 7 -> 6, periodic.max 7 -> 6
+837 Frostbolt: direct.min 51 -> 43, direct.max 57 -> 49, direct.coef 0.463 -> 0.597
+2138 Fire Blast: direct.min 103 -> 90, direct.max 127 -> 110
+18809 Pyroblast: direct.min 716 -> 520, direct.max 890 -> 646, periodic.min 67 -> 53, periodic.max 67 -> 53
+28609 Frost Ward: direct.min 920 -> 913, direct.max 920 -> 913
+10161 Cone of Cold: direct.min 335 -> 325, direct.max 365 -> 355
+10225 Fire Ward: direct.min 920 -> 913, direct.max 920 -> 913
+2948 Scorch: direct.min 53 -> 35, direct.max 65 -> 43, direct.per_lvl 0.9 -> 0.8
+11113 Blast Wave: direct.min 154 -> 148, direct.max 186 -> 178
+401502 Frostfire Bolt: lvl_req 1.0 -> 40
+8412 Fire Blast: direct.min 168 -> 148, direct.max 202 -> 178
+13021 Blast Wave: direct.min 462 -> 453, direct.max 544 -> 533
+8408 Frostbolt: direct.min 227 -> 173, direct.max 247 -> 189
+8445 Scorch: direct.min 100 -> 63, direct.max 120 -> 75, direct.per_lvl 1.3 -> 1
+8444 Scorch: direct.min 77 -> 50, direct.max 93 -> 60, direct.per_lvl 1.1 -> 1
+10230 Frost Nova: direct.min 71 -> 69, direct.max 79 -> 77
+116 Frostbolt: direct.coef 0.163 -> 0.407
+11366 Pyroblast: direct.min 141 -> 95, direct.max 187 -> 125, direct.per_lvl 1.9 -> 1.5, periodic.min 14 -> 11, periodic.max 14 -> 11
+13031 Ice Barrier: direct.min 549 -> 542, direct.max 549 -> 542
+8413 Fire Blast: direct.min 242 -> 215, direct.max 290 -> 257
+10181 Frostbolt: direct.min 429 -> 371, direct.max 463 -> 401
+10159 Cone of Cold: direct.min 203 -> 194, direct.max 223 -> 214
+8402 Fireball: direct.min 255 -> 162, direct.max 335 -> 212, direct.per_lvl 2.4 -> 2.3, periodic.min 8 -> 6, periodic.max 8 -> 6
+5614 Exorcism: direct.min 152 -> 132, direct.max 172 -> 150
+25894 Greater Blessing of Wisdom: periodic.min 30 -> 36, periodic.max 30 -> 36, periodic.dur 900.0001 -> 3600
+24274 Hammer of Wrath: direct.min 399 -> 369, direct.max 441 -> 407
+879 Exorcism: direct.min 84 -> 74, direct.max 96 -> 84
+19940 Flash of Light: direct.min 145 -> 95, direct.max 163 -> 107, direct.coef 0 -> 0.429
+10329 Holy Light: direct.min 1246 -> 1151, direct.max 1388 -> 1283, direct.coef 0 -> 0.714
+19941 Flash of Light: direct.min 197 -> 142, direct.max 221 -> 160, direct.coef 0 -> 0.429
+19742 Blessing of Wisdom: periodic.min 10 -> 12, periodic.max 10 -> 12, periodic.dur 300 -> 3600
+25290 Blessing of Wisdom: periodic.min 33 -> 40, periodic.max 33 -> 40, periodic.dur 300 -> 3600
+24239 Hammer of Wrath: direct.min 504 -> 474, direct.max 556 -> 522
+19854 Blessing of Wisdom: periodic.min 30 -> 36, periodic.max 30 -> 36, periodic.dur 300 -> 3600
+635 Holy Light: direct.coef 0 -> 0.714
+647 Holy Light: direct.min 159 -> 142, direct.max 187 -> 168, direct.coef 0 -> 0.714
+19943 Flash of Light: direct.min 343 -> 286, direct.max 383 -> 320, direct.coef 0 -> 0.429
+5615 Exorcism: direct.min 217 -> 190, direct.max 245 -> 214
+10314 Exorcism: direct.min 505 -> 475, direct.max 563 -> 529
+25292 Holy Light: direct.min 1590 -> 1495, direct.max 1770 -> 1665, direct.coef 0 -> 0.714
+1042 Holy Light: direct.min 491 -> 425, direct.max 553 -> 479, direct.coef 0 -> 0.714
+10313 Exorcism: direct.min 393 -> 363, direct.max 439 -> 405
+19850 Blessing of Wisdom: periodic.min 15 -> 18, periodic.max 15 -> 18, periodic.dur 300 -> 3600
+19939 Flash of Light: direct.min 96 -> 62, direct.max 110 -> 70, direct.coef 0 -> 0.429
+639 Holy Light: direct.coef 0 -> 0.714
+19852 Blessing of Wisdom: periodic.min 20 -> 24, periodic.max 20 -> 24, periodic.dur 300 -> 3600
+24275 Hammer of Wrath: direct.min 304 -> 274, direct.max 336 -> 302
+19853 Blessing of Wisdom: periodic.min 25 -> 30, periodic.max 25 -> 30, periodic.dur 300 -> 3600
+1026 Holy Light: direct.min 310 -> 267, direct.max 356 -> 307, direct.coef 0 -> 0.714
+19942 Flash of Light: direct.min 267 -> 210, direct.max 299 -> 236, direct.coef 0 -> 0.429
+25918 Greater Blessing of Wisdom: periodic.min 33 -> 40, periodic.max 33 -> 40, periodic.dur 900.0001 -> 3600
+10328 Holy Light: direct.min 945 -> 850, direct.max 1053 -> 948, direct.coef 0 -> 0.714
+10312 Exorcism: direct.min 304 -> 274, direct.max 342 -> 308
+3472 Holy Light: direct.min 698 -> 610, direct.max 780 -> 682, direct.coef 0 -> 0.714
+407632 Hammer of the Righteous: lvl_req 1.0 -> 40
+19750 Flash of Light: direct.min 62 -> 43, direct.max 72 -> 49, direct.coef 0 -> 0.429
+19296 Starshards: periodic.min 27 -> 50, periodic.max 27 -> 50, periodic.coef 0.154 -> 0.167
+2061 Flash Heal: direct.min 193 -> 174, direct.max 237 -> 214
+6076 Renew: periodic.min 49 -> 32, periodic.max 49 -> 32
+10963 Greater Heal: direct.min 1149 -> 1036, direct.max 1289 -> 1162
+6077 Renew: periodic.min 63 -> 41, periodic.max 63 -> 41
+591 Smite: direct.coef 0.271 -> 0.571
+10899 Power Word: Shield: direct.min 605 -> 591, direct.max 605 -> 591, direct.coef 0 -> 0.1
+15265 Holy Fire: direct.min 204 -> 94, direct.max 258 -> 118, direct.per_lvl 2.5 -> 1.5, periodic.min 17 -> 13, periodic.max 17 -> 13
+10961 Prayer of Healing: direct.min 939 -> 567, direct.max 991 -> 599, direct.per_lvl 2.4 -> 1.5
+10898 Power Word: Shield: direct.min 484 -> 470, direct.max 484 -> 470, direct.coef 0 -> 0.1
+17312 Mind Flay: periodic.min 62 -> 51, periodic.max 62 -> 51, periodic.coef 0.15 -> 0.167
+10964 Greater Heal: direct.min 1437 -> 1324, direct.max 1609 -> 1482
+17 Power Word: Shield: direct.coef 0 -> 0.1
+15263 Holy Fire: direct.min 132 -> 71, direct.max 166 -> 89, direct.per_lvl 2 -> 1.5, periodic.min 11 -> 6, periodic.max 11 -> 6
+6074 Renew: periodic.min 20 -> 15, periodic.max 20 -> 15, periodic.coef 0.155 -> 0.2
+15407 Mind Flay: periodic.min 25 -> 21, periodic.max 25 -> 21, periodic.coef 0.15 -> 0.167
+992 Shadow Word: Pain: periodic.min 39 -> 30, periodic.max 39 -> 30, periodic.coef 0.167 -> 0.2
+8103 Mind Blast: direct.min 112 -> 98, direct.max 120 -> 104
+402174 Penance: lvl_req 1.0 -> 30
+585 Smite: direct.coef 0.123 -> 0.429
+6063 Heal: direct.min 566 -> 490, direct.max 642 -> 556
+10893 Shadow Word: Pain: periodic.min 112 -> 97, periodic.max 112 -> 97, periodic.coef 0.167 -> 0.2
+10916 Flash Heal: direct.min 644 -> 589, direct.max 764 -> 699
+592 Power Word: Shield: direct.min 88 -> 86, direct.max 88 -> 86, direct.coef 0 -> 0.1
+18807 Mind Flay: periodic.min 142 -> 130, periodic.max 142 -> 130, periodic.coef 0.15 -> 0.167
+6066 Power Word: Shield: direct.min 381 -> 368, direct.max 381 -> 368, direct.coef 0 -> 0.1
+2060 Greater Heal: direct.min 899 -> 794, direct.max 1013 -> 894
+401937 Binding Heal: lvl_req 1.0 -> 25
+19242 Desperate Prayer: direct.min 1101 -> 1046, direct.max 1305 -> 1240
+19243 Desperate Prayer: direct.min 1324 -> 1269, direct.max 1562 -> 1497
+8092 Mind Blast: direct.min 39 -> 37, direct.max 43 -> 41, direct.coef 0.268 -> 0.429
+19271 Feedback: cost 245 -> 100
+17311 Mind Flay: periodic.min 42 -> 34, periodic.max 42 -> 34, periodic.coef 0.15 -> 0.167
+10934 Smite: direct.min 371 -> 160, direct.max 415 -> 180, direct.per_lvl 2.7 -> 1.3
+10945 Mind Blast: direct.min 346 -> 315, direct.max 366 -> 333
+9473 Flash Heal: direct.min 327 -> 283, direct.max 393 -> 341
+19240 Desperate Prayer: direct.min 588 -> 540, direct.max 708 -> 650
+19238 Desperate Prayer: direct.min 447 -> 414, direct.max 543 -> 502
+17314 Mind Flay: periodic.min 110 -> 98, periodic.max 110 -> 98, periodic.coef 0.15 -> 0.167
+19277 Devouring Plague: periodic.min 50 -> 43, periodic.max 50 -> 43, periodic.coef 0.063 -> 0.1
+19276 Devouring Plague: periodic.min 34 -> 29, periodic.max 34 -> 29, periodic.coef 0.063 -> 0.1
+25314 Greater Heal: direct.min 1966 -> 1853, direct.max 2194 -> 2067
+10797 Starshards: periodic.min 14 -> 27, periodic.max 14 -> 27, periodic.coef 0.104 -> 0.167
+8105 Mind Blast: direct.min 217 -> 190, direct.max 231 -> 202
+2055 Heal: direct.min 429 -> 378, direct.max 491 -> 432
+19275 Feedback: cost 580 -> 230
+2050 Lesser Heal: direct.coef 0.123 -> 0.429
+600 Power Word: Shield: direct.min 158 -> 154, direct.max 158 -> 154, direct.coef 0 -> 0.1
+10915 Flash Heal: direct.min 518 -> 463, direct.max 616 -> 551
+6078 Renew: periodic.min 80 -> 54, periodic.max 80 -> 54
+19299 Starshards: periodic.min 48 -> 88, periodic.max 48 -> 88
+10965 Greater Heal: direct.min 1798 -> 1685, direct.max 2006 -> 1879
+19236 Desperate Prayer: direct.min 263 -> 247, direct.max 325 -> 305, direct.coef 0.396 -> 0.429
+13908 Desperate Prayer: direct.min 134 -> 131, direct.max 170 -> 167, direct.coef 0.268 -> 0.429
+10900 Power Word: Shield: direct.min 763 -> 749, direct.max 763 -> 749, direct.coef 0 -> 0.1
+6060 Smite: direct.min 212 -> 88, direct.max 240 -> 100, direct.per_lvl 2 -> 1.1
+9474 Flash Heal: direct.min 400 -> 349, direct.max 478 -> 417
+8104 Mind Blast: direct.min 167 -> 147, direct.max 177 -> 155
+2052 Lesser Heal: direct.coef 0.229 -> 0.571
+15261 Holy Fire: direct.min 355 -> 184, direct.max 449 -> 232, direct.per_lvl 3.4 -> 2, periodic.min 29 -> 15, periodic.max 29 -> 15
+9472 Flash Heal: direct.min 258 -> 225, direct.max 314 -> 273
+25315 Renew: periodic.min 194 -> 166, periodic.max 194 -> 166
+19278 Devouring Plague: periodic.min 68 -> 61, periodic.max 68 -> 61, periodic.coef 0.063 -> 0.1
+15262 Holy Fire: direct.min 96 -> 56, direct.max 120 -> 70, direct.per_lvl 1.7 -> 1.4, periodic.min 8 -> 5, periodic.max 8 -> 5
+19280 Devouring Plague: periodic.min 113 -> 106, periodic.max 113 -> 106, periodic.coef 0.063 -> 0.1
+2767 Shadow Word: Pain: periodic.min 61 -> 48, periodic.max 61 -> 48, periodic.coef 0.167 -> 0.2
+19305 Starshards: periodic.min 156 -> 300, periodic.max 156 -> 300
+139 Renew: periodic.coef 0.11 -> 0.2
+3747 Power Word: Shield: direct.min 234 -> 226, direct.max 234 -> 226, direct.coef 0 -> 0.1
+10894 Shadow Word: Pain: periodic.min 142 -> 127, periodic.max 142 -> 127, periodic.coef 0.167 -> 0.2
+19304 Starshards: periodic.min 126 -> 240, periodic.max 126 -> 240
+996 Prayer of Healing: direct.min 444 -> 257, direct.max 472 -> 273, direct.per_lvl 1.6 -> 1
+10960 Prayer of Healing: direct.min 657 -> 390, direct.max 695 -> 412, direct.per_lvl 2 -> 1.3
+594 Shadow Word: Pain: periodic.min 11 -> 10, periodic.max 11 -> 10, periodic.coef 0.104 -> 0.2
+10927 Renew: periodic.min 102 -> 74, periodic.max 102 -> 74
+10933 Smite: direct.min 287 -> 119, direct.max 323 -> 133, direct.per_lvl 2.3 -> 1.1
+14914 Holy Fire: direct.min 78 -> 51, direct.max 98 -> 65, direct.per_lvl 1.5 -> 1.3, periodic.min 6 -> 4, periodic.max 6 -> 4
+15286 Vampiric Embrace: lvl_req 1.0 -> 30
+6065 Power Word: Shield: direct.min 301 -> 291, direct.max 301 -> 291, direct.coef 0 -> 0.1
+589 Shadow Word: Pain: periodic.coef 0.067 -> 0.2
+6075 Renew: periodic.min 35 -> 25, periodic.max 35 -> 25
+19273 Feedback: cost 355 -> 140
+10892 Shadow Word: Pain: periodic.min 85 -> 71, periodic.max 85 -> 71, periodic.coef 0.167 -> 0.2
+984 Smite: direct.min 91 -> 55, direct.max 105 -> 63, direct.per_lvl 1.3 -> 1
+1004 Smite: direct.min 150 -> 76, direct.max 170 -> 86, direct.per_lvl 1.6 -> 1
+19303 Starshards: periodic.min 95 -> 178, periodic.max 95 -> 178
+15267 Holy Fire: direct.min 304 -> 152, direct.max 386 -> 194, direct.per_lvl 3.2 -> 1.9, periodic.min 25 -> 13, periodic.max 25 -> 13
+970 Shadow Word: Pain: periodic.min 22 -> 18, periodic.max 22 -> 18, periodic.coef 0.154 -> 0.2
+19302 Starshards: periodic.min 69 -> 127, periodic.max 69 -> 127
+19241 Desperate Prayer: direct.min 834 -> 781, direct.max 994 -> 931
+13896 Feedback: cost 140 -> 55
+19279 Devouring Plague: periodic.min 89 -> 82, periodic.max 89 -> 82, periodic.coef 0.063 -> 0.1
+2053 Lesser Heal: direct.min 135 -> 130, direct.max 157 -> 152, direct.coef 0.446 -> 0.714
+10928 Renew: periodic.min 130 -> 102, periodic.max 130 -> 102
+2944 Devouring Plague: periodic.min 19 -> 16, periodic.max 19 -> 16, periodic.coef 0.063 -> 0.1
+10947 Mind Blast: direct.min 503 -> 472, direct.max 531 -> 498
+10917 Flash Heal: direct.min 812 -> 757, direct.max 958 -> 893
+598 Smite: direct.min 54 -> 43, direct.max 62 -> 49, direct.coef 0.554 -> 0.714, direct.per_lvl 0.9 -> 0.8
+15264 Holy Fire: direct.min 165 -> 81, direct.max 209 -> 103, direct.per_lvl 2.2 -> 1.5, periodic.min 13 -> 7, periodic.max 13 -> 7
+25316 Prayer of Healing: direct.min 1041 -> 631, direct.max 1099 -> 667, direct.per_lvl 2.5 -> 1.6
+6064 Heal: direct.min 712 -> 611, direct.max 804 -> 691
+10946 Mind Blast: direct.min 425 -> 394, direct.max 449 -> 416
+15266 Holy Fire: direct.min 254 -> 123, direct.max 322 -> 155, direct.per_lvl 2.9 -> 1.7, periodic.min 20 -> 10, periodic.max 20 -> 10
+2054 Heal: direct.min 295 -> 270, direct.max 341 -> 312, direct.coef 0.729 -> 0.857
+2651 Elune's Grace: cost 60 -> 0
+8106 Mind Blast: direct.min 279 -> 250, direct.max 297 -> 266
+401859 Prayer of Mending: lvl_req 1.0 -> 40
+10901 Power Word: Shield: direct.min 942 -> 928, direct.max 942 -> 928, direct.coef 0 -> 0.1
+17313 Mind Flay: periodic.min 87 -> 75, periodic.max 87 -> 75, periodic.coef 0.15 -> 0.167
+10929 Renew: periodic.min 162 -> 134, periodic.max 162 -> 134
+19274 Feedback: cost 470 -> 190
+596 Prayer of Healing: direct.min 301 -> 172, direct.max 321 -> 184, direct.per_lvl 1.3 -> 0.8
+8102 Mind Blast: direct.min 72 -> 65, direct.max 78 -> 71, direct.coef 0.364 -> 0.429
+11275 Rupture: periodic.min 60 -> 35, periodic.max 60 -> 35
+11273 Rupture: periodic.min 27 -> 16, periodic.max 27 -> 16
+11274 Rupture: periodic.min 37 -> 22, periodic.max 37 -> 22
+399956 Mutilate: cost 40 -> 60
+8640 Rupture: periodic.min 18 -> 11, periodic.max 18 -> 11
+8639 Rupture: periodic.min 12 -> 7, periodic.max 12 -> 7
+1943 Rupture: periodic.min 8 -> 5, periodic.max 8 -> 5
+15208 Lightning Bolt: direct.min 419 -> 185, direct.max 467 -> 207, direct.coef 0.857 -> 0.714, direct.per_lvl 2.4 -> 1.2, cast_time 3 -> 2.5, cost 265 -> 220
+8053 Flame Shock: direct.min 86 -> 43, direct.max 86 -> 43, direct.per_lvl 1.7 -> 1.2, periodic.min 24 -> 14, periodic.max 24 -> 14
+915 Lightning Bolt: direct.min 83 -> 52, direct.max 95 -> 60, direct.coef 0.857 -> 0.714, direct.per_lvl 1 -> 0.6, cast_time 3 -> 2.5, cost 75 -> 60
+905 Lightning Shield: direct.min 51 -> 1, direct.max 51 -> 1, direct.coef 0.267 -> 0
+10605 Chain Lightning: direct.min 493 -> 116, direct.max 551 -> 130, direct.coef 0.714 -> 0.571, direct.per_lvl 3.1 -> 0.8, cast_time 2.5 -> 2, cost 605 -> 485
+10392 Lightning Bolt: direct.min 282 -> 153, direct.max 316 -> 171, direct.coef 0.857 -> 0.714, direct.per_lvl 1.9 -> 1, cast_time 3 -> 2.5, cost 195 -> 160
+8044 Earth Shock: direct.coef 0.212 -> 0.386
+421 Chain Lightning: direct.min 191 -> 82, direct.max 217 -> 94, direct.coef 0.714 -> 0.571, direct.per_lvl 1.9 -> 0.6, cast_time 2.5 -> 2, cost 280 -> 225
+8058 Frost Shock: direct.min 206 -> 120, direct.max 220 -> 128, direct.per_lvl 1.9 -> 1.3
+1064 Chain Heal: direct.min 320 -> 233, direct.max 368 -> 269
+332 Healing Wave: direct.coef 0.271 -> 0.571
+10447 Flame Shock: direct.min 152 -> 82, direct.max 152 -> 82, direct.per_lvl 2.3 -> 1.4, periodic.min 42 -> 21, periodic.max 42 -> 21
+25357 Healing Wave: direct.min 1620 -> 1508, direct.max 1850 -> 1722
+403 Lightning Bolt: direct.coef 0.123 -> 0.429
+8010 Lesser Healing Wave: direct.min 337 -> 285, direct.max 381 -> 323
+8005 Healing Wave: direct.min 740 -> 636, direct.max 854 -> 734
+10412 Earth Shock: direct.min 225 -> 128, direct.max 239 -> 136, direct.per_lvl 2 -> 1.3
+959 Healing Wave: direct.min 536 -> 448, direct.max 622 -> 520
+10391 Lightning Bolt: direct.min 227 -> 138, direct.max 255 -> 156, direct.coef 0.857 -> 0.714, direct.per_lvl 1.7 -> 0.8, cast_time 3 -> 2.5, cost 165 -> 135
+17354 Mana Tide Totem: cost 40 -> 30
+10448 Flame Shock: direct.min 230 -> 128, direct.max 230 -> 128, direct.per_lvl 2.9 -> 1.7, periodic.min 64 -> 34, periodic.max 64 -> 34
+930 Chain Lightning: direct.min 277 -> 94, direct.max 311 -> 106, direct.coef 0.714 -> 0.571, direct.per_lvl 2.3 -> 0.6, cast_time 2.5 -> 2, cost 380 -> 305
+10413 Earth Shock: direct.min 359 -> 199, direct.max 381 -> 211, direct.per_lvl 2.6 -> 1.6
+8004 Lesser Healing Wave: direct.min 162 -> 142, direct.max 186 -> 164
+10623 Chain Heal: direct.min 551 -> 458, direct.max 629 -> 522
+8052 Flame Shock: direct.min 45 -> 33, direct.max 45 -> 33, direct.coef 0.198 -> 0.214, direct.per_lvl 1.2 -> 1, periodic.min 12 -> 8, periodic.max 12 -> 8, periodic.coef 0.093 -> 0.1
+10473 Frost Shock: direct.min 486 -> 275, direct.max 514 -> 291, direct.per_lvl 3 -> 1.8
+939 Healing Wave: direct.min 376 -> 315, direct.max 440 -> 369
+943 Lightning Bolt: direct.min 125 -> 67, direct.max 143 -> 77, direct.coef 0.857 -> 0.714, direct.per_lvl 1.2 -> 0.7, cast_time 3 -> 2.5, cost 105 -> 85
+2860 Chain Lightning: direct.min 378 -> 106, direct.max 424 -> 118, direct.coef 0.714 -> 0.517, direct.per_lvl 2.7 -> 0.7, cast_time 2.5 -> 2, cost 490 -> 390
+10472 Frost Shock: direct.min 333 -> 183, direct.max 353 -> 193, direct.per_lvl 2.5 -> 1.5
+16190 Mana Tide Totem: cost 20 -> 10
+408521 Riptide: lvl_req 1.0 -> 40
+8045 Earth Shock: direct.min 60 -> 47, direct.max 64 -> 51, direct.coef 0.299 -> 0.386, direct.per_lvl 1 -> 0.9
+913 Healing Wave: direct.min 268 -> 235, direct.max 316 -> 277, direct.coef 0.793 -> 0.857
+10432 Lightning Shield: direct.min 198 -> 1, direct.max 198 -> 1, direct.coef 0.267 -> 0
+6041 Lightning Bolt: direct.min 172 -> 104, direct.max 194 -> 118, direct.coef 0.857 -> 0.714, direct.per_lvl 1.5 -> 0.8, cast_time 3 -> 2.5, cost 135 -> 110
+8046 Earth Shock: direct.min 119 -> 78, direct.max 127 -> 84, direct.per_lvl 1.4 -> 1.1
+10468 Lesser Healing Wave: direct.min 832 -> 775, direct.max 928 -> 865
+10467 Lesser Healing Wave: direct.min 631 -> 574, direct.max 705 -> 642
+8042 Earth Shock: direct.coef 0.154 -> 0.386
+548 Lightning Bolt: direct.min 45 -> 41, direct.max 53 -> 49, direct.coef 0.554 -> 0.714, direct.per_lvl 0.7 -> 0.6
+325 Lightning Shield: direct.min 29 -> 1, direct.max 29 -> 1, direct.coef 0.227 -> 0
+945 Lightning Shield: direct.min 80 -> 1, direct.max 80 -> 1, direct.coef 0.267 -> 0
+8134 Lightning Shield: direct.min 114 -> 1, direct.max 114 -> 1, direct.coef 0.267 -> 0
+10414 Earth Shock: direct.min 517 -> 293, direct.max 545 -> 309, direct.per_lvl 3.1 -> 1.9
+324 Lightning Shield: direct.min 13 -> 1, direct.max 13 -> 1, direct.coef 0.147 -> 0
+10431 Lightning Shield: direct.min 154 -> 1, direct.max 154 -> 1, direct.coef 0.267 -> 0
+331 Healing Wave: direct.coef 0.123 -> 0.429
+10396 Healing Wave: direct.min 1367 -> 1255, direct.max 1561 -> 1433
+15207 Lightning Bolt: direct.min 347 -> 168, direct.max 389 -> 188, direct.coef 0.857 -> 0.714, direct.per_lvl 2.1 -> 1, cast_time 3 -> 2.5, cost 230 -> 190
+415236 Healing Rain: periodic.min 0.15 -> 0, periodic.max 0.15 -> 0
+8050 Flame Shock: direct.min 21 -> 20, direct.max 21 -> 20, direct.coef 0.134 -> 0.214, periodic.coef 0.063 -> 0.1
+8056 Frost Shock: direct.min 89 -> 64, direct.max 95 -> 68, direct.per_lvl 1.2 -> 0.9
+29228 Flame Shock: direct.min 292 -> 166, direct.max 292 -> 166, direct.per_lvl 3.5 -> 2.1, periodic.min 80 -> 44, periodic.max 80 -> 44
+10622 Chain Heal: direct.min 405 -> 312, direct.max 465 -> 358
+408490 Lava Burst: lvl_req 1.0 -> 40, cast_time 2 -> 2.5
+8008 Lesser Healing Wave: direct.min 247 -> 210, direct.max 281 -> 238
+10395 Healing Wave: direct.min 1017 -> 905, direct.max 1167 -> 1039
+10466 Lesser Healing Wave: direct.min 458 -> 401, direct.max 514 -> 451
+529 Lightning Bolt: direct.min 26 -> 27, direct.max 30 -> 31, direct.coef 0.314 -> 0.571
+547 Healing Wave: direct.min 129 -> 119, direct.max 155 -> 143, direct.coef 0.5 -> 0.714
+18868 Shadowburn: direct.min 186 -> 111, direct.max 210 -> 125, direct.per_lvl 1.8 -> 1.3
+17926 Death Coil: direct.min 470 -> 454, direct.max 470 -> 454, cost 565 -> 600
+403841 Shadow Cleave: direct.min 24 -> 23
+686 Shadow Bolt: direct.min 12 -> 11, direct.max 16 -> 15, direct.coef 0.14 -> 0.486, direct.per_lvl 0.4 -> 0.3
+17925 Death Coil: direct.min 375 -> 359, direct.max 375 -> 359, cost 495 -> 525
+18869 Shadowburn: direct.min 261 -> 139, direct.max 293 -> 157, direct.per_lvl 2.2 -> 1.3
+7801 Firebolt: direct.min 33 -> 16, direct.max 37 -> 18, direct.per_lvl 0.7 -> 0.3
+18870 Shadowburn: direct.min 350 -> 192, direct.max 392 -> 214, direct.per_lvl 2.6 -> 1.6
+403835 Shadow Cleave: direct.min 3 -> 2
+11684 Hellfire: periodic.min 208 -> 206, periodic.max 208 -> 206
+699 Drain Life: periodic.min 17 -> 14, periodic.max 17 -> 14
+3110 Firebolt: direct.min 6 -> 3, direct.max 8 -> 5, direct.per_lvl 0.3 -> 0.1
+18930 Conflagrate: direct.min 316 -> 172, direct.max 396 -> 216, direct.per_lvl 1.8 -> 1.1
+17922 Searing Pain: direct.min 158 -> 78, direct.max 188 -> 92, direct.per_lvl 1.7 -> 1
+11683 Hellfire: periodic.min 139 -> 137, periodic.max 139 -> 137
+1094 Immolate: direct.min 45 -> 32, direct.max 45 -> 32, direct.per_lvl 1.5 -> 1.2, periodic.min 18 -> 12, periodic.max 18 -> 12
+403851 Shadow Cleave: direct.max 193 -> 192
+11667 Immolate: direct.min 192 -> 106, direct.max 192 -> 106, direct.per_lvl 3.2 -> 1.9, periodic.min 73 -> 38, periodic.max 73 -> 38
+7815 Lash of Pain: direct.min 44 -> 22, direct.max 44 -> 22
+2941 Immolate: direct.min 90 -> 56, direct.max 90 -> 56, direct.per_lvl 2.1 -> 1.5, periodic.min 33 -> 19, periodic.max 33 -> 19
+11665 Immolate: direct.min 134 -> 72, direct.max 134 -> 72, direct.per_lvl 2.7 -> 1.6, periodic.min 51 -> 25, periodic.max 51 -> 25
+17923 Searing Pain: direct.min 204 -> 105, direct.max 240 -> 123, direct.per_lvl 2 -> 1.2
+5676 Searing Pain: direct.min 34 -> 21, direct.max 42 -> 25, direct.coef 0.396 -> 0.429, direct.per_lvl 0.7 -> 0.6
+17877 Shadowburn: direct.min 87 -> 62, direct.max 99 -> 70, direct.per_lvl 1.2 -> 0.9
+403839 Shadow Cleave: direct.max 11 -> 10
+1949 Hellfire: periodic.min 83 -> 82, periodic.max 83 -> 82
+7651 Drain Life: periodic.min 41 -> 28, periodic.max 41 -> 28
+7648 Corruption: periodic.min 54 -> 28, periodic.max 54 -> 28, periodic.coef 0.167 -> 0.2
+6223 Corruption: periodic.min 37 -> 22, periodic.max 37 -> 22, periodic.coef 0.167 -> 0.2
+18871 Shadowburn: direct.min 450 -> 251, direct.max 502 -> 281, direct.per_lvl 3 -> 1.8
+709 Drain Life: periodic.min 29 -> 22, periodic.max 29 -> 22
+17920 Searing Pain: direct.min 86 -> 40, direct.max 104 -> 48, direct.per_lvl 1.2 -> 0.8
+11711 Bane of Agony: periodic.min 42 -> 21, periodic.max 42 -> 21, periodic.coef 0.083 -> 0.133
+7814 Lash of Pain: direct.min 33 -> 16, direct.max 33 -> 16
+603 Bane of Doom: periodic.min 3200 -> 1742, periodic.max 3200 -> 1742, periodic.coef 1 -> 4
+403842 Shadow Cleave: direct.max 61 -> 60
+18880 Siphon Life: periodic.min 33 -> 29, periodic.max 33 -> 29
+11668 Immolate: direct.min 258 -> 146, direct.max 258 -> 146, direct.per_lvl 3.8 -> 2.3, periodic.min 97 -> 52, periodic.max 97 -> 52
+11779 Lash of Pain: direct.min 87 -> 43, direct.max 87 -> 43
+18265 Siphon Life: periodic.min 15 -> 11, periodic.max 15 -> 11
+7641 Shadow Bolt: direct.min 204 -> 95, direct.max 230 -> 107, direct.per_lvl 1.9 -> 1.2
+25309 Immolate: direct.min 279 -> 158, direct.max 279 -> 158, direct.per_lvl 3.9 -> 2.3, periodic.min 102 -> 55, periodic.max 102 -> 55
+17919 Searing Pain: direct.min 59 -> 30, direct.max 71 -> 36, direct.per_lvl 1 -> 0.7
+172 Corruption: periodic.coef 0.08 -> 0.2
+7802 Firebolt: direct.min 48 -> 24, direct.max 54 -> 26, direct.per_lvl 0.9 -> 0.4
+348 Immolate: direct.coef 0.058 -> 0.2, direct.per_lvl 0.6 -> 0.7, periodic.min 4 -> 3, periodic.max 4 -> 3, periodic.coef 0.037 -> 0.13
+11780 Lash of Pain: direct.min 99 -> 50, direct.max 99 -> 50
+7799 Firebolt: direct.min 12 -> 6, direct.max 14 -> 8, direct.per_lvl 0.4 -> 0.2
+11699 Drain Life: periodic.min 55 -> 39, periodic.max 55 -> 39
+11660 Shadow Bolt: direct.min 360 -> 180, direct.max 402 -> 202, direct.per_lvl 2.6 -> 1.6
+6353 Soul Fire: direct.min 623 -> 334, direct.max 783 -> 420, direct.per_lvl 2.9 -> 1.7
+11762 Firebolt: direct.min 67 -> 33, direct.max 75 -> 37, direct.per_lvl 1 -> 0.5
+18867 Shadowburn: direct.min 115 -> 75, direct.max 131 -> 85, direct.per_lvl 1.4 -> 1
+11713 Bane of Agony: periodic.min 87 -> 46, periodic.max 87 -> 46, periodic.coef 0.083 -> 0.133
+17921 Searing Pain: direct.min 122 -> 56, direct.max 146 -> 68, direct.per_lvl 1.5 -> 0.9
+11671 Corruption: periodic.min 81 -> 40, periodic.max 81 -> 40, periodic.coef 0.167 -> 0.2
+1014 Bane of Agony: periodic.min 15 -> 10, periodic.max 15 -> 10, periodic.coef 0.077 -> 0.133
+695 Shadow Bolt: direct.min 23 -> 22, direct.max 29 -> 28, direct.coef 0.299 -> 0.629
+707 Immolate: direct.min 19 -> 17, direct.max 19 -> 17, direct.coef 0.125 -> 0.2, direct.per_lvl 0.9 -> 0.8, periodic.min 8 -> 6, periodic.max 8 -> 6, periodic.coef 0.081 -> 0.13
+7800 Firebolt: direct.min 22 -> 11, direct.max 26 -> 13, direct.per_lvl 0.6 -> 0.3
+1088 Shadow Bolt: direct.min 86 -> 52, direct.max 98 -> 60, direct.per_lvl 1.2 -> 0.9
+11672 Corruption: periodic.min 111 -> 57, periodic.max 111 -> 57, periodic.coef 0.167 -> 0.2
+980 Bane of Agony: periodic.min 7 -> 6, periodic.max 7 -> 6, periodic.coef 0.046 -> 0.133
+18879 Siphon Life: periodic.min 22 -> 19, periodic.max 22 -> 19
+11712 Bane of Agony: periodic.min 65 -> 33, periodic.max 65 -> 33, periodic.coef 0.083 -> 0.133
+18932 Conflagrate: direct.min 447 -> 251, direct.max 557 -> 313, direct.per_lvl 2.2 -> 1.3
+7816 Lash of Pain: direct.min 60 -> 30, direct.max 60 -> 30
+18881 Siphon Life: periodic.min 45 -> 41, periodic.max 45 -> 41
+17962 Conflagrate: direct.min 240 -> 128, direct.max 306 -> 164, direct.per_lvl 1.6 -> 1
+437169 Portal of Summoning: lvl_req 1.0 -> 60
+403501 Haunt: lvl_req 1.0 -> 40
+705 Shadow Bolt: direct.min 48 -> 38, direct.max 56 -> 44, direct.coef 0.56 -> 0.8, direct.per_lvl 0.9 -> 0.7
+1106 Shadow Bolt: direct.min 142 -> 73, direct.max 162 -> 83, direct.per_lvl 1.6 -> 1.2
+11661 Shadow Bolt: direct.min 455 -> 237, direct.max 507 -> 265, direct.per_lvl 3 -> 1.8
+427717 Unstable Affliction: lvl_req 1.0 -> 40
+412758 Incinerate: lvl_req 1.0 -> 40, cast_time 2.25 -> 2.5
+1120 Drain Soul: periodic.min 11 -> 17, periodic.max 11 -> 17, periodic.coef 0.063 -> 0.1
+18931 Conflagrate: direct.min 383 -> 212, direct.max 479 -> 266, direct.per_lvl 2 -> 1.2
+25311 Corruption: periodic.min 137 -> 73, periodic.max 137 -> 73, periodic.coef 0.167 -> 0.2
+11778 Lash of Pain: direct.min 73 -> 36, direct.max 73 -> 36
+11763 Firebolt: direct.min 83 -> 41, direct.max 93 -> 47, direct.per_lvl 1.2 -> 0.6
+6222 Corruption: periodic.min 18 -> 13, periodic.max 18 -> 13, periodic.coef 0.155 -> 0.2
+17924 Soul Fire: direct.min 703 -> 383, direct.max 881 -> 479, direct.per_lvl 3.1 -> 1.9
+6217 Bane of Agony: periodic.min 27 -> 14, periodic.max 27 -> 14, periodic.coef 0.083 -> 0.133
+25307 Shadow Bolt: direct.min 482 -> 253, direct.max 538 -> 283, direct.per_lvl 3.1 -> 1.9
+6789 Death Coil: direct.min 287 -> 272, direct.max 287 -> 272, cost 430 -> 435
+11700 Drain Life: periodic.min 71 -> 51, periodic.max 71 -> 51
+11659 Shadow Bolt: direct.min 281 -> 133, direct.max 315 -> 149, direct.per_lvl 2.3 -> 1.4
+11675 Drain Soul: periodic.min 91 -> 84, periodic.max 91 -> 84
+8288 Drain Soul: periodic.min 31 -> 34, periodic.max 31 -> 34
+403844 Shadow Cleave: direct.min 79 -> 78
+689 Drain Life: periodic.coef 0.078 -> 0.1
+8289 Drain Soul: periodic.min 59 -> 54, periodic.max 59 -> 54
+23925 Shield Slam: direct.min 342 -> 640, direct.max 358 -> 670
+11600 Revenge: direct.min 43 -> 73, direct.max 53 -> 91
+6574 Revenge: direct.min 18 -> 31, direct.max 22 -> 37
+7379 Revenge: direct.min 25 -> 43, direct.max 31 -> 53
+23922 Shield Slam: direct.min 225 -> 421, direct.max 235 -> 439
+6572 Revenge: direct.min 12 -> 20, direct.max 14 -> 24
+12323 Piercing Howl: lvl_req 1.0 -> 20
+402911 Raging Blow: direct.min 1.15 -> 1, direct.max 1.15 -> 1
+402927 Victory Rush: lvl_req 1.0 -> 20
+12292 Sweeping Strikes: lvl_req 1.0 -> 30
+12809 Concussion Blow: cost 15 -> 10
+23923 Shield Slam: direct.min 264 -> 494, direct.max 276 -> 516
+25288 Revenge: direct.min 81 -> 138, direct.max 99 -> 168
+11601 Revenge: direct.min 64 -> 109, direct.max 78 -> 133
+23924 Shield Slam: direct.min 303 -> 567, direct.max 317 -> 593
+
+== aura_changed (481)
+talent_effects 16850 Improved Starfire [1]: -0.1 -> -0.5
+talent_effects 16845 Moonglow [0]: -0.03 -> -0.25
+talent_effects 17123 Improved Tranquility [0]: -0.5 -> -1
+talent_effects 16998 Savage Fury [0]: 0.1 -> 0.2
+talent_effects 16998 Savage Fury [1]: 0.1 -> 0.2
+talent_effects 17106 Reflection [0]: 0.05 -> 0.5
+class_buffs 9884 Mark of the Wild [0]: 240 -> 324
+class_buffs 5232 Mark of the Wild [0]: 65 -> 88
+class_buffs 8907 Mark of the Wild [0]: 195 -> 263
+class_buffs 1226105 Sunsurge [0]: 0.4 -> 0.1
+class_buffs 5234 Mark of the Wild [0]: 150 -> 203
+class_buffs 408255 Eclipse [0]: -1 -> -0.5
+class_buffs 6756 Mark of the Wild [0]: 105 -> 142
+class_buffs 9885 Mark of the Wild [0]: 285 -> 385
+class_buffs 21849 Gift of the Wild [1]: 10 -> 14
+class_buffs 1126 Mark of the Wild [0]: 25 -> 34
+class_buffs 21850 Gift of the Wild [1]: 12 -> 16
+class_buffs 1226106 Moonsurge [0]: 0.2 -> 0.1
+shapeshift_passives 3025 Cat Form (Passive) [0]: 40 -> 12
+item_effects 28855 Reduced Maul and Swipe Cost [0]: -30 -> -20
+item_effects 27851 Reduced Claw and Rake Cost [0]: -3 -> -2
+set_effects 467207 S03 - Item - T2- Druid - Feral 2P Bonus [0]: 0.1 -> 0.4
+set_effects 467207 S03 - Item - T2- Druid - Feral 2P Bonus [1]: 3 -> 6
+enchant_effects 467207 S03 - Item - T2- Druid - Feral 2P Bonus [0]: 0.1 -> 0.4
+enchant_effects 467207 S03 - Item - T2- Druid - Feral 2P Bonus [1]: 3 -> 6
+talent_effects 19239 Clever Traps [1]: 0.15 -> 0.3
+talent_effects 19239 Clever Traps [1]: 0.15 -> 0.3
+talent_effects 19376 Survival Tactics [0]: 0.05 -> 0.17
+talent_effects 19159 Savage Strikes [0]: 0.1 -> 0.2
+talent_effects 19583 Endurance Training [0]: 0.03 -> 0.15
+talent_effects 19609 Thick Hide [0]: 0.1 -> 0.3
+talent_effects 19485 Mortal Shots [0]: 0.06 -> 0.3
+talent_effects 19485 Mortal Shots [1]: 0.06 -> 0.3
+talent_effects 19255 Survivalist [0]: 0.02 -> 0.1
+talent_effects 19464 Improved Serpent Sting [0]: 0.02 -> 0.1
+talent_effects 19464 Improved Serpent Sting [1]: 0.02 -> 0.1
+talent_effects 19461 Barrage [0]: 0.05 -> 0.15
+talent_effects 19461 Barrage [1]: 0.05 -> 0.15
+talent_effects 19507 Ranged Weapon Specialization [0]: 0.01 -> 0.05
+talent_effects 19507 Ranged Weapon Specialization [0]: 0.01 -> 0.05
+talent_effects 19290 Surefooted [2]: 0.01 -> 0.03
+talent_effects 19416 Efficiency [0]: -0.02 -> -0.15
+talent_effects 19416 Efficiency [1]: -0.02 -> -0.15
+talent_effects 19295 Deflection [0]: 0.01 -> 0.05
+class_buffs 14322 Aspect of the Hawk [0]: 110 -> 55
+class_buffs 20906 Trueshot Aura [0]: 100 -> 50
+class_buffs 17331 Fang of the Crystal Spider [0]: -0.1 -> -0.09
+class_buffs 17331 Fang of the Crystal Spider [2]: -0.11 -> -0.09
+class_hostile_buffs 14323 Hunter's Mark [1]: 45 -> 59
+class_hostile_buffs 14324 Hunter's Mark [1]: 75 -> 98
+class_hostile_buffs 1130 Hunter's Mark [1]: 20 -> 26
+class_hostile_buffs 14325 Hunter's Mark [1]: 110 -> 71
+set_effects 1226365 S03 - Item - Scarlet Enclave - Hunter - Melee 6P Bonus [0]: 15 -> 10
+enchant_effects 440529 Resourcefulness [0]: -1 -> -0.6
+enchant_effects 415370 Lone Wolf [0]: 0.25 -> 0.2
+enchant_effects 415370 Lone Wolf [0]: 0.25 -> 0.2
+talent_effects 18459 Incineration [0]: 0.02 -> 0.06
+talent_effects 11108 Improved Flamestrike [0]: 0.05 -> 0.15
+talent_effects 11069 Improved Fireball [0]: -0.1 -> -0.5
+talent_effects 29438 Elemental Precision [0]: 0.02 -> 0.06
+talent_effects 11207 Ice Shards [0]: 0.2 -> 1
+talent_effects 11160 Frost Channeling [0]: -0.05 -> -0.15
+talent_effects 11160 Frost Channeling [1]: -0.1 -> -0.3
+talent_effects 18462 Arcane Meditation [0]: 0.05 -> 0.5
+talent_effects 11242 Arcane Impact [0]: 0.02 -> 0.06
+talent_effects 11083 Burning Soul [1]: -0.15 -> -0.3
+talent_effects 11210 Arcane Subtlety [1]: -5 -> -15
+talent_effects 11175 Permafrost [1]: -0.04 -> -0.1
+class_buffs 400625 Hot Streak [0]: -1 -> -0.25
+class_buffs 428878 Balefire Bolt [2]: 0.25 -> 0.2
+class_buffs 22782 Mage Armor [1]: 0.3 -> 0.5
+class_buffs 22783 Mage Armor [1]: 0.3 -> 0.5
+class_buffs 400573 Arcane Blast [0]: 0.15 -> 0.1
+class_buffs 6117 Mage Armor [1]: 0.3 -> 0.5
+set_effects 468427 S03 - Item - ZG - Mage - Frost 5P Bonus [0]: 0.75 -> 0.65
+enchant_effects 468427 S03 - Item - ZG - Mage - Frost 5P Bonus [0]: 0.75 -> 0.65
+talent_effects 20117 Conviction [0]: 0.01 -> 0.05
+talent_effects 20101 Benediction [0]: -0.03 -> -0.1
+class_buffs 20927 Holy Shield [0]: 0.3 -> 0.2
+class_buffs 25782 Greater Blessing of Might [0]: 155 -> 112
+class_buffs 20928 Holy Shield [0]: 0.3 -> 0.2
+class_buffs 25894 Greater Blessing of Wisdom [0]: 30 -> 36
+class_buffs 25916 Greater Blessing of Might [0]: 185 -> 133
+class_buffs 20925 Holy Shield [0]: 0.3 -> 0.2
+class_buffs 25918 Greater Blessing of Wisdom [0]: 33 -> 40
+class_buffs 1226461 Holy Power [0]: 0.1 -> 0.2
+class_buffs 1226464 Templar [0]: 0.15 -> 0.1
+class_hostile_buffs 20301 Judgement of the Crusader [0]: 80 -> 92
+class_hostile_buffs 21183 Judgement of the Crusader [0]: 20 -> 23
+class_hostile_buffs 20188 Judgement of the Crusader [0]: 30 -> 35
+class_hostile_buffs 20302 Judgement of the Crusader [0]: 110 -> 127
+class_hostile_buffs 20300 Judgement of the Crusader [0]: 50 -> 58
+class_hostile_buffs 20303 Judgement of the Crusader [0]: 140 -> 161
+passives 462814 S03 - Tuning and Overrides Passive - Paladin [0]: 1 -> 0
+passives 462814 S03 - Tuning and Overrides Passive - Paladin [1]: -1 -> 0
+passives 462814 S03 - Tuning and Overrides Passive - Paladin [2]: 1 -> 0
+passives 466503 S03 - Tuning and Overrides Passive - Paladin [0]: -1 -> 0
+passives 466503 S03 - Tuning and Overrides Passive - Paladin [1]: -1 -> 0
+set_effects 468431 S03 - Item - ZG - Paladin - Caster 5P Bonus [1]: 0.75 -> 0.5
+set_effects 1213397 S03 - Item - TAQ - Paladin - Retribution 2P Bonus [0]: 1.5 -> 0.5
+set_effects 467518 S03 - Item - T2 - Paladin - Retribution 2P Bonus [0]: 0.05 -> 0.2
+enchant_effects 468431 S03 - Item - ZG - Paladin - Caster 5P Bonus [1]: 0.75 -> 0.5
+enchant_effects 1213397 S03 - Item - TAQ - Paladin - Retribution 2P Bonus [0]: 1.5 -> 0.5
+enchant_effects 467518 S03 - Item - T2 - Paladin - Retribution 2P Bonus [0]: 0.05 -> 0.2
+talent_effects 15260 Shadow Focus [0]: 0.02 -> 0.05
+talent_effects 14520 Mental Agility [0]: -0.02 -> -0.1
+talent_effects 15275 Improved Shadow Word: Pain [0]: 3 -> 6
+talent_effects 14912 Improved Healing [0]: -0.05 -> -0.15
+talent_effects 14901 Spiritual Guidance [0]: 0.05 -> 0.08
+talent_effects 14750 Improved Mana Burn [0]: -0.25 -> -1
+talent_effects 14524 Wand Specialization [0]: 0.05 -> 0.25
+talent_effects 18530 Divine Fury [0]: -0.1 -> -0.5
+talent_effects 14521 Meditation [0]: 0.05 -> 0.5
+class_buffs 21562 Prayer of Fortitude [0]: 43 -> 56
+class_buffs 16873 Holy Word: Fortitude [0]: 68 -> 70
+class_buffs 21564 Prayer of Fortitude [0]: 54 -> 70
+class_buffs 16875 Divine Spirit [0]: 35 -> 40
+class_buffs 456549 Melting Faces [1]: -0.505 -> -0.5
+class_buffs 456549 Melting Faces [2]: 0.25 -> 0.5
+class_buffs 15473 Shadowform [1]: 0.15 -> 0.1
+passives 440247 S03 - Tuning and Overrides Passive - Priest [4]: -0.18 -> -0.15
+set_effects 1226591 S03 - Item - Scarlet Enclave - Priest - Shadow 4P Bonus [0]: -0.5 -> 1
+talent_effects 13741 Improved Gouge [0]: 0.5 -> 1.5
+talent_effects 13712 Lightning Reflexes [0]: 0.01 -> 0.05
+talent_effects 14082 Dirty Deeds [0]: -10 -> -20
+talent_effects 13732 Improved Sinister Strike [0]: -3 -> -5
+talent_effects 14162 Improved Eviscerate [0]: 0.05 -> 0.2
+talent_effects 14079 Improved Ambush [0]: 0.15 -> 0.45
+talent_effects 30902 Deadliness [0]: 0.02 -> 0.1
+talent_effects 30892 Sleight of Hand [0]: 0.1 -> 0.2
+talent_effects 30892 Sleight of Hand [0]: 0.1 -> 0.2
+talent_effects 14057 Opportunity [0]: 0.04 -> 0.1
+talent_effects 14057 Opportunity [1]: 0.04 -> 0.1
+talent_effects 16513 Vile Poisons [0]: 0.04 -> 0.2
+talent_effects 16513 Vile Poisons [1]: 0.04 -> 0.2
+talent_effects 13715 Dual Wield Specialization [0]: 0.1 -> 0.5
+talent_effects 14171 Serrated Blades [0]: 0.1 -> 0.3
+class_buffs 457469 Resilient [0]: -0.2 -> -0.5
+class_buffs 14143 Remorseless [0]: 0.2 -> 0.4
+class_buffs 400015 Rolling with the Punches [0]: 0.05 -> 0.06
+class_hostile_buffs 432275 Carnage [0]: 0.15 -> 0.08
+class_hostile_buffs 424785 Saber Slash [4]: 0.5 -> 0.33
+class_hostile_buffs 457469 Resilient [0]: -0.2 -> -0.5
+class_friendly_buffs 13222 Wound Poison [0]: -75 -> -92
+class_friendly_buffs 13218 Wound Poison [0]: -55 -> -67
+class_friendly_buffs 13224 Wound Poison [0]: -135 -> -165
+class_friendly_buffs 13223 Wound Poison [0]: -105 -> -128
+enchant_effects 400014 Just a Flesh Wound [0]: -0.2 -> -0.3
+talent_effects 16178 Purification [1]: 0.2 -> 0.1
+talent_effects 16178 Purification [2]: 0.2 -> 0.1
+talent_effects 16038 Call of Flame [0]: 0.05 -> 0.15
+talent_effects 16120 Call of Thunder [0]: 0.06 -> 0.03
+talent_effects 16179 Tidal Focus [0]: -0.01 -> -0.05
+class_buffs 408680 Way of Earth [1]: 0.25 -> 0.3
+class_buffs 10626 Grace of Air [0]: 67 -> 77
+class_buffs 25362 Strength of Earth [0]: 77 -> 53
+class_buffs 1213939 Pack Leader [0]: 0.05 -> 0.1
+class_buffs 1213939 Pack Leader [1]: 0.25 -> 0.2
+class_buffs 1213939 Pack Leader [2]: 0.05 -> 0.1
+class_buffs 1213939 Pack Leader [2]: 0.05 -> 0.1
+class_buffs 8163 Strength of Earth [0]: 36 -> 25
+class_buffs 8076 Strength of Earth [0]: 10 -> 7
+class_buffs 8836 Grace of Air [0]: 43 -> 49
+class_buffs 10441 Strength of Earth [0]: 61 -> 42
+class_buffs 25360 Grace of Air [0]: 77 -> 89
+class_buffs 8162 Strength of Earth [0]: 20 -> 14
+set_effects 1219367 S03 - Item - Naxxramas - Shaman - Elemental 2P Bonus [0]: 0.4 -> 0.2
+talent_effects 18130 Devastation [0]: 0.01 -> 0.05
+talent_effects 17927 Agonizing Flames [0]: 0.02 -> 0.1
+talent_effects 18694 Improved Imp [0]: 0.1 -> 0.3
+talent_effects 18694 Improved Imp [0]: 0.1 -> 0.3
+talent_effects 18694 Improved Imp [0]: 0.1 -> 0.3
+talent_effects 17778 Cataclysm [0]: -0.01 -> -0.1
+talent_effects 18705 Improved Voidwalker [0]: 0.1 -> 0.3
+talent_effects 18705 Improved Voidwalker [0]: 0.1 -> 0.3
+talent_effects 17788 Bane [0]: -0.1 -> -0.5
+talent_effects 17788 Bane [1]: -0.4 -> -2
+talent_effects 17954 Emberstorm [0]: 0.02 -> 0.1
+talent_effects 17954 Emberstorm [1]: 0.02 -> 0.1
+talent_effects 18754 Improved Sayaad [0]: 0.1 -> 0.3
+talent_effects 18754 Improved Sayaad [0]: 0.1 -> 0.3
+talent_effects 18754 Improved Sayaad [1]: 0.1 -> 0.3
+talent_effects 18731 Fel Vitality [0]: 0.03 -> 0.15
+talent_effects 18769 Unholy Power [0]: 0.04 -> 0.1
+talent_effects 17810 Improved Corruption [0]: -0.4 -> -2
+class_buffs 11708 Curse of Weakness [0]: -31 -> -37
+class_buffs 7658 Curse of Recklessness [1]: -290 -> -285
+class_buffs 7646 Curse of Weakness [0]: -15 -> -18
+class_buffs 6205 Curse of Weakness [0]: -10 -> -12
+class_buffs 1108 Curse of Weakness [0]: -6 -> -7
+class_buffs 702 Curse of Weakness [0]: -3 -> -4
+class_buffs 6307 Blood Pact [0]: 2 -> 3
+class_buffs 7659 Curse of Recklessness [1]: -465 -> -395
+class_buffs 704 Curse of Recklessness [1]: -140 -> -175
+class_buffs 11717 Curse of Recklessness [1]: -640 -> -505
+class_buffs 11707 Curse of Weakness [0]: -22 -> -26
+class_buffs 1214166 Bloodthirsty [0]: 0.15 -> 0.2
+class_buffs 1214166 Bloodthirsty [0]: 0.15 -> 0.2
+class_buffs 403816 Metamorphosis [2]: 0.5 -> 0.77
+class_buffs 403816 Metamorphosis [4]: -0.1 -> -0.15
+class_buffs 403816 Metamorphosis [4]: -0.1 -> -0.15
+class_buffs 7805 Blood Pact [0]: 16 -> 21
+class_buffs 7804 Blood Pact [0]: 7 -> 9
+class_buffs 11766 Blood Pact [0]: 27 -> 35
+class_buffs 11767 Blood Pact [0]: 38 -> 49
+class_hostile_buffs 7658 Curse of Recklessness [1]: -290 -> -285
+class_hostile_buffs 7659 Curse of Recklessness [1]: -465 -> -395
+class_hostile_buffs 704 Curse of Recklessness [1]: -140 -> -175
+class_hostile_buffs 11717 Curse of Recklessness [1]: -640 -> -505
+class_hostile_buffs 403501 Haunt [1]: 0.4 -> 0.1
+enchant_effects 403628 Shadow Bolt Volley [2]: -0.3 -> -0.05
+talent_effects 12287 Improved Thunder Clap [0]: -10 -> -60
+talent_effects 12299 Toughness [0]: 0.02 -> 0.1
+talent_effects 20502 Improved Execute [0]: -20 -> -50
+talent_effects 16538 Bastion [0]: 0.02 -> 0.1
+talent_effects 12320 Cruelty [0]: 0.01 -> 0.05
+talent_effects 12862 Improved Slam [0]: -0.1 -> -0.5
+talent_effects 12298 Shield Specialization [0]: 0.01 -> 0.05
+talent_effects 12308 Improved Sunder Armor [0]: -10 -> -30
+class_buffs 457814 Defensive Forecast [0]: -0.05 -> -0.1
+class_buffs 457816 Battle Forecast [0]: 0.05 -> 0.1
+class_buffs 5242 Battle Shout [0]: 35 -> 21
+class_buffs 11551 Battle Shout [0]: 185 -> 111
+class_buffs 18381 Cripple [0]: -15 -> -24
+class_buffs 18381 Cripple [1]: -15 -> -24
+class_buffs 6192 Battle Shout [0]: 55 -> 33
+class_buffs 457817 Berserker Forecast [0]: 0.05 -> 0.1
+class_buffs 6673 Battle Shout [0]: 15 -> 9
+class_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+class_buffs 426940 Rampage [0]: 0.15 -> 0.1
+class_buffs 11549 Battle Shout [0]: 85 -> 51
+class_buffs 11550 Battle Shout [0]: 130 -> 78
+class_buffs 15602 Lord General's Sword [0]: 50 -> 84
+class_buffs 15602 Lord General's Sword [1]: 50 -> 84
+class_buffs 25289 Battle Shout [0]: 232 -> 139
+class_hostile_buffs 457814 Defensive Forecast [0]: -0.05 -> -0.1
+class_hostile_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+class_hostile_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+set_effects 1227237 S03 - Item - Scarlet Enclave - Warrior - Protection 2P Bonus [0]: 0.6 -> 0.35
+set_effects 468235 S03 - Item - T2 - Warrior - Damage 4P Bonus [0]: 0.1 -> 0.25
+enchant_effects 403219 Furious Thunder [2]: 0.75 -> 0.5
+enchant_effects 468235 S03 - Item - T2 - Warrior - Damage 4P Bonus [0]: 0.1 -> 0.25
+player_buffs 9884 Mark of the Wild [0]: 240 -> 324
+player_buffs 9884 Mark of the Wild [1]: 10 -> 14
+player_buffs 20667 Corrosive Acid Breath [2]: -160 -> -935.51593
+player_buffs 1223342 Scarlet Inquisition [0]: 175 -> 250
+player_buffs 1231227 Reborn Inspiration [0]: -0.5 -> 0.5
+player_buffs 1245 Power Word: Fortitude [0]: 20 -> 26
+player_buffs 17351 Argent Dawn [0]: 0.5 -> 0.18
+player_buffs 11708 Curse of Weakness [0]: -31 -> -37
+player_buffs 7658 Curse of Recklessness [1]: -290 -> -285
+player_buffs 20927 Holy Shield [0]: 0.3 -> 0.2
+player_buffs 25782 Greater Blessing of Might [0]: 155 -> 112
+player_buffs 18946 The Lion Horn of Stormwind [0]: 250 -> 725
+player_buffs 457814 Defensive Forecast [0]: -0.05 -> -0.1
+player_buffs 5232 Mark of the Wild [0]: 65 -> 88
+player_buffs 5232 Mark of the Wild [1]: 2 -> 3
+player_buffs 457816 Battle Forecast [0]: 0.05 -> 0.1
+player_buffs 1225782 Well Fed [0]: 40 -> 20
+player_buffs 28747 Enrage [0]: 1 -> 2.5
+player_buffs 460332 Warmed Rumsey with Cream [0]: 100 -> 10
+player_buffs 460332 Warmed Rumsey with Cream [1]: 30 -> 15
+player_buffs 7646 Curse of Weakness [0]: -15 -> -18
+player_buffs 21562 Prayer of Fortitude [0]: 43 -> 56
+player_buffs 25101 Battle Shout [0]: 400 -> 200
+player_buffs 5242 Battle Shout [0]: 35 -> 21
+player_buffs 1244 Power Word: Fortitude [0]: 8 -> 10
+player_buffs 27499 Crusader's Wrath [0]: 95 -> 65
+player_buffs 27499 Crusader's Wrath [1]: 95 -> 65
+player_buffs 6205 Curse of Weakness [0]: -10 -> -12
+player_buffs 1108 Curse of Weakness [0]: -6 -> -7
+player_buffs 702 Curse of Weakness [0]: -3 -> -4
+player_buffs 20928 Holy Shield [0]: 0.3 -> 0.2
+player_buffs 19835 Blessing of Might [0]: 55 -> 40
+player_buffs 436365 Two-Handed Mastery [1]: 0.1 -> 0.15
+player_buffs 27775 The Furious Storm [0]: 95 -> 65
+player_buffs 27775 The Furious Storm [1]: 95 -> 65
+player_buffs 408680 Way of Earth [1]: 0.25 -> 0.3
+player_buffs 17745 Diseased Spit [1]: -15 -> -87.704613
+player_buffs 10626 Grace of Air [0]: 67 -> 77
+player_buffs 6307 Blood Pact [0]: 2 -> 3
+player_buffs 16873 Holy Word: Fortitude [0]: 68 -> 70
+player_buffs 13884 Withering Poison [1]: -10 -> -58.469746
+player_buffs 13884 Withering Poison [2]: -10 -> -58.469746
+player_buffs 22782 Mage Armor [1]: 0.3 -> 0.5
+player_buffs 19742 Blessing of Wisdom [0]: 10 -> 12
+player_buffs 12880 Enrage [0]: 0.05 -> 0.1
+player_buffs 7659 Curse of Recklessness [1]: -465 -> -395
+player_buffs 704 Curse of Recklessness [1]: -140 -> -175
+player_buffs 8907 Mark of the Wild [0]: 195 -> 263
+player_buffs 8907 Mark of the Wild [1]: 8 -> 11
+player_buffs 11717 Curse of Recklessness [1]: -640 -> -505
+player_buffs 457851 Overconfidence [0]: 2.75 -> 1.5
+player_buffs 457851 Overconfidence [1]: 0.1 -> 0.2
+player_buffs 457851 Overconfidence [1]: 0.1 -> 0.2
+player_buffs 25894 Greater Blessing of Wisdom [0]: 30 -> 36
+player_buffs 21970 Mark of the Chosen [0]: 25 -> 21
+player_buffs 22783 Mage Armor [1]: 0.3 -> 0.5
+player_buffs 19740 Blessing of Might [0]: 20 -> 14
+player_buffs 11551 Battle Shout [0]: 185 -> 111
+player_buffs 19854 Blessing of Wisdom [0]: 30 -> 36
+player_buffs 21564 Prayer of Fortitude [0]: 54 -> 70
+player_buffs 2791 Power Word: Fortitude [0]: 32 -> 42
+player_buffs 19853 Blessing of Wisdom [0]: 25 -> 30
+player_buffs 17315 Puncture Armor [0]: -200 -> -100
+player_buffs 25362 Strength of Earth [0]: 77 -> 53
+player_buffs 1213939 Pack Leader [0]: 0.05 -> 0.1
+player_buffs 1213939 Pack Leader [1]: 0.25 -> 0.2
+player_buffs 1213939 Pack Leader [2]: 0.05 -> 0.1
+player_buffs 1213939 Pack Leader [2]: 0.05 -> 0.1
+player_buffs 5234 Mark of the Wild [0]: 150 -> 203
+player_buffs 5234 Mark of the Wild [1]: 6 -> 8
+player_buffs 14322 Aspect of the Hawk [0]: 110 -> 55
+player_buffs 18381 Cripple [0]: -15 -> -24
+player_buffs 18381 Cripple [1]: -15 -> -24
+player_buffs 19850 Blessing of Wisdom [0]: 15 -> 18
+player_buffs 20906 Trueshot Aura [0]: 100 -> 50
+player_buffs 6192 Battle Shout [0]: 55 -> 33
+player_buffs 457469 Resilient [0]: -0.2 -> -0.5
+player_buffs 8163 Strength of Earth [0]: 36 -> 25
+player_buffs 16875 Divine Spirit [0]: 35 -> 40
+player_buffs 1226136 Wicked Shot [0]: 0.25 -> 0.2
+player_buffs 1226136 Wicked Shot [1]: 0.25 -> 0.2
+player_buffs 25916 Greater Blessing of Might [0]: 185 -> 133
+player_buffs 20925 Holy Shield [0]: 0.3 -> 0.2
+player_buffs 19834 Blessing of Might [0]: 35 -> 25
+player_buffs 8076 Strength of Earth [0]: 10 -> 7
+player_buffs 8836 Grace of Air [0]: 43 -> 49
+player_buffs 457817 Berserker Forecast [0]: 0.05 -> 0.1
+player_buffs 25918 Greater Blessing of Wisdom [0]: 33 -> 40
+player_buffs 6673 Battle Shout [0]: 15 -> 9
+player_buffs 19836 Blessing of Might [0]: 85 -> 61
+player_buffs 10441 Strength of Earth [0]: 61 -> 42
+player_buffs 6756 Mark of the Wild [0]: 105 -> 142
+player_buffs 6756 Mark of the Wild [1]: 4 -> 5
+player_buffs 1226461 Holy Power [0]: 0.1 -> 0.2
+player_buffs 25291 Blessing of Might [0]: 185 -> 133
+player_buffs 9885 Mark of the Wild [0]: 285 -> 385
+player_buffs 9885 Mark of the Wild [1]: 12 -> 16
+player_buffs 12686 Enrage [0]: 20 -> 102
+player_buffs 16359 Corrosive Acid Breath [2]: -160 -> -935.51593
+player_buffs 21849 Gift of the Wild [1]: 10 -> 14
+player_buffs 11707 Curse of Weakness [0]: -22 -> -26
+player_buffs 440667 Vindication [0]: -90 -> 6
+player_buffs 440667 Vindication [1]: -90 -> 6
+player_buffs 25360 Grace of Air [0]: 77 -> 89
+player_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+player_buffs 25290 Blessing of Wisdom [0]: 33 -> 40
+player_buffs 10937 Power Word: Fortitude [0]: 43 -> 56
+player_buffs 449869 Corrosive Acid Breath [2]: -80 -> -467.757965
+player_buffs 6117 Mage Armor [1]: 0.3 -> 0.5
+player_buffs 1126 Mark of the Wild [0]: 25 -> 34
+player_buffs 400015 Rolling with the Punches [0]: 0.05 -> 0.06
+player_buffs 19852 Blessing of Wisdom [0]: 20 -> 24
+player_buffs 426940 Rampage [0]: 0.15 -> 0.1
+player_buffs 10938 Power Word: Fortitude [0]: 54 -> 70
+player_buffs 15473 Shadowform [1]: 0.15 -> 0.1
+player_buffs 10351 Basilisk Skin [0]: 33 -> 48
+player_buffs 21850 Gift of the Wild [1]: 12 -> 16
+player_buffs 17331 Fang of the Crystal Spider [0]: -0.1 -> -0.09
+player_buffs 17331 Fang of the Crystal Spider [2]: -0.11 -> -0.09
+player_buffs 19837 Blessing of Might [0]: 115 -> 83
+player_buffs 1214166 Bloodthirsty [0]: 0.15 -> 0.2
+player_buffs 1214166 Bloodthirsty [0]: 0.15 -> 0.2
+player_buffs 11549 Battle Shout [0]: 85 -> 51
+player_buffs 403816 Metamorphosis [2]: 0.5 -> 0.77
+player_buffs 403816 Metamorphosis [4]: -0.1 -> -0.15
+player_buffs 403816 Metamorphosis [4]: -0.1 -> -0.15
+player_buffs 7805 Blood Pact [0]: 16 -> 21
+player_buffs 11550 Battle Shout [0]: 130 -> 78
+player_buffs 7804 Blood Pact [0]: 7 -> 9
+player_buffs 16928 Armor Shatter [0]: -200 -> -165
+player_buffs 15602 Lord General's Sword [0]: 50 -> 84
+player_buffs 15602 Lord General's Sword [1]: 50 -> 84
+player_buffs 1226357 Wicked Fast [1]: 0.3 -> 0.2
+player_buffs 8162 Strength of Earth [0]: 20 -> 14
+player_buffs 17499 Surge of Strength [0]: 50 -> 53
+player_buffs 19838 Blessing of Might [0]: 155 -> 112
+player_buffs 21614 Vitality [0]: 14 -> 51
+player_buffs 11766 Blood Pact [0]: 27 -> 35
+player_buffs 25289 Battle Shout [0]: 232 -> 139
+player_buffs 1225780 Well Fed [0]: 29 -> 25
+player_buffs 20587 Ragged John's Neverending Cup [0]: -5 -> -10
+player_buffs 20587 Ragged John's Neverending Cup [1]: -5 -> -10
+player_buffs 20587 Ragged John's Neverending Cup [2]: 10 -> 40
+player_buffs 20128 Redoubt [0]: 0.06 -> 0.3
+player_buffs 1226464 Templar [0]: 0.15 -> 0.1
+player_buffs 11767 Blood Pact [0]: 38 -> 49
+player_buffs 458878 Infinite Midnight [3]: -0.75 -> -0.5
+player_buffs 458878 Infinite Midnight [4]: 1.5 -> 1
+player_buffs 458878 Infinite Midnight [7]: 0.75 -> 0.5
+player_buffs 458878 Infinite Midnight [7]: 0.75 -> 0.5
+player_buffs 1243 Power Word: Fortitude [0]: 3 -> 4
+hostile_buffs 9884 Mark of the Wild [0]: 240 -> 324
+hostile_buffs 20667 Corrosive Acid Breath [2]: -160 -> -935.51593
+hostile_buffs 1231227 Reborn Inspiration [0]: -0.5 -> 0.5
+hostile_buffs 1231227 Reborn Inspiration [0]: -0.5 -> 0.5
+hostile_buffs 7658 Curse of Recklessness [1]: -290 -> -285
+hostile_buffs 18946 The Lion Horn of Stormwind [0]: 250 -> 725
+hostile_buffs 457814 Defensive Forecast [0]: -0.05 -> -0.1
+hostile_buffs 5232 Mark of the Wild [0]: 65 -> 88
+hostile_buffs 20301 Judgement of the Crusader [0]: 80 -> 92
+hostile_buffs 10173 Dampen Magic [0]: -60 -> -90
+hostile_buffs 14323 Hunter's Mark [1]: 45 -> 59
+hostile_buffs 7659 Curse of Recklessness [1]: -465 -> -395
+hostile_buffs 704 Curse of Recklessness [1]: -140 -> -175
+hostile_buffs 8907 Mark of the Wild [0]: 195 -> 263
+hostile_buffs 11717 Curse of Recklessness [1]: -640 -> -505
+hostile_buffs 457851 Overconfidence [0]: 2.75 -> 1.5
+hostile_buffs 457851 Overconfidence [0]: 2.75 -> 1.5
+hostile_buffs 21183 Judgement of the Crusader [0]: 20 -> 23
+hostile_buffs 14324 Hunter's Mark [1]: 75 -> 98
+hostile_buffs 17315 Puncture Armor [0]: -200 -> -100
+hostile_buffs 5234 Mark of the Wild [0]: 150 -> 203
+hostile_buffs 457469 Resilient [0]: -0.2 -> -0.5
+hostile_buffs 8455 Amplify Magic [0]: 30 -> 45
+hostile_buffs 6756 Mark of the Wild [0]: 105 -> 142
+hostile_buffs 9885 Mark of the Wild [0]: 285 -> 385
+hostile_buffs 16359 Corrosive Acid Breath [2]: -160 -> -935.51593
+hostile_buffs 8451 Dampen Magic [0]: -40 -> -60
+hostile_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+hostile_buffs 871 Shield Wall [0]: -0.75 -> -0.6
+hostile_buffs 20188 Judgement of the Crusader [0]: 30 -> 35
+hostile_buffs 1130 Hunter's Mark [1]: 20 -> 26
+hostile_buffs 449869 Corrosive Acid Breath [2]: -80 -> -467.757965
+hostile_buffs 1126 Mark of the Wild [0]: 25 -> 34
+hostile_buffs 10170 Amplify Magic [0]: 75 -> 113
+hostile_buffs 1008 Amplify Magic [0]: 15 -> 23
+hostile_buffs 20302 Judgement of the Crusader [0]: 110 -> 127
+hostile_buffs 10169 Amplify Magic [0]: 50 -> 75
+hostile_buffs 20300 Judgement of the Crusader [0]: 50 -> 58
+hostile_buffs 16128 Infected Bite [1]: 20 -> 116.939491
+hostile_buffs 20303 Judgement of the Crusader [0]: 140 -> 161
+hostile_buffs 14325 Hunter's Mark [1]: 110 -> 71
+hostile_buffs 16928 Armor Shatter [0]: -200 -> -165
+hostile_buffs 8450 Dampen Magic [0]: -20 -> -30
+hostile_buffs 10174 Dampen Magic [0]: -90 -> -135
+hostile_buffs 604 Dampen Magic [0]: -10 -> -15
+hostile_buffs 458878 Infinite Midnight [3]: -0.75 -> -0.5
+hostile_buffs 458878 Infinite Midnight [3]: -0.75 -> -0.5
+friendly_buffs 13222 Wound Poison [0]: -75 -> -92
+friendly_buffs 13218 Wound Poison [0]: -55 -> -67
+friendly_buffs 10173 Dampen Magic [1]: -120 -> -180
+friendly_buffs 13224 Wound Poison [0]: -135 -> -165
+friendly_buffs 8455 Amplify Magic [1]: 60 -> 90
+friendly_buffs 13223 Wound Poison [0]: -105 -> -128
+friendly_buffs 8451 Dampen Magic [1]: -80 -> -120
+friendly_buffs 10170 Amplify Magic [1]: 150 -> 225
+friendly_buffs 1008 Amplify Magic [1]: 30 -> 45
+friendly_buffs 10169 Amplify Magic [1]: 100 -> 150
+friendly_buffs 8450 Dampen Magic [1]: -40 -> -60
+friendly_buffs 10174 Dampen Magic [1]: -180 -> -270
+friendly_buffs 604 Dampen Magic [1]: -20 -> -30
+item_effects 25975 Increased Spell Penetration 03 [0]: -10 -> -3
+item_effects 26283 Increased Spell Penetration 05 [0]: -20 -> -5
+item_effects 18060 Attack Power 200 [1]: 20 -> 200
+item_effects 467830 Hybrid Healing/Spell Dam 15/5 [1]: 6 -> 5
+item_effects 15811 Attack Power 46 [1]: 48 -> 46
+item_effects 28869 Increased Spell Penetration 04 [0]: -13 -> -4
+item_effects 1220741 Hybrid Healing/Spell Dam 239/80 [1]: 80 -> 72
+item_effects 28799 Increased Spell Penetration 07 [0]: -25 -> -7
+enchant_effects 25116 Increased Mana Regen & Healing [0]: 12 -> 15
+enchant_effects 25116 Increased Mana Regen & Healing [1]: 25 -> 30
+enchant_effects 25114 Increased Mana Regen [0]: 4 -> 5
+enchant_effects 13363 Lesser Intellect [0]: 3 -> 5
+enchant_effects 7780 Minor Strength [0]: 1 -> 3
+enchant_effects 415370 Lone Wolf [0]: 0.25 -> 0.2
+enchant_effects 415370 Lone Wolf [0]: 0.25 -> 0.2
+enchant_effects 25115 Increased Mana Regen [0]: 8 -> 10
+enchant_effects 13624 Minor Stats [0]: 1 -> 2
+enchant_effects 13922 Deflection [0]: 3 -> 7
+enchant_effects 15811 Attack Power 46 [1]: 48 -> 46
+enchant_effects 7455 Minor Stamina [0]: 1 -> 3
+enchant_effects 7778 Minor Agility [0]: 1 -> 3
+enchant_effects 7427 Minor Deflection [0]: 1 -> 3
+enchant_effects 7456 Minor Spirit [0]: 1 -> 3
+enchant_effects 21930 Winter's Might [0]: 7 -> 15
+enchant_effects 13371 Lesser Strength [0]: 3 -> 4
+enchant_effects 23797 Spirit [0]: 20 -> 22
+enchant_effects 25067 Increase Healing 35 [0]: 30 -> 35
+enchant_effects 21614 Vitality [0]: 14 -> 51
+
+== item_changed (1416)
+items 13699: [23481] -> []
+items 13700: [23482] -> []
+items 13701: [23483] -> []
+items 1254: [23480] -> []
+items 20345: [9308] -> []
+items 22670: [13383] -> []
+items 17580: [15715] -> []
+items 20061: [9417, 21618] -> []
+items 17620: [14047] -> []
+items 21352: [18050, 21627] -> []
+items 19567: [21364] -> []
+items 21275: [26461, 21643] -> []
+items 13936: [14047] -> []
+items 21395: [21618] -> []
+items 22088: [9398] -> []
+items 21365: [9396] -> []
+items 22732: [13390, 13669, 15464] -> []
+items 22492: [18033, 21363] -> []
+items 21608: [14054, 18384] -> []
+items 22497: [23727, 28264] -> []
+items 19600: [9415] -> []
+items 22070: [9417] -> []
+items 16524: [9396] -> []
+items 18840: [7597, 9335] -> []
+items 23028: [13669] -> []
+items 8347: [7597] -> []
+items 18860: [21440] -> []
+items 21400: [9343] -> []
+items 23311: [9417, 18384] -> []
+items 19833: [21439, 21362] -> []
+items 20175: [9336] -> []
+items 19226: [23674] -> []
+items 20103: [18384] -> []
+items 16444: [15715, 25975] -> []
+items 21587: [18031, 21619] -> []
+items 16536: [15715, 25975] -> []
+items 22469: [18029, 21626] -> []
+items 20094: [9415] -> []
+items 23273: [15715] -> []
+items 20089: [7597, 9139] -> []
+items 21396: [9342] -> []
+items 21507: [18033, 21627] -> []
+items 23038: [7597, 15464, 15812] -> []
+items 239618: [9335] -> []
+items 22385: [15465, 7597] -> []
+items 23257: [7597, 15464, 14089] -> []
+items 16483: [15464] -> []
+items 16503: [9329, 9342] -> []
+items 19569: [21618] -> []
+items 22510: [18052, 18384] -> []
+items 22877: [7597, 9344] -> []
+items 7359: [9329] -> []
+items 18831: [7597] -> []
+items 23272: [15715] -> []
+items 17902: [13669] -> []
+items 22093: [9417, 21618] -> []
+items 19685: [15464] -> []
+items 15056: [7598, 13669] -> []
+items 18838: [7597, 9335] -> []
+items 16476: [14254, 18379] -> []
+items 20446: [24775] -> []
+items 20274: [13670] -> []
+items 16431: [7598] -> []
+items 19572: [21626] -> []
+items 10004: [9328] -> []
+items 22426: [21629, 9318] -> []
+items 22440: [15464] -> []
+items 16534: [14798, 18384] -> []
+items 19526: [9315] -> []
+items 10018: [9416] -> []
+items 22416: [14249, 13669, 15465] -> []
+items 21615: [18040, 21634] -> []
+items 6898: [7685, 7706] -> []
+items 22074: [9345, 23727] -> []
+items 23001: [18382] -> []
+items 19832: [15464] -> []
+items 20724: [18049] -> []
+items 23262: [9345, 21626] -> []
+items 21609: [18036] -> []
+items 22651: [7597, 15464] -> []
+items 23169: [9397] -> []
+items 20622: [14027] -> []
+items 19382: [15696] -> []
+items 22086: [9417, 21618] -> []
+items 23469: [9317] -> []
+items 22505: [18384, 18054, 25975] -> []
+items 23274: [7597] -> []
+items 20632: [15714, 18384] -> []
+items 217270: [9397] -> []
+items 20714: [9343, 21618] -> []
+items 20059: [9336] -> []
+items 22488: [18041, 18378] -> []
+items 16574: [7597] -> []
+items 21278: [7597, 15464] -> []
+items 19584: [9335] -> []
+items 23298: [7597, 15464, 15806] -> []
+items 20279: [13669] -> []
+items 22879: [7597, 15464, 15806] -> []
+items 10779: [12956] -> []
+items 12947: [17178] -> []
+items 17611: [14254] -> []
+items 22856: [9335] -> []
+items 20270: [13670] -> []
+items 13712: [18061] -> []
+items 16449: [9346] -> []
+items 21188: [18056, 18382] -> []
+items 21995: [15464] -> []
+items 11263: [13595] -> []
+items 22676: [7597, 18384, 18379] -> []
+items 22666: [9332] -> []
+items 22005: [7597] -> []
+items 17562: [14254] -> []
+items 21690: [9317, 21626] -> []
+items 23063: [13881] -> []
+items 20428: [7678] -> []
+items 21269: [21476, 13387] -> []
+items 21674: [13388] -> []
+items 20099: [9416] -> []
+items 20538: [21626] -> []
+items 17590: [15715] -> []
+items 21345: [14798, 25975, 21362] -> []
+items 17579: [18054] -> []
+items 19377: [15464] -> []
+items 19840: [9314] -> []
+items 18765: [21432] -> []
+items 22699: [13384] -> []
+items 20426: [9395, 21360] -> []
+items 20487: [7598] -> []
+items 16984: [9335] -> []
+items 22514: [18045, 21620] -> []
+items 12625: [17371] -> []
+items 21612: [9344, 21620] -> []
+items 7049: [7681] -> []
+items 20069: [18382, 18057] -> []
+items 16416: [18384] -> []
+items 21563: [18384, 26283] -> []
+items 22493: [15696] -> []
+items 18855: [21440] -> []
+items 19822: [7517] -> []
+items 20160: [9415] -> []
+items 10020: [9316] -> []
+items 21196: [13383] -> []
+items 13603: [18384] -> []
+items 20174: [18384] -> []
+items 23060: [15464] -> []
+items 4975: [13674] -> []
+items 14107: [18008] -> []
+items 21203: [15464] -> []
+items 19835: [15464] -> []
+items 9517: [15714] -> []
+items 22747: [14127] -> []
+items 20272: [13665] -> []
+items 22347: [15464] -> []
+items 22981: [21477] -> []
+items 22860: [9344, 23727] -> []
+items 20705: [9344] -> []
+items 20116: [9336] -> []
+items 20271: [7597] -> []
+items 7926: [13669] -> []
+items 20138: [15465] -> []
+items 22496: [24196, 23727, 18384, 28869] -> []
+items 21198: [13384] -> []
+items 16494: [9343] -> []
+items 22874: [7598] -> []
+items 19395: [18041, 21365] -> []
+items 23243: [7597] -> []
+items 21343: [18055, 18384, 26283] -> []
+items 23254: [9343] -> []
+items 19397: [14254, 21365] -> []
+items 19519: [9417, 21362] -> []
+items 22657: [9344] -> []
+items 20163: [18384, 9343] -> []
+items 20042: [7597] -> []
+items 23027: [21632] -> []
+items 13871: [17891] -> []
+items 21681: [18378, 7681] -> []
+items 23047: [18043] -> []
+items 22091: [9343, 18384] -> []
+items 22111: [9415] -> []
+items 16565: [7597] -> []
+items 20218: [21626] -> []
+items 22632: [28145, 28152, 28154] -> [28145, 28154]
+items 21393: [7597] -> []
+items 4323: [7708] -> []
+items 22886: [18384, 14248] -> []
+items 22875: [7598] -> []
+items 16413: [18384] -> []
+items 18764: [21432] -> []
+items 22515: [18035, 21361] -> []
+items 16391: [14248] -> []
+items 15108: [9414] -> []
+items 18833: [21440] -> []
+items 16567: [7597] -> []
+items 20640: [7517] -> []
+items 4548: [7560] -> []
+items 16474: [7597, 15715, 21363] -> []
+items 20150: [7597, 15806] -> []
+items 19156: [14047] -> []
+items 22000: [13383] -> []
+items 21623: [9345, 7597] -> []
+items 17569: [9417] -> []
+items 20481: [21362, 9398] -> []
+items 20354: [17891] -> []
+items 23023: [7597, 9331] -> []
+items 23252: [7597] -> []
+items 16485: [9417] -> []
+items 16508: [7598] -> []
+items 19167: [7597] -> []
+items 21585: [18054, 23727] -> []
+items 22700: [9346] -> []
+items 20370: [24694, 13670] -> [24694]
+items 13092: [9346] -> []
+items 12774: [7597] -> []
+items 20097: [18384, 9415] -> []
+items 20349: [24667] -> []
+items 21996: [7515] -> []
+items 22664: [14049] -> []
+items 21582: [18038, 21364] -> []
+items 23258: [9332, 7597, 15464] -> []
+items 22113: [9417, 21618] -> []
+items 21412: [9314] -> []
+items 17586: [18049] -> []
+items 22090: [9416, 7597] -> []
+items 16539: [14248, 23727] -> []
+items 19147: [18050] -> []
+items 10461: [7706] -> []
+items 22421: [13388, 21476] -> []
+items 19121: [9417] -> []
+items 22073: [9417] -> []
+items 20344: [13831] -> []
+items 9643: [13675] -> []
+items 20196: [18384] -> []
+items 16448: [9417] -> []
+items 22672: [7597, 15464] -> []
+items 10003: [9344] -> []
+items 20329: [17898, 18378] -> []
+items 20361: [9404] -> []
+items 10009: [9343] -> []
+items 20647: [21618] -> []
+items 20047: [18384, 9343] -> []
+items 22652: [14248] -> []
+items 20326: [18384, 13831] -> []
+items 19695: [15464] -> []
+items 16551: [9346] -> []
+items 23046: [18056] -> []
+items 15587: [9329] -> []
+items 20502: [24852] -> []
+items 16452: [14248, 7597] -> []
+items 21620: [18035, 21620] -> []
+items 23288: [14248] -> []
+items 20003: [15464] -> []
+items 22865: [14248] -> []
+items 11910: [13669] -> []
+items 21709: [18054, 23727] -> []
+items 19693: [15464] -> []
+items 21394: [15464] -> []
+items 16505: [7597] -> []
+items 2943: [7680] -> []
+items 21598: [13665, 13387] -> []
+items 22430: [18032, 18384, 21363] -> []
+items 17073: [9332] -> []
+items 14152: [18056, 18384] -> []
+items 21398: [26142] -> []
+items 23293: [7598] -> []
+items 17596: [14248] -> []
+items 22072: [9345] -> []
+items 20357: [9307] -> []
+items 23318: [18384, 14248] -> []
+items 13870: [9308] -> []
+items 16396: [15807] -> []
+items 20041: [7597] -> []
+items 19315: [18050] -> []
+items 10002: [9328] -> []
+items 21390: [9345, 7597, 21618] -> []
+items 22080: [9416, 21626, 18384] -> []
+items 21392: [7517] -> []
+items 23307: [7597] -> []
+items 18762: [9294] -> []
+items 21999: [7597] -> []
+items 19312: [15696, 21625] -> []
+items 22083: [9343, 21626] -> []
+items 20100: [9141] -> []
+items 20685: [21629, 9314] -> []
+items 22424: [9317, 21362] -> []
+items 22082: [9417] -> []
+items 19521: [9397, 21624] -> []
+items 23067: [18379] -> []
+items 20488: [7597, 21432] -> []
+items 22482: [7597] -> []
+items 20324: [18384, 13831] -> []
+items 20339: [9308] -> []
+items 217287: [9395] -> []
+items 23291: [9344, 23727] -> []
+items 21410: [21362, 26154] -> []
+items 16471: [7597] -> []
+items 21375: [13881, 18384, 21618] -> []
+items 7054: [9343] -> []
+items 20140: [7597] -> []
+items 18800: [21636, 23213] -> []
+items 22464: [18038, 21635] -> []
+items 23290: [9346] -> []
+items 18582: [22988] -> []
+items 17581: [17367] -> []
+items 20191: [14027] -> []
+items 18848: [7597, 9335] -> []
+items 14142: [18379] -> []
+items 20194: [9336] -> []
+items 21664: [7597, 15810] -> []
+items 23297: [15715] -> []
+items 22419: [15464, 13388] -> []
+items 16425: [9334, 7597] -> []
+items 16544: [15464] -> []
+items 20267: [7597] -> []
+items 23313: [9332, 7597, 15464] -> []
+items 19566: [18378] -> []
+items 20330: [18384, 13831] -> []
+items 19528: [9406] -> []
+items 22383: [14799, 25975] -> []
+items 20034: [23727, 14054] -> []
+items 19682: [23729, 14054] -> []
+items 15062: [15811, 7597] -> []
+items 20187: [9138] -> []
+items 21178: [14054] -> []
+items 4825: [9139] -> []
+items 18814: [18052] -> []
+items 21101: [25717] -> []
+items 15995: [21432] -> []
+items 15999: [14054] -> []
+items 20167: [9329] -> []
+items 21268: [24697, 13387] -> []
+items 22501: [18053] -> []
+items 22741: [9416] -> []
+items 19383: [13385] -> []
+items 19532: [9406] -> []
+items 21186: [14054, 23727] -> []
+items 20347: [17899] -> []
+items 18844: [7597, 9335] -> []
+items 16540: [14054] -> []
+items 23031: [18053, 23727] -> []
+items 19097: [9330] -> []
+items 16467: [7597] -> []
+items 21702: [14027] -> []
+items 20118: [18384] -> []
+items 20699: [13388] -> []
+items 22112: [9396, 21623] -> []
+items 21417: [18384, 9343, 23727] -> []
+items 20331: [17898, 18378] -> []
+items 19058: [13669] -> []
+items 17572: [9345] -> []
+items 221518: [436239] -> []
+items 19090: [9346] -> []
+items 20434: [21361] -> []
+items 21244: [7597, 15464, 9330] -> []
+items 22060: [7597] -> []
+items 21407: [18056, 26153] -> [26153]
+items 12624: [16638] -> []
+items 10031: [9414] -> []
+items 18406: [13665, 13387] -> []
+items 20068: [15806] -> []
+items 20355: [9307] -> []
+items 21604: [15696] -> []
+items 19043: [15809] -> []
+items 20642: [9342] -> []
+items 15057: [7598, 13669] -> []
+items 21373: [15714, 25975, 21362] -> []
+items 210781: [9400] -> []
+items 22631: [28144, 28155] -> [28144]
+items 21677: [14049, 7597] -> []
+items 21839: [26814, 21625] -> []
+items 16484: [7597] -> []
+items 16519: [14254] -> []
+items 19597: [9345] -> []
+items 20190: [7597, 15806] -> []
+items 18807: [18384, 9343] -> []
+items 20362: [17891] -> []
+items 22195: [15807, 7597] -> []
+items 22864: [9331, 7597] -> []
+items 16987: [9141] -> []
+items 18871: [7597] -> []
+items 17567: [9345] -> []
+items 19523: [9417, 21362] -> []
+items 21401: [21361] -> []
+items 20445: [24774] -> []
+items 22671: [7518] -> []
+items 21331: [13384] -> []
+items 16564: [15465, 7597] -> []
+items 21607: [14254, 21363] -> []
+items 16568: [15464] -> []
+items 21362: [7597] -> []
+items 16566: [7597] -> []
+items 19595: [15714] -> []
+items 22498: [14055, 23727, 18382] -> []
+items 23319: [9344, 18384] -> []
+items 23062: [14798, 18384] -> []
+items 21678: [9398] -> []
+items 16543: [7598, 15464] -> []
+items 10028: [9325] -> []
+items 10041: [14248] -> []
+items 20151: [7597, 9331] -> []
+items 23295: [18384, 9343] -> []
+items 20703: [9334] -> []
+items 12639: [13665, 7597] -> []
+items 19520: [9415, 21625] -> []
+items 22438: [7598, 21625] -> []
+items 14103: [7703] -> []
+items 22066: [9417, 23727] -> []
+items 22437: [7597, 21627] -> []
+items 23032: [9346] -> []
+items 23310: [14248, 18384] -> []
+items 19434: [18013] -> []
+items 22423: [7518] -> []
+items 4983: [15806] -> []
+items 18747: [9417, 14049, 9405] -> []
+items 23259: [7597, 18384] -> []
+items 22109: [9345] -> []
+items 18407: [18013] -> []
+items 20704: [9316] -> []
+items 22100: [9416] -> []
+items 22667: [9406] -> []
+items 16401: [13669] -> []
+items 22465: [18038, 21365] -> []
+items 19311: [17875] -> []
+items 23125: [15714] -> []
+items 21332: [13384, 15464] -> []
+items 21336: [18052, 18384] -> []
+items 22867: [18384, 9342] -> []
+items 20341: [17899] -> []
+items 21330: [7517, 15464] -> []
+items 20711: [7681] -> []
+items 21368: [7597, 9415] -> []
+items 23315: [7597] -> []
+items 22418: [13669, 21410] -> []
+items 19690: [7598] -> []
+items 21347: [18050, 18384, 23727] -> []
+items 19847: [23729, 9345] -> []
+items 15107: [9401] -> []
+items 12784: [15816] -> []
+items 21622: [26395, 18384] -> []
+items 21639: [13388, 13669] -> []
+items 18868: [7597] -> []
+items 22852: [9343] -> []
+items 19577: [13384, 13675] -> []
+items 20278: [21624] -> []
+items 23557: [7597, 9330] -> []
+items 16454: [7597] -> []
+items 16548: [7597] -> []
+items 20343: [17899] -> []
+items 21712: [18037, 18379] -> []
+items 14154: [18044, 18379] -> []
+items 14141: [18378] -> []
+items 17570: [9345] -> []
+items 19593: [9406] -> []
+items 22513: [18041] -> []
+items 22107: [9416, 21623] -> []
+items 7348: [9132, 21352] -> []
+items 23285: [9335] -> []
+items 22101: [9417] -> []
+items 16475: [14054, 7597] -> []
+items 22872: [7597] -> []
+items 21317: [7597] -> []
+items 7064: [9401] -> []
+items 17568: [9345] -> []
+items 22441: [7597, 21618] -> []
+items 7950: [15464] -> []
+items 10023: [9325] -> []
+items 20333: [9308, 21619] -> []
+items 21351: [18053, 18384, 25975] -> []
+items 16580: [9345] -> []
+items 22099: [21618, 9417] -> []
+items 17610: [9345] -> []
+items 21409: [9416] -> []
+items 16489: [18384] -> []
+items 19048: [9331] -> []
+items 21531: [9315] -> []
+items 21413: [23727, 18056] -> []
+items 22417: [21409, 13669] -> []
+items 21707: [18049, 26283] -> []
+items 18403: [18384] -> []
+items 10042: [17868] -> []
+items 22954: [7597, 15464] -> []
+items 23263: [18384, 14248] -> []
+items 16554: [9345] -> []
+items 20350: [9402] -> []
+items 19384: [9333, 15464] -> []
+items 18847: [7597, 9335] -> []
+items 19831: [21619] -> []
+items 23041: [15817] -> []
+items 217273: [9395] -> []
+items 23061: [18036] -> []
+items 16456: [15465, 7597] -> []
+items 22688: [14254] -> []
+items 20431: [9395, 21360] -> []
+items 15061: [9317] -> []
+items 22655: [9417] -> []
+items 7951: [15776] -> []
+items 20135: [7597, 15464] -> []
+items 20033: [23727, 14054] -> []
+items 13715: [18064] -> []
+items 16506: [13669, 15464, 9141] -> []
+items 18405: [18384] -> []
+items 2231: [17747] -> []
+items 16472: [9346, 18379] -> []
+items 10038: [9328] -> []
+items 19575: [7517] -> []
+items 19842: [9315] -> []
+items 22483: [7597] -> []
+items 10032: [9411] -> []
+items 19120: [9331, 15464] -> []
+items 20203: [21618] -> []
+items 12256: [9296] -> []
+items 23453: [9317] -> []
+items 20480: [21363, 9416] -> []
+items 17599: [14254] -> []
+items 19599: [9397] -> []
+items 21364: [7597, 15464] -> []
+items 16451: [7597, 9346] -> []
+items 23237: [17872, 18384] -> []
+items 22062: [9343] -> []
+items 16478: [7597] -> []
+items 10502: [14248] -> []
+items 21349: [14248, 21625] -> []
+items 10039: [9357] -> []
+items 19098: [21362] -> []
+items 23253: [9346] -> []
+items 21606: [18029] -> []
+items 23057: [9344, 18382] -> []
+items 16541: [7597] -> []
+items 16459: [9345] -> []
+items 16433: [7597] -> []
+items 19085: [9343] -> []
+items 21399: [9417] -> []
+items 22064: [14248] -> []
+items 20149: [13665] -> []
+items 18510: [18032] -> []
+items 9607: [7516] -> []
+items 21505: [15809] -> []
+items 20044: [18384] -> []
+items 19576: [13383] -> []
+items 20186: [9329] -> []
+items 21389: [9346, 18384, 7597] -> []
+items 19570: [18378] -> []
+items 19024: [13669] -> []
+items 18836: [21440] -> []
+items 12632: [9361] -> []
+items 21187: [15464] -> []
+items 22384: [15464, 7597] -> []
+items 17598: [9345] -> []
+items 7920: [13669] -> []
+items 22740: [7597] -> []
+items 20096: [9397] -> []
+items 12619: [13387] -> []
+items 7949: [9140] -> []
+items 15141: [7597] -> []
+items 22379: [9342] -> []
+items 19998: [7598] -> []
+items 19594: [9406] -> []
+items 17573: [9417] -> []
+items 20641: [9398] -> []
+items 21700: [13384] -> []
+items 20095: [9398] -> []
+items 21182: [7597, 15464] -> []
+items 21406: [15464] -> []
+items 22869: [14248] -> []
+items 17583: [18049] -> []
+items 18282: [21434, 15464] -> []
+items 23053: [7598, 9334] -> []
+items 21388: [9343, 21362] -> []
+items 20550: [13669] -> []
+items 20695: [9331] -> []
+items 23277: [14799] -> []
+items 12259: [9141] -> []
+items 23454: [29369, 21626] -> []
+items 20137: [7597] -> []
+items 23283: [9346] -> []
+items 21565: [26283] -> []
+items 17608: [14047] -> []
+items 11872: [13669] -> []
+items 21387: [14047, 7597] -> []
+items 19692: [7597] -> []
+items 12620: [13388] -> []
+items 16477: [7597] -> []
+items 14045: [17867] -> []
+items 15109: [7710, 7688] -> []
+items 19140: [18033] -> []
+items 18877: [7597] -> []
+items 10025: [14794] -> []
+items 16428: [9141] -> []
+items 20143: [7597] -> []
+items 22512: [18040, 21363] -> []
+items 21403: [15464] -> []
+items 23464: [29369, 21626] -> []
+items 16422: [13669, 9330] -> []
+items 22665: [15807] -> []
+items 23025: [14248, 23727, 18384] -> []
+items 12105: [17819] -> []
+items 23036: [15696] -> []
+items 22478: [15464, 7598] -> []
+items 22968: [9345] -> []
+items 17613: [9417] -> []
+items 22081: [9416] -> []
+items 21414: [9346, 18384] -> []
+items 14108: [9295] -> []
+items 21273: [26460, 23729, 18384] -> []
+items 21624: [14799, 18384] -> []
+items 22092: [9416] -> []
+items 21322: [13390] -> []
+items 21208: [15715, 21362] -> []
+items 20195: [18384] -> []
+items 20328: [18384, 13831] -> []
+items 22507: [23727, 18053] -> []
+items 18882: [7597] -> []
+items 10049: [7707] -> []
+items 20162: [9397] -> []
+items 7053: [7703] -> []
+items 21695: [13669, 13384] -> []
+items 23309: [9343] -> []
+items 18835: [21440] -> []
+items 16007: [7581, 21429] -> []
+items 19838: [9318] -> []
+items 16573: [14799, 21363] -> []
+items 18830: [7597] -> []
+items 16555: [9417] -> []
+items 22436: [15464, 7597, 21618] -> []
+items 22191: [15824, 7597, 27518] -> [27518]
+items 21197: [13383] -> []
+items 16571: [7597] -> []
+items 17624: [18050, 21362] -> []
+items 17909: [13670] -> []
+items 16414: [14254] -> []
+items 22757: [9346] -> []
+items 13863: [9417] -> []
+items 22750: [9416] -> []
+items 19038: [21619] -> []
+items 21338: [14127, 25975] -> []
+items 19530: [9315] -> []
+items 22089: [9343, 7597] -> []
+items 20220: [18382, 18057] -> []
+items 15058: [7597, 13669] -> []
+items 16549: [14248, 7597] -> []
+items 23040: [21475] -> []
+items 22378: [9334] -> []
+items 20112: [9141] -> []
+items 21477: [15464, 9336] -> []
+items 16415: [9417] -> []
+items 18821: [7597, 9336] -> []
+items 20106: [7597] -> []
+items 16424: [9329, 9342] -> []
+items 22443: [15464] -> []
+items 21669: [18038] -> []
+items 18876: [7597] -> []
+items 22471: [9318, 21619] -> []
+items 16523: [15715] -> []
+items 22391: [14055, 18384] -> []
+items 22880: [7597, 15464, 15806] -> []
+items 22380: [18030] -> []
+items 7027: [7708] -> []
+items 20165: [18384, 9415] -> []
+items 20549: [13675] -> []
+items 22431: [18031, 21363] -> []
+items 21527: [17899] -> []
+items 19406: [15814, 15465, 13669] -> []
+items 22108: [9395] -> []
+items 20380: [21618] -> []
+items 16453: [7597, 15464] -> []
+items 21272: [21438] -> []
+items 20682: [15714] -> []
+items 19592: [7680] -> []
+items 23296: [14127] -> []
+items 19052: [13669] -> []
+items 4117: [9400] -> []
+items 19116: [9408] -> []
+items 21397: [21363] -> []
+items 20551: [7597] -> []
+items 13717: [18066] -> []
+items 19115: [9415] -> []
+items 16487: [14248] -> []
+items 20360: [17891] -> []
+items 20716: [14054] -> []
+items 22887: [14248, 18384] -> []
+items 16491: [18384] -> []
+items 19829: [9417, 21619] -> []
+items 20537: [21618] -> []
+items 22467: [18032, 21626] -> []
+items 21374: [17367, 7597, 18384] -> []
+items 19828: [18052, 18384] -> []
+items 20269: [7597] -> []
+items 12776: [13665, 15465] -> []
+items 20216: [15464] -> []
+items 20372: [24697, 13670] -> [24697]
+items 18509: [18384] -> []
+items 22947: [21364] -> []
+items 23452: [14799] -> []
+items 21360: [7597, 15464] -> []
+items 23251: [7598] -> []
+items 239688: [9335] -> []
+items 21350: [14799, 21625, 25975] -> []
+items 12783: [7597] -> []
+items 20144: [7597] -> []
+items 19846: [9343] -> []
+items 23292: [7598] -> []
+items 22885: [14248, 21626] -> []
+items 16420: [9141] -> []
+items 23284: [9331, 7597] -> []
+items 7060: [9403] -> []
+items 19101: [9344] -> []
+items 21648: [14799] -> []
+items 21366: [7597, 9417] -> []
+items 17588: [14798] -> []
+items 19989: [9327] -> []
+items 7928: [13669] -> []
+items 19095: [9330] -> []
+items 15047: [18041] -> []
+items 20117: [14027] -> []
+items 21329: [13384] -> []
+items 17571: [14127] -> []
+items 19568: [21626] -> []
+items 22481: [15464, 15818, 7597] -> []
+items 19323: [7598] -> []
+items 16560: [7597] -> []
+items 20113: [9138] -> []
+items 16479: [7598, 15464] -> []
+items 22519: [18031] -> []
+items 16418: [13669, 9141, 15464] -> []
+items 16535: [18384, 18050] -> []
+items 18543: [18384] -> []
+items 21348: [14127, 21628, 23727] -> []
+items 16463: [7597] -> []
+items 22753: [7597, 15464, 15715] -> []
+items 20346: [9308] -> []
+items 19605: [9343] -> []
+items 16462: [15464] -> []
+items 14136: [18018, 17900] -> []
+items 7377: [9402] -> []
+items 22502: [14127, 23727] -> []
+items 21201: [15464] -> []
+items 22087: [9417, 21618] -> []
+items 23261: [14248, 21626] -> []
+items 19848: [9345] -> []
+items 23455: [21364, 14054] -> []
+items 20136: [15465] -> []
+items 20053: [9329] -> []
+items 16521: [7597] -> []
+items 22681: [9408, 21362] -> []
+items 17904: [13670] -> []
+items 16528: [9141] -> []
+items 17901: [13669] -> []
+items 22097: [9343, 18384] -> []
+items 22489: [18041, 18378] -> []
+items 19825: [7597] -> []
+items 22656: [7597] -> []
+items 20338: [13831] -> []
+items 19083: [14027] -> []
+items 20171: [18384] -> []
+items 23301: [7598] -> []
+items 16421: [9345, 7597] -> []
+items 17603: [17367, 21362] -> []
+items 19525: [9397, 21624] -> []
+items 20342: [13831] -> []
+items 15060: [9315] -> []
+items 21359: [15464] -> []
+items 21318: [15714] -> []
+items 22589: [23729, 28141, 28142] -> [28142]
+items 19845: [9417] -> []
+items 19686: [15465] -> []
+items 22506: [18050, 18382, 23727] -> []
+items 17604: [15715] -> []
+items 13868: [17890] -> []
+items 17577: [14248] -> []
+items 18837: [21440] -> []
+items 19168: [13665] -> []
+items 19583: [15806] -> []
+items 21207: [15714, 21625] -> []
+items 23468: [14799] -> []
+items 23059: [13669, 13390] -> []
+items 16443: [18384, 18050] -> []
+items 18608: [23264] -> []
+items 21997: [15464] -> []
+items 16542: [7597] -> []
+items 23037: [21632] -> []
+items 20334: [18382, 24666, 21620] -> []
+items 14111: [18011] -> []
+items 7513: [7688] -> []
+items 20124: [7597] -> []
+items 21483: [18384, 21625, 9415] -> []
+items 18023: [13598, 9413] -> []
+items 16466: [7597] -> []
+items 22476: [7598, 15826, 15464] -> []
+items 20152: [14027] -> []
+items 17602: [18050, 21362] -> []
+items 20217: [21628] -> []
+items 2907: [7552] -> []
+items 4329: [9342] -> []
+items 18508: [21442] -> []
+items 21355: [14799, 21362, 25975] -> []
+items 22749: [7597] -> []
+items 22870: [9346] -> []
+items 2950: [7703] -> []
+items 16579: [14054, 18384, 7597] -> []
+items 21337: [18050, 18384, 23727] -> []
+items 16468: [15464] -> []
+items 15052: [15813] -> []
+items 7515: [9342] -> []
+items 22095: [9398] -> []
+items 215365: [9397] -> []
+items 16423: [9398] -> []
+items 19529: [7680] -> []
+items 19108: [9304] -> []
+items 20427: [7678] -> []
+items 19050: [21626] -> []
+items 19826: [9315] -> []
+items 21517: [21365] -> []
+items 20101: [9138] -> []
+items 12260: [7689] -> []
+items 16499: [15807] -> []
+items 18511: [13669] -> []
+items 22422: [21476, 13388] -> []
+items 20046: [18384] -> []
+items 20275: [7597] -> []
+items 12584: [7597, 9335] -> []
+items 16427: [9141] -> []
+items 20710: [7518] -> []
+items 12107: [9344] -> []
+items 21189: [25901, 15464] -> []
+items 22939: [18035] -> []
+items 21179: [18384, 21361] -> []
+items 17906: [13669] -> []
+items 20273: [7597] -> []
+items 15862: [9331] -> []
+items 23306: [7598] -> []
+items 21516: [26203] -> []
+items 22630: [18382, 28141, 28143] -> [28143]
+items 19527: [9408] -> []
+items 20098: [9343] -> []
+items 17584: [14798] -> []
+items 20043: [7597, 15806] -> []
+items 17903: [13669] -> []
+items 19310: [17896] -> []
+items 19582: [15808] -> []
+items 21601: [13388] -> []
+items 20170: [9141] -> []
+items 18968: [23433] -> []
+items 22940: [13385] -> []
+items 19165: [17280] -> []
+items 21183: [18384, 15715] -> []
+items 20353: [9307] -> []
+items 12187: [15804] -> []
+items 19518: [9343, 21619] -> []
+items 17576: [9417] -> []
+items 17594: [9417] -> []
+items 13586: [17713] -> []
+items 21994: [13385] -> []
+items 17612: [9345] -> []
+items 22067: [9345] -> []
+items 22084: [9417, 21628] -> []
+items 20358: [9404] -> []
+items 221344: [14248] -> []
+items 22466: [18042, 21629] -> []
+items 22009: [15465] -> []
+items 23308: [9346] -> []
+items 20189: [9141] -> []
+items 17601: [9417] -> []
+items 20204: [7597] -> []
+items 19571: [21364] -> []
+items 22110: [9416] -> []
+items 21206: [14248, 21625] -> []
+items 17907: [13669] -> []
+items 23260: [9344, 18384] -> []
+items 16527: [7597, 13669] -> []
+items 20717: [18035] -> []
+items 20214: [14798, 18384] -> []
+items 16550: [9346, 7597] -> []
+items 21210: [14127, 21363] -> []
+items 18867: [7597] -> []
+items 20168: [9138] -> []
+items 18879: [13383] -> []
+items 215366: [9397] -> []
+items 22689: [18031] -> []
+items 14153: [28264] -> []
+items 19926: [14047] -> []
+items 20177: [7597] -> []
+items 23465: [21364, 14054] -> []
+items 20192: [9336] -> []
+items 12618: [13388] -> []
+items 20056: [21618] -> []
+items 18828: [7597, 9335] -> []
+items 21418: [9346] -> []
+items 22883: [14248, 18384] -> []
+items 17618: [14047] -> []
+items 21335: [14127, 25975, 23727] -> []
+items 16492: [9417] -> []
+items 19047: [21362] -> []
+items 21581: [7597, 15464] -> []
+items 22150: [14027, 15464] -> []
+items 21391: [9343, 21625] -> []
+items 20176: [9417, 21618] -> []
+items 22480: [15464, 7597, 15817] -> []
+items 22884: [15715] -> []
+items 16502: [13669, 9330] -> []
+items 18238: [7597] -> []
+items 23451: [26395, 18384] -> []
+items 4331: [7688] -> []
+items 16562: [15464] -> []
+items 22518: [18034] -> []
+items 23467: [7597, 9335] -> []
+items 21312: [14027] -> []
+items 20054: [9417] -> []
+items 16563: [15464, 7597] -> []
+items 21126: [15808, 7574] -> []
+items 16473: [7597, 15715, 21363] -> []
+items 22500: [18384, 14127] -> []
+items 22855: [9346] -> []
+items 23466: [26395, 18384] -> []
+items 15050: [14056] -> []
+items 23282: [14248] -> []
+items 14042: [17866] -> []
+items 16450: [7597] -> []
+items 22669: [13387] -> []
+items 19123: [21618] -> []
+items 21597: [18384, 23727, 14799] -> []
+items 13714: [18063] -> []
+items 16569: [15464] -> []
+items 22273: [9346, 18384] -> []
+items 23255: [14248, 18384] -> []
+items 21602: [15464] -> []
+items 14043: [9295] -> []
+items 19325: [7597, 15464, 9329] -> []
+items 19694: [15465] -> []
+items 16465: [7597] -> []
+items 11862: [14027] -> []
+items 20327: [17898, 18378] -> []
+items 23034: [7597] -> []
+items 20648: [21625] -> []
+items 7514: [7702] -> []
+items 6733: [9141] -> []
+items 16430: [7597] -> []
+items 16577: [7597, 18384, 9415] -> []
+items 16659: [9141] -> []
+items 20115: [7597, 9331] -> []
+items 20276: [7597] -> []
+items 13602: [18384] -> []
+items 19830: [9342, 21362] -> []
+items 16504: [7597, 9345] -> []
+items 18413: [7518] -> []
+items 21588: [15715, 18379] -> []
+items 10510: [21431] -> []
+items 22752: [14127] -> []
+items 20277: [7597] -> []
+items 21600: [18052] -> []
+items 20090: [14027] -> []
+items 19573: [21618] -> []
+items 10019: [9346] -> []
+items 22503: [25975, 14054] -> []
+items 19157: [15810, 7597, 18384] -> []
+items 21346: [18052, 18384, 21620] -> []
+items 17625: [17367, 21362] -> []
+items 21316: [7597] -> []
+items 20363: [7702] -> []
+items 19574: [7517] -> []
+items 21202: [15464] -> []
+items 17605: [18050, 21362] -> []
+items 22814: [15829] -> []
+items 19102: [9344] -> []
+items 23065: [18030, 21627] -> []
+items 21667: [18042, 18384] -> []
+items 14146: [18382] -> []
+items 21694: [17371] -> []
+items 16515: [7598] -> []
+items 22470: [21628, 18032] -> []
+items 17622: [15715] -> []
+items 19601: [9415] -> []
+items 22878: [18384, 9343] -> []
+items 21518: [26204] -> []
+items 7936: [13669] -> []
+items 19129: [9342] -> []
+items 16501: [9398] -> []
+items 12104: [9331] -> []
+items 16457: [15464] -> []
+items 22069: [9345, 26283] -> []
+items 19371: [21365] -> []
+items 16417: [7597] -> []
+items 21809: [7597, 15464] -> []
+items 19124: [7516] -> []
+items 22468: [18030, 21626] -> []
+items 19839: [7681] -> []
+items 20153: [7597, 9139] -> []
+items 22071: [9398] -> []
+items 16393: [9343] -> []
+items 22068: [9415] -> []
+items 14112: [18008] -> []
+items 19684: [23727, 14254] -> []
+items 12775: [15768] -> []
+items 21404: [15464] -> []
+items 20479: [18379, 9344] -> []
+items 19094: [9346] -> []
+items 21334: [18057, 18384, 26283] -> []
+items 22491: [21363, 18034] -> []
+items 19834: [7598, 15810] -> []
+items 22098: [9417, 21618] -> []
+items 21586: [15817, 7597, 15464] -> []
+items 18865: [7597, 9335] -> []
+items 20268: [7597] -> []
+items 21521: [23730] -> []
+items 22490: [18041] -> []
+items 18715: [7598] -> []
+items 19604: [9343] -> []
+items 16983: [13669] -> []
+items 19431: [21485, 14249] -> []
+items 14106: [18015] -> []
+items 20580: [24994] -> []
+items 22876: [7597] -> []
+items 22494: [18035, 21618] -> []
+items 22065: [9416, 18384] -> []
+items 7937: [7597] -> []
+items 18609: [21364, 23265] -> []
+items 19084: [14027] -> []
+items 13713: [18062] -> []
+items 19598: [9397] -> []
+items 21672: [15464] -> []
+items 22943: [14127, 28869] -> []
+items 23275: [9344] -> []
+items 17623: [18050, 21362] -> []
+items 22102: [18384, 9343] -> []
+items 16518: [9343] -> []
+items 22748: [7597, 15464] -> []
+items 10021: [9346] -> []
+items 16345: [7597, 9335] -> []
+items 16513: [7597] -> []
+items 19603: [9417] -> []
+items 22516: [21626, 17371] -> []
+items 21242: [7597, 9142] -> []
+items 22429: [18384, 18031, 21619] -> []
+items 14144: [18378] -> []
+items 19096: [21362] -> []
+items 17908: [13669] -> []
+items 17607: [14047] -> []
+items 7047: [7710] -> []
+items 12633: [18029] -> []
+items 20146: [7597] -> []
+items 20325: [9308, 21619] -> []
+items 17592: [17367] -> []
+items 21619: [9315, 21633] -> []
+items 22198: [21473] -> []
+items 21185: [21629, 9406] -> []
+items 23300: [7597] -> []
+items 12641: [14249] -> []
+items 20145: [7597, 15464] -> []
+items 19841: [9408] -> []
+items 22758: [9397] -> []
+items 16545: [15464] -> []
+items 19999: [23729, 18384, 21365] -> []
+items 21200: [13385] -> []
+items 15105: [9296] -> []
+items 12258: [7597] -> []
+items 22654: [9344] -> []
+items 17617: [14248] -> []
+items 7927: [7597] -> []
+items 20539: [21625] -> []
+items 5522: [18384] -> []
+items 22420: [13388, 13669] -> []
+items 21372: [17367, 18384] -> []
+items 16455: [7597, 15464] -> []
+items 22194: [9335, 7597] -> []
+items 20088: [7597, 9331] -> []
+items 21209: [18049, 21362] -> []
+items 21836: [15715, 18384] -> []
+items 22511: [14047] -> []
+items 15106: [9326] -> []
+items 20332: [9308, 21619] -> []
+items 17616: [9417] -> []
+items 23276: [18049] -> []
+items 21353: [14054, 7597] -> []
+items 14143: [18379] -> []
+items 20348: [9308] -> []
+items 21204: [15464] -> []
+items 21583: [18031, 18378] -> []
+items 21411: [21363] -> []
+items 15059: [9315] -> []
+items 23019: [13387] -> []
+items 20060: [9336] -> []
+items 17566: [9345] -> []
+items 19531: [9408] -> []
+items 23456: [7597, 9335] -> []
+items 21890: [17371] -> []
+items 22106: [9397] -> []
+items 19524: [9415, 21625] -> []
+items 19308: [17829, 21625] -> []
+items 19403: [23727, 14248] -> []
+items 21611: [14127] -> []
+items 16552: [7597] -> []
+items 19687: [15464] -> []
+items 20336: [9308, 21619] -> []
+items 21650: [7597, 9331] -> []
+items 22690: [7597] -> []
+items 10011: [9345] -> []
+items 20164: [9416] -> []
+items 16369: [9417] -> []
+items 15051: [14049] -> []
+items 20073: [15806] -> []
+items 21566: [25975] -> []
+items 20351: [9404] -> []
+items 23066: [18030, 21627] -> []
+items 22495: [18031, 21620] -> []
+items 10044: [9298] -> []
+items 22508: [17367, 18384] -> []
+items 23294: [7597, 9344] -> []
+items 22078: [9417] -> []
+items 22076: [9417] -> []
+items 22680: [13383] -> []
+items 21663: [18043, 21628] -> []
+items 20166: [9343] -> []
+items 19426: [15714] -> []
+items 20052: [9329] -> []
+items 20425: [21361] -> []
+items 21610: [18029, 21627] -> []
+items 22149: [9342] -> []
+items 21205: [15464] -> []
+items 18874: [23929] -> []
+items 19596: [14799] -> []
+items 16437: [14248, 23727] -> []
+items 21333: [7517] -> []
+items 16426: [7597, 13669] -> []
+items 18843: [7597, 9335] -> []
+items 21370: [7597, 9415] -> []
+items 22439: [7597] -> []
+items 18713: [7597, 21432] -> []
+items 22882: [14248, 21626] -> []
+items 19162: [18039] -> []
+items 20205: [7597] -> []
+items 20340: [13831] -> []
+items 16441: [18384, 18050] -> []
+items 18408: [17871] -> []
+items 16533: [18384, 18050] -> []
+items 21416: [26155] -> []
+items 21361: [15464] -> []
+items 20335: [9402, 21624] -> []
+items 21376: [14127, 21625] -> []
+items 19109: [9417] -> []
+items 20356: [17891] -> []
+items 23312: [7597, 15464, 14089] -> []
+items 16480: [15464] -> []
+items 18763: [21432] -> []
+items 20141: [7597] -> []
+items 22756: [9417] -> []
+items 17593: [18054] -> []
+items 21367: [9396] -> []
+items 4324: [7701] -> []
+items 16578: [7597, 18384, 9415] -> []
+items 19522: [9343, 21619] -> []
+items 10010: [7696] -> []
+items 19844: [23729, 9345] -> []
+items 22673: [7597, 15464] -> []
+items 7935: [7597, 13669] -> []
+items 21693: [13669] -> []
+items 20159: [9417] -> []
+items 20706: [9344] -> []
+items 18970: [23434] -> []
+items 21408: [21363] -> []
+items 22063: [9398] -> []
+items 16561: [15464, 7597] -> []
+items 4319: [7703] -> []
+items 19843: [9314] -> []
+items 22479: [7597, 15464] -> []
+items 22873: [7598] -> []
+items 7046: [7703] -> []
+items 21504: [15715] -> []
+items 23303: [14248, 21626] -> []
+items 22348: [15464] -> []
+items 22504: [23727, 28767, 18384] -> []
+items 22085: [9345, 21626] -> []
+items 20139: [13665] -> []
+items 20650: [13384] -> []
+items 18866: [7597, 9335] -> []
+items 23316: [14248, 21626] -> []
+items 18263: [21365] -> []
+items 22659: [14027, 7597] -> []
+items 17591: [17367] -> []
+items 20193: [7597, 9331] -> []
+items 23304: [14248, 18384] -> []
+items 13711: [18060] -> []
+items 11858: [9140] -> []
+items 18827: [7597, 9335] -> []
+items 21594: [14054, 23727] -> []
+items 22013: [15464] -> []
+items 18873: [23929] -> []
+items 19837: [26647] -> []
+items 19602: [9417] -> []
+items 19303: [18379] -> []
+items 13242: [9408, 9361] -> []
+items 23018: [15464] -> []
+items 2944: [7709] -> []
+items 21102: [25718] -> []
+items 21199: [13384] -> []
+items 17600: [9345] -> []
+items 20639: [9316] -> []
+items 20179: [7597] -> []
+items 15469: [9141] -> []
+items 19086: [9343] -> []
+items 19379: [17493, 23729] -> []
+items 21357: [14127, 18384, 7597] -> []
+items 16419: [7598] -> []
+items 4317: [7689] -> []
+items 21415: [9346] -> []
+items 19309: [18014] -> []
+items 20359: [9404] -> []
+items 19533: [7680] -> []
+items 18404: [15464, 7597] -> []
+items 16440: [14054] -> []
+items 21344: [14127, 23727, 21362] -> []
+items 22427: [18384, 18032, 21629] -> []
+items 23289: [9343] -> []
+items 22477: [7597, 15464] -> []
+items 23314: [7597, 15464] -> []
+items 16435: [7598] -> []
+items 18982: [23440] -> []
+items 22425: [18038, 18384, 20959] -> []
+items 19849: [9417] -> []
+items 16507: [9141] -> []
+items 19884: [23729, 21641, 14054] -> []
+items 13869: [17890] -> []
+items 23256: [9417, 18384] -> []
+items 22079: [9415, 21360] -> []
+items 3854: [7597] -> []
+items 20045: [7597, 15806] -> []
+items 22096: [9417, 21618] -> []
+items 22517: [18031, 21362] -> []
+items 23058: [18043, 18379] -> []
+items 12640: [7598, 15465] -> []
+items 23281: [9343] -> []
+items 23305: [18384, 14248] -> []
+items 17578: [17367] -> []
+items 10659: [21363] -> []
+items 20352: [9404] -> []
+items 22881: [14127] -> []
+items 21356: [14054, 7597, 21618] -> []
+items 16522: [7597] -> []
+items 16525: [9334, 7597] -> []
+items 17721: [9406, 7696] -> []
+items 23244: [7597, 15464] -> []
+items 18869: [7597] -> []
+items 21354: [14799, 21625] -> []
+items 19827: [7679] -> []
+items 23317: [9345, 21626] -> []
+items 22509: [18384, 18049] -> []
+items 19366: [14127] -> []
+items 22075: [9417, 18384] -> []
+items 22442: [15464, 7597, 21625] -> []
+items 19823: [7597] -> []
+items 20070: [14798, 18384] -> []
+items 20161: [9398] -> []
+items 23064: [18030] -> []
+items 21998: [7597] -> []
+items 23264: [9344, 18384] -> []
+items 4130: [13669] -> []
+items 14044: [9400] -> []
+items 22859: [9343] -> []
+items 23299: [7597, 15464, 15806] -> []
+items 21506: [7517] -> []
+items 15063: [9335, 7597] -> []
+items 20707: [9316] -> []
+items 16531: [13669] -> []
+items 22499: [18053] -> []
+items 21311: [21626] -> []
+items 22428: [18040, 18384, 21629] -> []
+items 22077: [9342, 23727] -> []
+items 16442: [14798, 18384] -> []
+items 24358: [31750] -> []
+items 16490: [14254] -> []
+items 21523: [26228] -> []
+items 23302: [14248, 21626] -> []
+items 19683: [23727, 18054] -> []
+weapons 1913: 5-10 1.8 -> 10-19 2.2
+weapons 2844: 6-11 2.2 -> 7-13 2.6
+weapons 2845: 5-10 1.9 -> 6-12 2.4
+weapons 2847: 5-11 2.1 -> 9-18 2.5
+weapons 2848: 18-34 2.6 -> 20-38 2.6
+weapons 2849: 15-29 2.1 -> 20-38 2.5
+weapons 2850: 16-31 2.1 -> 21-40 2.5
+weapons 3225: 4-8 1.6 -> 7-13 1.7
+weapons 3487: 27-41 2.7 -> 33-50 3.3
+weapons 3488: 23-35 3.2 -> 25-38 3.5
+weapons 3850: 33-62 2.6 -> 35-67 2.8
+weapons 3852: 50-76 2.75 -> 60-91 3.3
+weapons 3853: 55-83 2.8 -> 69-104 3.5
+weapons 3856: 58-87 2.5 -> 76-115 3.3
+weapons 4302: 4-9 1.5 -> 6-13 1.5
+weapons 4956: 12-14 3 -> 6-10 3
+weapons 5247: 42-79 1.9 -> 43-81 1.9
+weapons 5541: 18-34 1.8 -> 24-46 2.4
+weapons 6174: 50-100 0.5 -> 3-5 0.5
+weapons 6206: 25-38 3.5 -> 28-43 3.5
+weapons 6214: 21-32 2.8 -> 28-43 3.3
+weapons 6215: 18-21 2.2 -> 15-24 2.2
+weapons 7166: 5-10 1.5 -> 7-13 1.7
+weapons 7170: 50-100 0.5 -> 3-5 0.5
+weapons 7942: 32-61 1.8 -> 43-81 2.4
+weapons 7943: 43-80 2.3 -> 46-87 2.5
+weapons 7945: 46-86 2.4 -> 49-93 2.6
+weapons 7946: 41-76 2 -> 32-61 1.6
+weapons 7947: 32-59 1.5 -> 36-67 1.7
+weapons 7955: 15-23 3 -> 20-31 3.3
+weapons 7956: 37-57 3.1 -> 47-71 3.5
+weapons 7957: 38-58 3 -> 47-72 3.4
+weapons 7958: 39-59 2.9 -> 48-73 3.3
+weapons 7959: 93-141 2.7 -> 128-193 3.7
+weapons 7960: 108-162 3 -> 122-184 3.4
+weapons 7961: 59-111 2.6 -> 36-68 1.6
+weapons 11265: 70-105 2.8 -> 83-125 2.8
+weapons 12259: 19-37 1.5 -> 22-42 1.7
+weapons 12468: 18-19 0.5 -> 13-24 0.5
+weapons 12775: 114-172 3.3 -> 121-183 3.5
+weapons 12776: 100-150 2.6 -> 135-203 3.5
+weapons 12777: 44-82 1.7 -> 62-116 2.4
+weapons 12781: 52-98 2 -> 65-123 2.5
+weapons 12782: 119-179 3 -> 131-197 3.3
+weapons 12783: 49-92 1.7 -> 55-102 1.9
+weapons 12790: 129-194 3 -> 146-220 3.4
+weapons 12794: 58-108 2 -> 46-86 1.6
+weapons 12797: 66-124 2.3 -> 81-151 2.8
+weapons 12798: 49-92 1.7 -> 69-129 2.4
+weapons 13262: 201-247 3 -> 179-269 3
+weapons 15109: 39-59 2.9 -> 49-74 2.9
+weapons 15807: 6-7 2.5 -> 5-8 2.5
+weapons 15808: 20-20 2.7 -> 16-24 2.7
+weapons 15809: 36-37 2.8 -> 29-44 2.8
+weapons 15814: 57-86 2 -> 50-93 2
+weapons 17193: 176-295 3.7 -> 188-283 3.7
+weapons 17704: 30-56 2.1 -> 40-75 2.8
+weapons 19158: 180-302 3 -> 192-289 3
+weapons 19323: 175-292 3.8 -> 166-277 3.6
+weapons 21126: 95-144 1.8 -> 83-156 1.8
+weapons 22348: 158-265 3.8 -> 169-254 3.8
+weapons 22384: 86-161 2.7 -> 89-167 2.8
+weapons 22596: 1-0 0 -> 1-2 2
+weapons 208222: 163-245 3.9 -> 131-197 3.7
+weapons 213105: 50-93 2.6 -> 40-75 2.6
+weapons 217314: 13-25 1.7 -> 13-24 1.7
+weapons 221518: 109-163 2.6 -> 123-185 3.2
+armor 876: 5 -> 10
+armor 2303: 46 -> 48
+armor 2307: 49 -> 51
+armor 2311: 62 -> 65
+armor 2315: 51 -> 53
+armor 2316: 17 -> 18
+armor 2362: 5 -> 10
+armor 2546: 61 -> 69
+armor 2569: 16 -> 17
+armor 2582: 29 -> 30
+armor 2584: 14 -> 15
+armor 2851: 61 -> 65
+armor 2852: 83 -> 94
+armor 2854: 68 -> 72
+armor 2857: 86 -> 91
+armor 2866: 168 -> 177
+armor 3008: 8 -> 10
+armor 3224: 8 -> 10
+armor 3322: 6 -> 8
+armor 3323: 7 -> 8
+armor 3469: 65 -> 74
+armor 3472: 73 -> 77
+armor 3480: 124 -> 130
+armor 3719: 20 -> 21
+armor 3835: 86 -> 91
+armor 4237: 29 -> 31
+armor 4239: 39 -> 41
+armor 4246: 38 -> 40
+armor 4261: 13 -> 17
+armor 4307: 11 -> 12
+armor 4308: 9 -> 10
+armor 4314: 26 -> 27
+armor 4315: 27 -> 28
+armor 4343: 16 -> 17
+armor 4728: 165 -> 28
+armor 4976: 96 -> 99
+armor 5312: 105 -> 107
+armor 5739: 101 -> 106
+armor 5957: 45 -> 55
+armor 5966: 63 -> 66
+armor 6040: 91 -> 96
+armor 6147: 29 -> 33
+armor 6189: 128 -> 135
+armor 6191: 25 -> 26
+armor 6201: 36 -> 40
+armor 6202: 12 -> 15
+armor 6203: 189 -> 274
+armor 6350: 106 -> 111
+armor 6787: 34 -> 36
+armor 6832: 28 -> 30
+armor 7048: 33 -> 34
+armor 7050: 34 -> 36
+armor 7058: 46 -> 49
+armor 7062: 43 -> 45
+armor 7281: 28 -> 30
+armor 10047: 23 -> 24
+armor 10048: 33 -> 29
+armor 10421: 81 -> 108
+armor 11469: 26 -> 27
+armor 12018: 238 -> 262
+armor 12021: 354 -> 390
+armor 12041: 124 -> 136
+armor 15402: 81 -> 85
+armor 16604: 10 -> 19
+armor 19048: 258 -> 247
+armor 19049: 112 -> 107
+armor 19050: 68 -> 65
+armor 19057: 417 -> 398
+armor 19058: 134 -> 129
+armor 19059: 68 -> 65
+armor 223173: 27 -> 24
+armor 223174: 34 -> 2
+armor 223175: 23 -> 1
+armor 223177: 43 -> 2
+armor 223178: 20 -> 1
+armor 223180: 31 -> 2
+armor 223181: 38 -> 2
+armor 223182: 45 -> 2
+armor 223183: 54 -> 3
+
+== aura_restructured (585)
+talent_effects 17003 Heart of the Wild [0]
+talent_effects 16821 Improved Moonfire [1]
+talent_effects 16821 Improved Moonfire [1]
+talent_effects 17111 Improved Rejuvenation [0]
+talent_effects 17111 Improved Rejuvenation [0]
+talent_effects 16947 Feral Instinct [1]
+talent_effects 16929 Thick Hide [0]
+talent_effects 17118 Subtlety [0]
+talent_effects 16942 Sharpened Claws [0]
+talent_effects 17104 Gift of Nature [0]
+talent_effects 17104 Gift of Nature [0]
+talent_effects 17104 Gift of Nature [0]
+talent_effects 16896 Moonfury [0]
+talent_effects 16896 Moonfury [0]
+class_buffs 417045 Tiger's Fury [0]
+class_buffs 17401 Hurricane [1]
+class_buffs 24907 Moonkin Aura [0]
+class_buffs 5217 Tiger's Fury [0]
+class_buffs 24867 Feral Swiftness [0]
+class_buffs 17402 Hurricane [1]
+class_buffs 21793 Twisted Tranquility [2]
+class_buffs 1226127 Savage Flurry [0]
+class_buffs 16914 Hurricane [1]
+class_buffs 24932 Leader of the Pack [0]
+class_buffs 417141 Berserk [0]
+class_buffs 16886 Nature's Grace [0]
+class_buffs 16886 Nature's Grace [1]
+class_buffs 27530 Hurricane [1]
+shapeshift_passives 1178 Bear Form (Passive) [1]
+shapeshift_passives 9635 Dire Bear Form (Passive) [1]
+item_effects 446212 Improved Rip [0]
+item_effects 446212 Improved Rip [0]
+item_effects 27853 Increased Regrowth Healing [0]
+set_effects 456546 S03 - Item - T1 - Priest - Healer 4P Bonus [1]
+set_effects 457323 S03 - Item - T1 - Paladin - Holy 4P Bonus [1]
+set_effects 456489 S03 - Item - T1 - Paladin - Retribution 4P Bonus [1]
+set_effects 457530 S03 - Item - T1 - Shaman - Enhancement 4P Bonus [1]
+set_effects 457322 S03 - Item - T1 - Priest - Shadow 4P Bonus [1]
+enchant_effects 456546 S03 - Item - T1 - Priest - Healer 4P Bonus [1]
+enchant_effects 457323 S03 - Item - T1 - Paladin - Holy 4P Bonus [1]
+enchant_effects 457530 S03 - Item - T1 - Shaman - Enhancement 4P Bonus [1]
+talent_effects 19549 Improved Aspect of the Monkey [0]
+talent_effects 19168 Lightning Reflexes [0]
+talent_effects 19370 Killer Instinct [0]
+talent_effects 19598 Ferocity [0]
+talent_effects 19426 Lethal Attacks [0]
+talent_effects 24293 Improved Tracking [0]
+talent_effects 19616 Unleashed Fury [0]
+class_buffs 3043 Scorpid Sting [0]
+class_buffs 428728 Frenzy [0]
+class_buffs 17331 Fang of the Crystal Spider [1]
+talent_effects 11232 Arcane Mind [0]
+talent_effects 11247 Arcane Geometry [0]
+talent_effects 11210 Arcane Subtlety [0]
+talent_effects 15058 Arcane Instability [2]
+talent_effects 11175 Permafrost [0]
+class_buffs 400625 Hot Streak [1]
+class_buffs 15850 Chilled [0]
+class_buffs 18101 Chilled [0]
+class_buffs 16927 Chilled [0]
+class_buffs 12531 Chilling Touch [0]
+class_buffs 24389 Chaos Fire [1]
+class_buffs 7321 Chilled [1]
+class_buffs 6136 Chilled [1]
+class_buffs 25022 Hallow's End Fright [0]
+class_hostile_buffs 13744 Blazing Emblem [0]
+class_hostile_buffs 22959 Fire Vulnerability [0]
+class_hostile_buffs 12579 Winter's Chill [0]
+talent_effects 20224 Improved Seals [0]
+talent_effects 20224 Improved Seals [0]
+talent_effects 20257 Divine Intellect [0]
+talent_effects 20468 Improved Righteous Fury [0]
+talent_effects 5923 Holy Power [0]
+talent_effects 20237 Healing Light [0]
+talent_effects 20237 Healing Light [0]
+class_buffs 642 Divine Shield [1]
+class_buffs 1020 Divine Shield [1]
+item_effects 27848 Seal Duration Increase [0]
+item_effects 28853 Libram of Divinity [0]
+enchant_effects 426065 Infusion of Light [0]
+enchant_effects 426157 The Art of War [0]
+enchant_effects 429142 Fanaticism [0]
+talent_effects 14523 Silent Resolve [0]
+talent_effects 14908 Improved Renew [0]
+talent_effects 14908 Improved Renew [0]
+talent_effects 14748 Improved Power Word: Shield [0]
+talent_effects 14748 Improved Power Word: Shield [0]
+talent_effects 14898 Spiritual Healing [0]
+talent_effects 14898 Spiritual Healing [0]
+talent_effects 14898 Spiritual Healing [0]
+talent_effects 14901 Spiritual Guidance [1]
+talent_effects 15259 Darkness [0]
+talent_effects 15259 Darkness [0]
+talent_effects 14909 Searing Light [0]
+talent_effects 14909 Searing Light [1]
+talent_effects 18551 Mental Strength [0]
+class_buffs 19283 Hex of Weakness [0]
+class_buffs 19254 Touch of Weakness [1]
+class_buffs 2943 Touch of Weakness [1]
+class_buffs 19253 Touch of Weakness [1]
+class_buffs 19285 Hex of Weakness [0]
+class_buffs 19282 Hex of Weakness [0]
+class_buffs 10911 Mind Control [2]
+class_buffs 19284 Hex of Weakness [0]
+class_buffs 19251 Touch of Weakness [1]
+class_buffs 605 Mind Control [2]
+class_buffs 19281 Hex of Weakness [0]
+class_buffs 9035 Hex of Weakness [0]
+class_buffs 19252 Touch of Weakness [1]
+class_buffs 10912 Mind Control [2]
+class_buffs 19249 Touch of Weakness [1]
+class_buffs 2651 Elune's Grace [1]
+class_hostile_buffs 15258 Shadow Weaving [0]
+talent_effects 30892 Sleight of Hand [1]
+talent_effects 30919 Weapon Expertise [0]
+talent_effects 13706 Hack and Slash [0]
+talent_effects 14168 Improved Expose Armor [0]
+talent_effects 14158 Murder [0]
+talent_effects 14138 Malice [0]
+talent_effects 14174 Improved Kidney Shot [0]
+class_buffs 408699 Waylay [0]
+class_buffs 5171 Slice and Dice [1]
+class_buffs 6774 Slice and Dice [1]
+class_buffs 13877 Blade Flurry [0]
+class_buffs 1234071 Flurry of Blades [0]
+class_buffs 439472 Numbing Poison [0]
+class_hostile_buffs 16511 Hemorrhage [2]
+talent_effects 16178 Purification [0]
+talent_effects 16178 Purification [0]
+talent_effects 16178 Purification [0]
+talent_effects 16261 Improved Lightning Shield [0]
+talent_effects 16261 Improved Lightning Shield [0]
+talent_effects 16261 Improved Lightning Shield [0]
+talent_effects 16255 Thundering Strikes [0]
+talent_effects 29187 Natural Grace [0]
+talent_effects 17485 Ancestral Knowledge [0]
+talent_effects 16252 Toughness [0]
+talent_effects 16086 Improved Fire Nova [0]
+talent_effects 16086 Improved Fire Nova [1]
+class_buffs 16257 Flurry [0]
+class_buffs 425336 Rage of the Farseer [0]
+class_hostile_buffs 425336 Rage of the Farseer [0]
+class_hostile_buffs 425336 Rage of the Farseer [0]
+class_hostile_buffs 17364 Stormstrike [1]
+item_effects 28856 Increased Water Shield Charges [0]
+item_effects 27859 Increased Shock Damage [0]
+item_effects 461295 Totem of Thunder [0]
+set_effects 457532 S03 - Item - T1 - Shaman - Enhancement 6P Bonus [1]
+enchant_effects 457532 S03 - Item - T1 - Shaman - Enhancement 6P Bonus [1]
+talent_effects 17804 Soul Siphon [0]
+talent_effects 17804 Soul Siphon [0]
+talent_effects 18174 Suppression [0]
+talent_effects 18697 Demonic Embrace [0]
+talent_effects 18827 Improved Bane of Agony [0]
+talent_effects 18827 Improved Bane of Agony [0]
+talent_effects 18703 Improved Health Funnel [0]
+talent_effects 18703 Improved Health Funnel [0]
+class_buffs 20882 Subjugate Demon [1]
+class_buffs 7658 Curse of Recklessness [0]
+class_buffs 412758 Incinerate [1]
+class_buffs 18789 Burning Shadow [0]
+class_buffs 7659 Curse of Recklessness [0]
+class_buffs 704 Curse of Recklessness [0]
+class_buffs 11717 Curse of Recklessness [0]
+class_buffs 1098 Subjugate Demon [1]
+class_buffs 11725 Subjugate Demon [1]
+class_buffs 18791 Touch of Fire [0]
+class_buffs 468540 Massive Destruction [0]
+class_buffs 11726 Subjugate Demon [1]
+class_hostile_buffs 17794 Shadow Vulnerability [0]
+item_effects 22855 Pimgib's Collar [0]
+set_effects 457549 S03 - Item - T1 - Warlock - Damage 4P Bonus [1]
+enchant_effects 427712 Pandemic [0]
+enchant_effects 457549 S03 - Item - T1 - Warlock - Damage 4P Bonus [1]
+talent_effects 12321 Booming Voice [0]
+talent_effects 12329 Improved Cleave [0]
+talent_effects 12329 Improved Cleave [0]
+talent_effects 12286 Improved Rend [0]
+talent_effects 12286 Improved Rend [0]
+talent_effects 12700 Weaponmaster [0]
+class_buffs 1719 Recklessness [0]
+class_buffs 461475 Valor of Azeroth [0]
+class_buffs 413589 Thunder Clap [0]
+class_buffs 12328 Death Wish [2]
+shapeshift_passives 7381 Berserker Stance Passive [0]
+passives 20591 Expansive Mind [0]
+passives 20597 Sword Specialization [0]
+player_buffs 24318 Enrage [1]
+player_buffs 5115 Battle Command [0]
+player_buffs 459736 Warmed Rumsey with Cream [0]
+player_buffs 11443 Cripple [1]
+player_buffs 26527 Enrage [1]
+player_buffs 20882 Subjugate Demon [1]
+player_buffs 407791 Aku'mai's Rage [1]
+player_buffs 355363 Rallying Cry of the Dragonslayer [0]
+player_buffs 17134 Musty Tome Trap [1]
+player_buffs 16257 Flurry [0]
+player_buffs 5213 Molten Metal [2]
+player_buffs 7645 Dominate Mind [1]
+player_buffs 10732 Supercharge [1]
+player_buffs 1215885 Berserk [0]
+player_buffs 18972 Slow [0]
+player_buffs 1213356 Dominate Mind [1]
+player_buffs 7658 Curse of Recklessness [0]
+player_buffs 460455 Haste [0]
+player_buffs 425336 Rage of the Farseer [0]
+player_buffs 20716 Sand Breath [1]
+player_buffs 368615 Pulse Lightning [3]
+player_buffs 22247 Suppression Aura [1]
+player_buffs 7102 Contagion of Rot [0]
+player_buffs 22820 Slip'kik's Savvy [0]
+player_buffs 3442 Enslave [1]
+player_buffs 448828 Overdrive [1]
+player_buffs 15471 Enveloping Web [1]
+player_buffs 1232052 Heads! [1]
+player_buffs 355366 Warchief's Blessing [1]
+player_buffs 19283 Hex of Weakness [0]
+player_buffs 25801 Frenzy Aura [0]
+player_buffs 1231266 En Garde! [1]
+player_buffs 5271 Cursed Blade [0]
+player_buffs 436739 Cluck! [0]
+player_buffs 461470 Single-Minded [0]
+player_buffs 28747 Enrage [1]
+player_buffs 24178 Will of Hakkar [2]
+player_buffs 5515 Savagery [0]
+player_buffs 13494 Haste [0]
+player_buffs 19779 Inspire [0]
+player_buffs 3443 Enchanted Quickness [0]
+player_buffs 412758 Incinerate [1]
+player_buffs 23021 Dragon Orb [1]
+player_buffs 460939 Might of Stormwind [0]
+player_buffs 460939 Might of Stormwind [1]
+player_buffs 460939 Might of Stormwind [2]
+player_buffs 450084 Rapid Cutting [0]
+player_buffs 24672 Unholy Frenzy [0]
+player_buffs 3490 Frenzied Rage [0]
+player_buffs 25806 Creature of Nightmare [2]
+player_buffs 27648 Thunderfury [0]
+player_buffs 19254 Touch of Weakness [1]
+player_buffs 24689 Aspect of Thekal [0]
+player_buffs 417045 Tiger's Fury [0]
+player_buffs 15850 Chilled [0]
+player_buffs 6907 Diseased Slime [0]
+player_buffs 408699 Waylay [0]
+player_buffs 17148 Brain Hacker [1]
+player_buffs 446577 Echoes of Dread [0]
+player_buffs 17505 Hand of Timmy [0]
+player_buffs 16528 Numbing Pain [1]
+player_buffs 10855 Lag [0]
+player_buffs 1237939 Berserk [0]
+player_buffs 3416 Fiend Fury [2]
+player_buffs 19953 Enrage [1]
+player_buffs 1719 Recklessness [0]
+player_buffs 20005 Chilled [0]
+player_buffs 27545 Cat Form [1]
+player_buffs 15859 Dominate Mind [1]
+player_buffs 21165 Haste [0]
+player_buffs 461475 Valor of Azeroth [0]
+player_buffs 23060 Battle Squawk [0]
+player_buffs 23342 Frenzy [0]
+player_buffs 23342 Frenzy [0]
+player_buffs 14822 Drunken Rage [0]
+player_buffs 436365 Two-Handed Mastery [0]
+player_buffs 3043 Scorpid Sting [0]
+player_buffs 7396 Fishliver Oil [0]
+player_buffs 28347 Dimensional Siphon [0]
+player_buffs 5220 Frenzied Capo the Mean [1]
+player_buffs 1139 Cold Eye [0]
+player_buffs 25790 Vengeance [0]
+player_buffs 370066 Visions of Madness [3]
+player_buffs 20812 Cripple [1]
+player_buffs 4514 Consuming Rage [1]
+player_buffs 7965 Cobrahn Serpent Form [2]
+player_buffs 413589 Thunder Clap [0]
+player_buffs 459592 Cropchop [1]
+player_buffs 13589 Haste Aura [0]
+player_buffs 18789 Burning Shadow [0]
+player_buffs 460940 Might of Stormwind [1]
+player_buffs 7659 Curse of Recklessness [0]
+player_buffs 22642 Brood Power: Bronze [2]
+player_buffs 704 Curse of Recklessness [0]
+player_buffs 26259 Whisperings of C'Thun [2]
+player_buffs 16050 Slowing Ooze [0]
+player_buffs 28371 Frenzy [0]
+player_buffs 11717 Curse of Recklessness [0]
+player_buffs 22909 Eye of Immol'thar [1]
+player_buffs 20594 Stoneform [0]
+player_buffs 438537 Spark of Inspiration [3]
+player_buffs 1098 Subjugate Demon [1]
+player_buffs 25516 Aura of Command [1]
+player_buffs 19451 Frenzy [0]
+player_buffs 13168 Chicken Fury [1]
+player_buffs 24185 Bloodlust [0]
+player_buffs 17401 Hurricane [1]
+player_buffs 465414 Crusader's Zeal [1]
+player_buffs 370832 Gift of the Spider [1]
+player_buffs 19755 Frightalon [0]
+player_buffs 462238 Out of breath! [1]
+player_buffs 23733 Blinding Light [1]
+player_buffs 20717 Sand Breath [1]
+player_buffs 7127 Wavering Will [0]
+player_buffs 428728 Frenzy [0]
+player_buffs 461270 Magmadar's Return [0]
+player_buffs 469144 Quick Strikes [0]
+player_buffs 26099 Battle Shout [1]
+player_buffs 22888 Rallying Cry of the Dragonslayer [0]
+player_buffs 22888 Rallying Cry of the Dragonslayer [1]
+player_buffs 22888 Rallying Cry of the Dragonslayer [2]
+player_buffs 22888 Rallying Cry of the Dragonslayer [3]
+player_buffs 24907 Moonkin Aura [0]
+player_buffs 14872 Drunken Rage [0]
+player_buffs 17538 Elixir of the Mongoose [1]
+player_buffs 16170 Bloodlust [0]
+player_buffs 469208 Boon of Earth [1]
+player_buffs 1231884 Accuracy of the Owl [1]
+player_buffs 1222564 Bloodlust [0]
+player_buffs 20050 Vengeance [0]
+player_buffs 2943 Touch of Weakness [1]
+player_buffs 16609 Warchief's Blessing [0]
+player_buffs 16609 Warchief's Blessing [1]
+player_buffs 16609 Warchief's Blessing [2]
+player_buffs 24327 Cause Insanity [1]
+player_buffs 18101 Chilled [0]
+player_buffs 1232051 Ambitious Pursuit [0]
+player_buffs 8599 Enrage [1]
+player_buffs 26331 Vengeance [0]
+player_buffs 22559 Brood Power: Blue [0]
+player_buffs 468408 Bloodlust [0]
+player_buffs 5217 Tiger's Fury [0]
+player_buffs 23951 Bloodlust [0]
+player_buffs 26197 Whisperings of C'Thun [2]
+player_buffs 25773 Will of Weavil [1]
+player_buffs 437813 Screeching Frenzy [0]
+player_buffs 12731 Strength of Stone [0]
+player_buffs 1231587 Tidal Force [0]
+player_buffs 3547 Enraging Memories [0]
+player_buffs 8269 Enrage [1]
+player_buffs 26041 Frenzy [0]
+player_buffs 11725 Subjugate Demon [1]
+player_buffs 24352 Devilsaur Glare [0]
+player_buffs 17687 Flurry [0]
+player_buffs 1231402 Lightfist Flurry [0]
+player_buffs 426311 Flame [0]
+player_buffs 5171 Slice and Dice [1]
+player_buffs 10370 Lacerations [0]
+player_buffs 16927 Chilled [0]
+player_buffs 1215755 Frenzy [0]
+player_buffs 6434 Slice and Dice [0]
+player_buffs 371206 Servant of Chaos [2]
+player_buffs 3136 Frenzied Command [0]
+player_buffs 1231230 Reborn Inspiration [0]
+player_buffs 26662 Berserk [1]
+player_buffs 12966 Flurry [0]
+player_buffs 1219500 Kiss of the Spider [0]
+player_buffs 24867 Feral Swiftness [0]
+player_buffs 6146 Slow [0]
+player_buffs 1231375 Berserk [0]
+player_buffs 17402 Hurricane [1]
+player_buffs 12795 Enrage [1]
+player_buffs 19253 Touch of Weakness [1]
+player_buffs 18791 Touch of Fire [0]
+player_buffs 13528 Decayed Power [0]
+player_buffs 8255 Strong Cleave [1]
+player_buffs 434907 Amplified Circuitry [1]
+player_buffs 424574 Out of breath! [1]
+player_buffs 3130 Ice Claw [0]
+player_buffs 7357 Poisonous Stab [0]
+player_buffs 19285 Hex of Weakness [0]
+player_buffs 369982 Touch of Madness [0]
+player_buffs 468461 Brilliant Light [0]
+player_buffs 15656 Poisonous Stab [0]
+player_buffs 21793 Twisted Tranquility [2]
+player_buffs 24002 Tranquilizing Poison [0]
+player_buffs 22290 Brood Power: Blue [0]
+player_buffs 26615 Berserk [0]
+player_buffs 11436 Slow [0]
+player_buffs 27689 Bloodlust [0]
+player_buffs 89 Cripple [0]
+player_buffs 468157 Thunderfury [0]
+player_buffs 7992 Slowing Poison [0]
+player_buffs 15366 Songflower Serenade [0]
+player_buffs 15366 Songflower Serenade [1]
+player_buffs 16601 Fist of Shahram [0]
+player_buffs 24498 Brilliant Light [0]
+player_buffs 18810 Taelan's Suffering [0]
+player_buffs 462872 Unholy Frenzy [0]
+player_buffs 1231886 Speed of the Cat [0]
+player_buffs 14897 Slowing Poison [0]
+player_buffs 12531 Chilling Touch [0]
+player_buffs 6814 Sludge Toxin [2]
+player_buffs 12328 Death Wish [2]
+player_buffs 19282 Hex of Weakness [0]
+player_buffs 26051 Frenzy [0]
+player_buffs 436430 Avenging Wrath [0]
+player_buffs 6742 Bloodlust [0]
+player_buffs 26083 Whirlwind [1]
+player_buffs 13524 Curse of Stalvan [0]
+player_buffs 6774 Slice and Dice [1]
+player_buffs 446327 Enrage [1]
+player_buffs 473387 Horn of the Dawn [0]
+player_buffs 10371 Slow [0]
+player_buffs 28701 Haste [0]
+player_buffs 24389 Chaos Fire [1]
+player_buffs 5628 Gnarlpine Vengeance [0]
+player_buffs 12686 Enrage [1]
+player_buffs 8602 Vengeance [0]
+player_buffs 468540 Massive Destruction [0]
+player_buffs 11726 Subjugate Demon [1]
+player_buffs 474400 Cause Insanity [1]
+player_buffs 10911 Mind Control [2]
+player_buffs 19516 Enrage [0]
+player_buffs 642 Divine Shield [1]
+player_buffs 4955 Fist of Stone [1]
+player_buffs 7103 Contagion of Rot [0]
+player_buffs 1223458 Enrage [1]
+player_buffs 19284 Hex of Weakness [0]
+player_buffs 1223975 Eskhandar's Rage [0]
+player_buffs 16791 Furious Anger [1]
+player_buffs 13877 Blade Flurry [0]
+player_buffs 1234071 Flurry of Blades [0]
+player_buffs 1230943 Abandoned Experiment [0]
+player_buffs 468183 Frenzy Effect [0]
+player_buffs 22818 Mol'dar's Moxie [0]
+player_buffs 1226127 Savage Flurry [0]
+player_buffs 370767 Essence of C'Thun [3]
+player_buffs 26258 Whisperings of C'Thun [2]
+player_buffs 461347 Enrage [1]
+player_buffs 19251 Touch of Weakness [1]
+player_buffs 1230319 Vengeful Rage [2]
+player_buffs 16789 Rage [1]
+player_buffs 605 Mind Control [2]
+player_buffs 19281 Hex of Weakness [0]
+player_buffs 16914 Hurricane [1]
+player_buffs 18501 Enrage [1]
+player_buffs 1232180 Screeching Frenzy [0]
+player_buffs 438536 Spark of Inspiration [3]
+player_buffs 23537 Enrage [1]
+player_buffs 4962 Encasing Webs [1]
+player_buffs 8699 Unholy Frenzy [0]
+player_buffs 23684 Aura of the Blue Dragon [0]
+player_buffs 425895 Frost Breath [1]
+player_buffs 15061 Enrage [1]
+player_buffs 26195 Whisperings of C'Thun [2]
+player_buffs 4063 Argus Shadow Mage Transform [2]
+player_buffs 24932 Leader of the Pack [0]
+player_buffs 23128 Frenzy [0]
+player_buffs 26198 Whisperings of C'Thun [2]
+player_buffs 368388 Berserk [1]
+player_buffs 440720 Scooty's Not-Quite-Divine Shield [3]
+player_buffs 15716 Enrage [1]
+player_buffs 13874 Divine Shield [1]
+player_buffs 9035 Hex of Weakness [0]
+player_buffs 26068 Berserk [0]
+player_buffs 28131 Enrage [1]
+player_buffs 460703 Tender's Rage [0]
+player_buffs 13533 Haste [0]
+player_buffs 22640 Eskhandar's Rage [0]
+player_buffs 18546 Overdrive [1]
+player_buffs 19812 Frenzy [0]
+player_buffs 18633 Weakening Disease [1]
+player_buffs 473441 Might of Blackrock [1]
+player_buffs 24003 Tranquilizing Poison [0]
+player_buffs 467522 Blinding Light [1]
+player_buffs 22479 Frost Breath [1]
+player_buffs 3229 Quick Bloodlust [0]
+player_buffs 1231896 Brilliance of Mr. Bigglesworth [5]
+player_buffs 1231896 Brilliance of Mr. Bigglesworth [6]
+player_buffs 3510 Sloth Effect [0]
+player_buffs 437349 Gneuro-Logical Shock [0]
+player_buffs 1020 Divine Shield [1]
+player_buffs 26064 Shell Shield [1]
+player_buffs 437377 Intense Concentration [0]
+player_buffs 28134 Power Surge [0]
+player_buffs 7321 Chilled [1]
+player_buffs 12888 Cause Insanity [1]
+player_buffs 17331 Fang of the Crystal Spider [1]
+player_buffs 3151 Crazed Hunger [0]
+player_buffs 439472 Numbing Poison [0]
+player_buffs 6136 Chilled [1]
+player_buffs 28798 Enrage [1]
+player_buffs 363881 CHUG! CHUG! CHUG! CHUG! [0]
+player_buffs 365122 Berserk [1]
+player_buffs 429688 Dominate Mind [1]
+player_buffs 10348 Tune Up [0]
+player_buffs 19252 Touch of Weakness [1]
+player_buffs 16597 Curse of Shahram [1]
+player_buffs 429867 Void Madness [0]
+player_buffs 25164 Vengeance [0]
+player_buffs 10912 Mind Control [2]
+player_buffs 19615 Frenzy [0]
+player_buffs 19249 Touch of Weakness [1]
+player_buffs 1226357 Wicked Fast [0]
+player_buffs 5915 Crazed [0]
+player_buffs 20553 Golemagg's Trust [1]
+player_buffs 20553 Golemagg's Trust [1]
+player_buffs 26079 Cause Insanity [1]
+player_buffs 3258 Savage Rage [0]
+player_buffs 24354 Prayer Beads Blessing [0]
+player_buffs 3631 Battle Fury [0]
+player_buffs 21049 Bloodlust [0]
+player_buffs 24865 Sanctified Orb [0]
+player_buffs 28866 Kiss of the Spider [0]
+player_buffs 3269 Blessing of Thule [0]
+player_buffs 22428 Frenzy [0]
+player_buffs 27995 Unholy Frenzy [0]
+player_buffs 25022 Hallow's End Fright [0]
+player_buffs 246 Slow [0]
+player_buffs 6468 Skeletal Miner Berserk [0]
+player_buffs 5337 Wither Strike [0]
+player_buffs 468387 Aligned with Nature [2]
+player_buffs 27530 Hurricane [1]
+player_buffs 16939 Ancestor's Vengeance [0]
+player_buffs 402808 Cripple [0]
+player_buffs 436074 Trogg Rage [1]
+player_buffs 2651 Elune's Grace [1]
+hostile_buffs 13744 Blazing Emblem [0]
+hostile_buffs 22959 Fire Vulnerability [0]
+hostile_buffs 425336 Rage of the Farseer [0]
+hostile_buffs 425336 Rage of the Farseer [0]
+hostile_buffs 15258 Shadow Weaving [0]
+hostile_buffs 17364 Stormstrike [1]
+hostile_buffs 15595 Force of Will [0]
+hostile_buffs 12579 Winter's Chill [0]
+hostile_buffs 16511 Hemorrhage [2]
+hostile_buffs 17794 Shadow Vulnerability [0]
+item_effects 468277 Increased Spell  Hit Chance 2 [0]
+item_effects 23440 Increased Critical Spell Shadow [0]
+item_effects 1240071 Increased Critical 2 - All [0]
+item_effects 18384 Increased Critical Spell [0]
+item_effects 448324 Increased Critical 2 - All [0]
+item_effects 28347 Dimensional Siphon [0]
+item_effects 1234792 Haste [0]
+item_effects 22988 Illidan's Fury [2]
+item_effects 1222393 Haste [0]
+item_effects 1213971 Haste [0]
+item_effects 468275 Increased Holy Hit Chance 3 [0]
+item_effects 1223262 Increased Critical 3 - All [0]
+item_effects 1223455 Increased Critical Spell [0]
+item_effects 18382 Increased Critical Spell [0]
+item_effects 461953 Spell Crit [0]
+item_effects 24852 Increased Nature Criticals [0]
+item_effects 436239 Increased Critical 1 - All [0]
+item_effects 1222394 Haste [0]
+item_effects 23433 Increased Critical Spell [0]
+item_effects 468621 Hybrid Healing/Spell Dam 31/11 [0]
+set_effects 18384 Increased Critical Spell [0]
+set_effects 448324 Increased Critical 2 - All [0]
+set_effects 457549 S03 - Item - T1 - Warlock - Damage 4P Bonus [1]
+set_effects 23570 Increased Critical Spell Nature [0]
+set_effects 449933 Spell Crit [0]
+set_effects 456546 S03 - Item - T1 - Priest - Healer 4P Bonus [1]
+set_effects 18382 Increased Critical Spell [0]
+set_effects 457323 S03 - Item - T1 - Paladin - Holy 4P Bonus [1]
+set_effects 436239 Increased Critical 1 - All [0]
+set_effects 21092 Increased Spell Critical [0]
+set_effects 456489 S03 - Item - T1 - Paladin - Retribution 4P Bonus [1]
+set_effects 457530 S03 - Item - T1 - Shaman - Enhancement 4P Bonus [1]
+set_effects 457322 S03 - Item - T1 - Priest - Shadow 4P Bonus [1]
+set_effects 457532 S03 - Item - T1 - Shaman - Enhancement 6P Bonus [1]
+enchant_effects 13928 Minor Haste [0]
+enchant_effects 13928 Minor Haste [1]
+enchant_effects 457549 S03 - Item - T1 - Warlock - Damage 4P Bonus [1]
+enchant_effects 19990 Major Stamina [0]
+enchant_effects 7419 Inferior Stamina [0]
+enchant_effects 7850 Stamina [0]
+enchant_effects 442895 Spell Specialization [0]
+enchant_effects 22841 Arcanum of Rapidity [0]
+enchant_effects 7747 Lesser Stamina [0]
+enchant_effects 442898 Spell Specialization [0]
+enchant_effects 13862 Superior Stamina [0]
+enchant_effects 442894 Spell Specialization [0]
+enchant_effects 442897 Spell Specialization [0]
+enchant_effects 1220596 Increased Critical 1% [1]
+enchant_effects 7217 Weapon Counterweight [0]
+enchant_effects 456546 S03 - Item - T1 - Priest - Healer 4P Bonus [1]
+enchant_effects 457323 S03 - Item - T1 - Paladin - Holy 4P Bonus [1]
+enchant_effects 429142 Fanaticism [0]
+enchant_effects 13639 Greater Stamina [0]
+enchant_effects 1220735 Power of the Scourge [2]
+enchant_effects 432137 Automatic Crowd Pummeler [0]
+enchant_effects 442896 Spell Specialization [0]
+enchant_effects 442893 Spell Specialization [0]
+enchant_effects 1220743 Might of the Scourge [4]
+enchant_effects 457530 S03 - Item - T1 - Shaman - Enhancement 4P Bonus [1]
+enchant_effects 457532 S03 - Item - T1 - Shaman - Enhancement 6P Bonus [1]
+
+== missing (88)
+22896 periodic: effect 0 gone or changed in Forever
+1082 direct: effect 1 gone or changed in Forever
+22570 direct: effect 0 gone or changed in Forever
+17402 periodic: effect 0 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+3029 direct: effect 1 gone or changed in Forever
+22895 periodic: effect 0 gone or changed in Forever
+17401 periodic: effect 0 gone or changed in Forever
+9849 direct: effect 1 gone or changed in Forever
+5201 direct: effect 1 gone or changed in Forever
+9850 direct: effect 1 gone or changed in Forever
+16914 periodic: effect 0 gone or changed in Forever
+14271 direct: effect 0 gone or changed in Forever
+14294 periodic: effect 0 gone or changed in Forever
+20910 direct: effect 0 gone or changed in Forever
+1495 direct: effect 0 gone or changed in Forever
+19306 direct: effect 0 gone or changed in Forever
+14270 direct: effect 0 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+14269 direct: effect 0 gone or changed in Forever
+20909 direct: effect 0 gone or changed in Forever
+1510 periodic: effect 0 gone or changed in Forever
+14295 periodic: effect 0 gone or changed in Forever
+10 periodic: effect 0 gone or changed in Forever
+10186 periodic: effect 0 gone or changed in Forever
+10187 periodic: effect 0 gone or changed in Forever
+6141 periodic: effect 0 gone or changed in Forever
+10216 periodic: effect 1 gone or changed in Forever
+2121 periodic: effect 1 gone or changed in Forever
+10215 periodic: effect 1 gone or changed in Forever
+8422 periodic: effect 1 gone or changed in Forever
+2120 periodic: effect 1 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+8423 periodic: effect 1 gone or changed in Forever
+8427 periodic: effect 0 gone or changed in Forever
+10185 periodic: effect 0 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+20923 periodic: effect 0 gone or changed in Forever
+20924 periodic: effect 0 gone or changed in Forever
+20116 periodic: effect 0 gone or changed in Forever
+26573 periodic: effect 0 gone or changed in Forever
+407613 direct: effect 1 gone or changed in Forever
+407613 periodic: effect 0 gone or changed in Forever
+20922 periodic: effect 0 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+11279 direct: effect 2 gone or changed in Forever
+462715 direct: effect 2 gone or changed in Forever
+17348 direct: effect 1 gone or changed in Forever
+462714 direct: effect 2 gone or changed in Forever
+26297 direct: effect 0 gone or changed in Forever
+8621 direct: effect 1 gone or changed in Forever
+11294 direct: effect 1 gone or changed in Forever
+462711 direct: effect 2 gone or changed in Forever
+8721 direct: effect 2 gone or changed in Forever
+462713 direct: effect 2 gone or changed in Forever
+1759 direct: effect 1 gone or changed in Forever
+53 direct: effect 2 gone or changed in Forever
+1760 direct: effect 1 gone or changed in Forever
+1758 direct: effect 1 gone or changed in Forever
+17347 direct: effect 1 gone or changed in Forever
+424785 direct: effect 2 gone or changed in Forever
+25300 direct: effect 2 gone or changed in Forever
+2590 direct: effect 2 gone or changed in Forever
+1752 direct: effect 1 gone or changed in Forever
+398196 direct: effect 2 gone or changed in Forever
+16511 direct: effect 1 gone or changed in Forever
+462710 direct: effect 2 gone or changed in Forever
+11281 direct: effect 2 gone or changed in Forever
+2591 direct: effect 2 gone or changed in Forever
+14278 direct: effect 2 gone or changed in Forever
+424919 direct: effect 2 gone or changed in Forever
+462712 direct: effect 2 gone or changed in Forever
+462709 direct: effect 2 gone or changed in Forever
+399985 direct: effect 3 gone or changed in Forever
+2589 direct: effect 2 gone or changed in Forever
+462717 direct: effect 2 gone or changed in Forever
+1757 direct: effect 1 gone or changed in Forever
+462716 direct: effect 2 gone or changed in Forever
+11280 direct: effect 2 gone or changed in Forever
+11293 direct: effect 1 gone or changed in Forever
+425336 periodic: effect 1 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+5740 periodic: effect 0 gone or changed in Forever
+20554 direct: effect 0 gone or changed in Forever
+6219 periodic: effect 0 gone or changed in Forever
+11678 periodic: effect 0 gone or changed in Forever
+11677 periodic: effect 0 gone or changed in Forever
+26296 direct: effect 0 gone or changed in Forever
+
+== untraced (331)
+408247 direct: 1.61-1.89
+29166 periodic: 4.0-4.0
+6603 direct: 1.0-1.0
+8972 direct: 1.0-1.0
+6808 direct: 1.0-1.0
+8992 direct: 2.25-2.25
+9005 periodic: 15.0-15.0
+408124 direct: 0.57-0.57
+408124 periodic: 0.04-0.04
+9823 periodic: 20.0-20.0
+6787 direct: 3.5-3.5
+414689 direct: 1.3-1.52
+414689 periodic: 0.65-0.65
+9880 direct: 1.0-1.0
+407993 direct: 2.7-2.7
+417045 periodic: 0.0-0.0
+9827 periodic: 25.0-25.0
+414644 periodic: 0.19999999-0.19999999
+9881 direct: 1.0-1.0
+417157 direct: 2.48-3.04
+6793 periodic: 0.0-0.0
+6809 direct: 1.0-1.0
+5221 direct: 2.25-2.25
+9745 direct: 1.0-1.0
+6785 direct: 3.5-3.5
+417448 direct: 0.59999996-0.59999996
+417448 periodic: 0.39999998-0.39999998
+5217 periodic: 0.0-0.0
+9829 direct: 2.25-2.25
+414684 direct: 1.3-1.52
+414684 periodic: 0.65-0.65
+407995 direct: 1.5999999-1.5999999
+9866 direct: 3.5-3.5
+439748 direct: 0.45999998-0.53999996
+439748 periodic: 439753.0-439753.0
+6800 direct: 2.25-2.25
+9867 direct: 3.5-3.5
+6807 direct: 1.0-1.0
+9830 direct: 2.25-2.25
+9845 periodic: 0.0-0.0
+414687 direct: 1.3-1.52
+414687 periodic: 0.65-0.65
+408120 periodic: 0.17-0.17
+9846 periodic: 0.0-0.0
+411128 direct: 2.5-2.5
+20902 direct: 1.0-1.0
+6603 direct: 1.0-1.0
+20903 direct: 1.0-1.0
+24132 periodic: 70.0-70.0
+14262 direct: 1.0-1.0
+415343 direct: 1.0-1.0
+19434 direct: 1.0-1.0
+14265 direct: 1.0-1.0
+415337 direct: 1.0-1.0
+458482 direct: 1.4-1.4
+458482 periodic: 0.0-0.0
+14266 direct: 1.0-1.0
+458436 direct: 1.4-1.4
+458436 periodic: 0.0-0.0
+14264 direct: 1.0-1.0
+75 direct: 1.0-1.0
+14302 periodic: 43.0-43.0
+2764 direct: 1.0-1.0
+415320 direct: 1.0-1.0
+415340 direct: 1.0-1.0
+14289 direct: 1.0-1.0
+409433 direct: 1.35-1.35
+14304 periodic: 102.0-102.0
+14263 direct: 1.0-1.0
+415342 direct: 1.0-1.0
+415335 direct: 1.0-1.0
+2643 direct: 1.0-1.0
+409530 periodic: 138.0-138.0
+415336 direct: 1.0-1.0
+24133 periodic: 100.0-100.0
+415341 direct: 1.0-1.0
+14290 direct: 1.0-1.0
+415338 direct: 1.0-1.0
+20904 direct: 1.0-1.0
+20900 direct: 1.0-1.0
+458481 direct: 1.4-1.4
+458481 periodic: 0.0-0.0
+14316 direct: 139.0-187.0
+14316 periodic: 24.0-24.0
+14303 periodic: 68.0-68.0
+20901 direct: 1.0-1.0
+14317 direct: 201.0-257.0
+14317 periodic: 33.0-33.0
+425711 direct: 0.65-0.65
+437123 direct: 1.0-1.0
+14261 direct: 1.0-1.0
+2973 direct: 1.0-1.0
+409521 periodic: 21.0-21.0
+14260 direct: 1.0-1.0
+19386 periodic: 100.0-100.0
+13813 direct: 100.0-130.0
+13813 periodic: 15.0-15.0
+2480 direct: 1.0-1.0
+25294 direct: 1.0-1.0
+409552 periodic: 10.0-10.0
+7918 direct: 1.0-1.0
+7919 direct: 1.0-1.0
+14288 direct: 1.0-1.0
+6603 direct: 1.0-1.0
+401417 periodic: 0.55-0.55
+10211 periodic: 151.0-151.0
+428739 direct: 4.62-5.38
+400574 direct: 4.5299997-5.27
+10212 periodic: 192.0-192.0
+428878 direct: 2.8-4.2
+5143 periodic: 24.0-24.0
+12051 periodic: 15.0-15.0
+400640 direct: 0.55-0.65
+8416 periodic: 83.0-83.0
+5144 periodic: 36.0-36.0
+5019 direct: 1.0-1.0
+425124 direct: 2.26-2.6399999
+428885 periodic: 1.0-1.0
+401556 periodic: 1.0-1.0
+436516 direct: 2.2-3.3
+25345 periodic: 230.0-230.0
+400613 direct: 1.7099999-1.7099999
+400613 periodic: 0.84999996-0.84999996
+401502 direct: 3.25-3.79
+401502 periodic: 0.12-0.12
+400610 direct: 3.58-4.38
+8417 periodic: 115.0-115.0
+412532 direct: 3.05-3.55
+440802 periodic: 0.9-0.9
+5145 periodic: 56.0-56.0
+412510 periodic: 0.55-0.55
+20347 direct: 53.0-53.0
+6603 direct: 1.0-1.0
+20290 direct: 78.0-86.0
+407669 direct: 3.6599998-4.48
+20473 direct: 204.0-220.0
+407631 direct: 35.0-35.0
+20349 direct: 94.0-94.0
+20165 direct: 39.0-39.0
+20375 direct: 0.7-0.7
+20930 direct: 365.0-395.0
+407676 direct: 0.75-0.75
+20348 direct: 76.0-76.0
+20288 direct: 39.0-43.0
+20915 direct: 0.7-0.7
+412019 direct: 0.35999998-0.35999998
+412019 periodic: 100.0-100.0
+20929 direct: 279.0-301.0
+20287 direct: 25.0-27.0
+20291 direct: 102.0-112.0
+20918 direct: 0.7-0.7
+21084 direct: 15.0-15.0
+20292 direct: 131.0-143.0
+458856 direct: 3.55-3.9299998
+407778 direct: 1.1-1.1
+20289 direct: 57.0-63.0
+440658 direct: 1.79-1.79
+20293 direct: 162.0-178.0
+20919 direct: 0.7-0.7
+407798 direct: 0.5-0.5
+20920 direct: 0.7-0.7
+27870 periodic: 233.0-233.0
+6603 direct: 1.0-1.0
+19265 direct: 48.0-48.0
+724 periodic: 160.0-160.0
+425204 periodic: 1.29-1.29
+27801 direct: 302.0-350.0
+402174 periodic: 0.84999996-0.84999996
+402668 periodic: 0.65-0.65
+15431 direct: 121.0-139.0
+401937 direct: 1.61-1.9699999
+27800 direct: 235.0-271.0
+401946 direct: 1.3-1.4399999
+15237 direct: 52.0-60.0
+19271 direct: 35.0-35.0
+425294 periodic: 0.06-0.06
+19275 direct: 105.0-105.0
+19261 direct: 15.0-15.0
+19266 direct: 64.0-64.0
+401955 direct: 3.1999998-3.72
+27871 periodic: 320.0-320.0
+19264 direct: 35.0-35.0
+431681 periodic: 0.51-0.51
+27799 direct: 161.0-187.0
+19273 direct: 54.0-54.0
+13896 direct: 18.0-18.0
+19262 direct: 24.0-24.0
+2652 direct: 8.0-8.0
+5019 direct: 1.0-1.0
+15430 direct: 86.0-98.0
+431655 direct: 1.22-1.42
+401859 direct: 0.74-0.74
+19274 direct: 77.0-77.0
+8676 direct: 2.5-2.5
+2835 periodic: 9.0-9.0
+6603 direct: 1.0-1.0
+399963 direct: 0.79999995-0.79999995
+11267 direct: 2.5-2.5
+462719 direct: 2.5-2.5
+8725 direct: 2.5-2.5
+400009 direct: 0.53-0.81
+409240 direct: 0.5-0.5
+399956 direct: 0.95-0.95
+14251 direct: 1.5-1.5
+11269 direct: 2.5-2.5
+436564 direct: 1.92-2.8799999
+8724 direct: 2.5-2.5
+424785 periodic: 0.0-0.0
+462722 direct: 2.5-2.5
+399986 direct: 0.0-0.0
+2764 direct: 1.0-1.0
+11268 direct: 2.5-2.5
+2480 direct: 1.0-1.0
+462723 direct: 2.5-2.5
+462718 direct: 2.5-2.5
+7918 direct: 1.0-1.0
+462720 direct: 2.5-2.5
+462721 direct: 2.5-2.5
+7919 direct: 1.0-1.0
+6603 direct: 1.0-1.0
+408345 periodic: 396.0-442.0
+6377 periodic: 10.0-10.0
+10587 periodic: 75.0-75.0
+8227 direct: 489.0-489.0
+17359 periodic: 290.0-290.0
+10456 direct: 84.0-84.0
+10496 periodic: 8.0-8.0
+8499 periodic: 184.0-208.0
+17354 periodic: 230.0-230.0
+8190 periodic: 22.0-22.0
+8498 periodic: 102.0-116.0
+16356 direct: 175.0-175.0
+10526 direct: 947.0-947.0
+8033 direct: 35.0-35.0
+10463 periodic: 14.0-14.0
+10462 periodic: 12.0-12.0
+16387 direct: 1217.0-1217.0
+11314 periodic: 281.0-317.0
+10586 periodic: 54.0-54.0
+17364 direct: 1.0-1.0
+16190 periodic: 170.0-170.0
+408521 direct: 0.57-0.63
+408521 periodic: 0.12-0.12
+16355 direct: 134.0-134.0
+10497 periodic: 10.0-10.0
+408507 direct: 1.0-1.0
+6365 periodic: 26.0-34.0
+8249 direct: 697.0-697.0
+6364 periodic: 19.0-25.0
+5394 periodic: 6.0-6.0
+425339 direct: 0.71999997-1.0799999
+6363 periodic: 13.0-17.0
+5675 periodic: 4.0-4.0
+10438 periodic: 40.0-54.0
+10495 periodic: 6.0-6.0
+10585 periodic: 37.0-37.0
+408514 direct: 0.28-0.28
+1535 periodic: 48.0-56.0
+3599 periodic: 9.0-11.0
+6375 periodic: 8.0-8.0
+408490 direct: 4.69-6.0499997
+10437 periodic: 33.0-45.0
+8038 direct: 53.0-53.0
+6603 direct: 1.0-1.0
+19505 direct: 234.0-234.0
+19731 direct: 319.0-319.0
+17951 direct: 40.0-60.0
+17727 direct: 650.0-650.0
+1122 direct: 200.0-200.0
+11730 direct: 1200.0-1200.0
+17728 direct: 900.0-900.0
+6201 direct: 100.0-100.0
+11729 direct: 800.0-800.0
+19734 direct: 438.0-438.0
+427744 direct: 1.0-1.0
+17952 direct: 60.0-90.0
+427745 direct: 25.0-25.0
+6202 direct: 250.0-250.0
+5699 direct: 500.0-500.0
+6366 direct: 25.0-35.0
+19736 direct: 579.0-579.0
+403629 direct: 5.22-6.62
+403501 direct: 2.51-2.95
+426320 direct: 1.73-1.73
+426320 periodic: 0.64-0.64
+427717 direct: 0.022699999-0.022699999
+427717 periodic: 2.4199998-2.4199998
+5019 direct: 1.0-1.0
+412758 direct: 2.22-2.58
+17953 direct: 80.0-120.0
+2362 direct: 400.0-400.0
+20252 direct: 25.0-25.0
+8820 direct: 1.0-1.0
+6603 direct: 1.0-1.0
+25286 direct: 1.0-1.0
+11608 direct: 1.0-1.0
+20617 direct: 65.0-65.0
+11567 direct: 1.0-1.0
+7384 direct: 1.0-1.0
+7369 direct: 1.0-1.0
+23893 direct: 0.0-0.0
+23892 direct: 0.0-0.0
+11604 direct: 1.0-1.0
+11584 direct: 1.0-1.0
+7887 direct: 1.0-1.0
+284 direct: 1.0-1.0
+78 direct: 1.0-1.0
+1608 direct: 1.0-1.0
+845 direct: 1.0-1.0
+21552 direct: 1.0-1.0
+11566 direct: 1.0-1.0
+11585 direct: 1.0-1.0
+2764 direct: 1.0-1.0
+20616 direct: 45.0-45.0
+21553 direct: 1.0-1.0
+23881 direct: 0.0-0.0
+11605 direct: 1.0-1.0
+11565 direct: 1.0-1.0
+11564 direct: 1.0-1.0
+2480 direct: 1.0-1.0
+11609 direct: 1.0-1.0
+23894 direct: 0.0-0.0
+1464 direct: 1.0-1.0
+21551 direct: 1.0-1.0
+7918 direct: 1.0-1.0
+429765 direct: 0.0-0.0
+12294 direct: 1.0-1.0
+285 direct: 1.0-1.0
+1680 direct: 1.0-1.0
+7919 direct: 1.0-1.0
+20569 direct: 1.0-1.0
+
+talent/buff values traced 5620, untraced 2002

@@ -1,0 +1,27 @@
+# Build recipe for the BigWigs packager (github.com/BigWigsMods/packager).
+#
+# The packager checks the repo out at a tag, strips everything listed under
+# `ignore`, zips what is left with `package-as` as the top folder, and uploads
+# that to CurseForge and to a GitHub release.
+#
+# The libraries under lib/ are committed to this repo on purpose and are NOT
+# declared as `externals`: they are what the addon was tested against.
+
+package-as: SpellCodaForever
+
+# Release notes for players instead of the commit log.
+manual-changelog:
+  filename: CHANGELOG-release.md
+  markup-type: markdown
+
+# Everything that only serves development.
+ignore:
+  - tools
+  - branding
+  - .pkgmeta
+  - .gitignore
+  - CHANGELOG-release.md
+  - "*.zip"
+
+# No stripped-down "nolib" package: the libraries are part of the addon.
+enable-nolib-creation: no

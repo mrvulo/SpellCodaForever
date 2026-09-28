@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="46%" r="62%">
+      <stop offset="0" stop-color="#3e2080"/>
+      <stop offset="0.55" stop-color="#1b0f38"/>
+      <stop offset="1" stop-color="#0a0615"/>
+    </radialGradient>
+    <linearGradient id="gauge" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6a3cff"/>
+      <stop offset="0.5" stop-color="#9b6cff"/>
+      <stop offset="1" stop-color="#e6d8ff"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#5a2de0"/>
+      <stop offset="0.45" stop-color="#9b6cff"/>
+      <stop offset="1" stop-color="#e2d2ff"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d8c6ff"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#9b6cff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9b6cff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- tile -->
+  <rect x="8" y="8" width="496" height="496" rx="96" fill="url(#bg)"/>
+  <rect x="10" y="10" width="492" height="492" rx="94" fill="none" stroke="#9b6cff" stroke-opacity="0.35" stroke-width="4"/>
+
+  <!-- halo -->
+  <circle cx="256" cy="262" r="150" fill="url(#halo)"/>
+
+  <!-- dial ticks -->
+  <g transform="rotate(-90 256 256)" fill="none" stroke="#b999ff">
+    <circle cx="256" cy="256" r="176" stroke-width="12" stroke-opacity="0.35" stroke-dasharray="2.5 15.93"/>
+    <circle cx="256" cy="256" r="176" stroke-width="22" stroke-opacity="0.8" stroke-dasharray="5 87.15"/>
+  </g>
+
+  <!-- gauge arc (270°, gap at bottom) -->
+  <circle cx="256" cy="256" r="206" fill="none" stroke="#9b6cff" stroke-opacity="0.18" stroke-width="10"
+          transform="rotate(135 256 256)" stroke-dasharray="970.9 1294.3" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="206" fill="none" stroke="url(#gauge)" stroke-width="10" filter="url(#softglow)"
+          transform="rotate(135 256 256)" stroke-dasharray="760 1294.3" stroke-linecap="round"/>
+
+  <!-- flame -->
+  <g filter="url(#glow)">
+    <path fill="url(#flame)" d="M256 128
+      C 264 180, 326 204, 328 270
+      C 330 326, 296 362, 256 364
+      C 216 362, 182 328, 184 276
+      C 186 238, 208 212, 222 186
+      C 226 212, 234 228, 248 238
+      C 244 200, 244 164, 256 128 Z"/>
+    <path fill="url(#core)" d="M260 220
+      C 264 252, 298 270, 296 306
+      C 294 334, 276 348, 256 348
+      C 234 348, 218 332, 218 308
+      C 218 284, 232 270, 240 252
+      C 244 268, 250 276, 256 280
+      C 252 262, 252 240, 260 220 Z"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#efe6ff" filter="url(#softglow)">
+    <path d="M352 158 l5 15 15 5 -15 5 -5 15 -5 -15 -15 -5 15 -5 z"/>
+    <path d="M160 176 l3.5 10 10 3.5 -10 3.5 -3.5 10 -3.5 -10 -10 -3.5 10 -3.5 z"/>
+    <path d="M344 330 l3 8.5 8.5 3 -8.5 3 -3 8.5 -3 -8.5 -8.5 -3 8.5 -3 z"/>
+  </g>
+
+  <!-- infinity (Forever) in the gauge gap -->
+  <path d="M256 456 C 244 441, 214 437, 214 456 C 214 475, 244 471, 256 456 C 268 441, 298 437, 298 456 C 298 475, 268 471, 256 456 Z"
+        fill="none" stroke="#e2d2ff" stroke-width="7" stroke-linejoin="round" filter="url(#softglow)"/>
+</svg>

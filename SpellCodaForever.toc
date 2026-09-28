@@ -1,0 +1,75 @@
+## Interface: 16001
+## Title: SpellCoda |cff9b6cffForever|r
+## Notes: All things Spells! Spell calculator for World of Warcraft: Forever.
+## Notes-frFR: Tout sur les sorts !
+## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
+## Author: Vulo
+## Version: 0.44
+## X-Curse-Project-ID: 1716723
+## IconTexture: Interface\Icons\spell_fire_elementaldevastation
+## SavedVariablesPerCharacter: __sc_p_char
+## SavedVariables: __sc_p_acc
+## OptionalDeps: LibStub, CallbackHandler-1.0, LibUIDropDownMenu
+
+lib/LibStub/LibStub.lua
+lib/CallbackHandler-1.0/CallbackHandler-1.0.xml
+lib/LibDataBroker-1.1/LibDataBroker-1.1.lua
+lib/LibDBIcon-1.0/LibDBIcon-1.0.lua
+lib/LibUIDropDownMenu/LibUIDropDownMenu.xml
+lib/LibUIDropDownMenu/LibUIDropDownMenu.lua
+
+api.lua
+
+generated/vanilla/defs.lua
+generated/vanilla/localized_defs.lua
+generated/vanilla/all.lua
+
+generated/vanilla/druid.lua
+generated/vanilla/hunter.lua
+generated/vanilla/mage.lua
+generated/vanilla/paladin.lua
+generated/vanilla/priest.lua
+generated/vanilla/rogue.lua
+generated/vanilla/shaman.lua
+generated/vanilla/warlock.lua
+generated/vanilla/warrior.lua
+
+generated/locale_strings.lua
+
+locale/ptBR.lua
+locale/zhCN.lua
+locale/zhTW.lua
+locale/frFR.lua
+locale/deDE.lua
+locale/itIT.lua
+locale/esMX.lua
+locale/ptPT.lua
+locale/koKR.lua
+locale/ruRU.lua
+locale/esES.lua
+
+localization.lua
+
+utils.lua
+
+override.lua
+
+vanilla/override.lua
+vanilla/scaling.lua
+
+config.lua
+loadouts.lua
+equipment.lua
+buffs.lua
+talents.lua
+calc_defs.lua
+vanilla/mechanics.lua
+calc.lua
+overlay.lua
+tooltip.lua
+ui.lua
+spells_feed.lua
+verify.lua
+core.lua
+public.lua
+

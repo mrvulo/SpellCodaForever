@@ -1,0 +1,8 @@
+# DB2 downloads; tools/forever_data.py fetches them again
+tools/db2_cache/
+__pycache__/
+*.zip
+.DS_Store
+
+# Editor
+.vscode/

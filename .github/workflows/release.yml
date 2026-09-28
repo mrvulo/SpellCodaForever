@@ -1,0 +1,35 @@
+# Builds and publishes a release whenever a version tag is pushed:
+#
+#     git tag v0.44 && git push --tags
+#
+# What it needs, once:
+#   * `## X-Curse-Project-ID: <id>` in SpellCodaForever.toc (already set).
+#   * a repository secret CF_API_KEY, from
+#     https://legacy.curseforge.com/account/api-tokens
+#     (GitHub: Settings -> Secrets and variables -> Actions -> New secret)
+#
+# GITHUB_TOKEN is provided by Actions itself; nothing to set up for that.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write          # needed to create the GitHub release
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Package and upload
+        uses: BigWigsMods/packager@v2
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
