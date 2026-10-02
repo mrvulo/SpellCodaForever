@@ -8,6 +8,7 @@ local GetItemInfoInstant                        = sc.api.GetItemInfoInstant;
 local getglobal                                 = sc.api.getglobal;
 local MouseIsOver                               = sc.api.MouseIsOver;
 local readable                                  = sc.api.readable;
+local num                                       = sc.api.num;
 
 local spell_flags                               = sc.spell_flags;
 local spells                                    = sc.spells;
@@ -2037,7 +2038,7 @@ local function write_spell_tooltip()
 
         if config.settings.general_calc_secondary_tooltip then
             sc_stat_calc_tooltip:ClearLines();
-            sc_stat_calc_tooltip:SetOwner(GameTooltip, "ANCHOR_LEFT", 0, -select(2, sc_stat_calc_tooltip:GetSize()));
+            sc_stat_calc_tooltip:SetOwner(GameTooltip, "ANCHOR_LEFT", 0, -num(select(2, sc_stat_calc_tooltip:GetSize()), 0));
 
             write_tooltip_spell_info(
                 sc_stat_calc_tooltip,
@@ -2593,8 +2594,10 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
 
     local min_width = 95;
 
-    local offset_to_first = math.max(min_width, tt.headers.second_fstr:GetWidth());
-    local offset_to_role_icon = offset_to_first + math.max(min_width, tt.headers.first_fstr:GetWidth());
+    -- a tooltip filled by secure code (quest rewards) lays its lines out as
+    -- secret values, and the headers anchored into it inherit that
+    local offset_to_first = math.max(min_width, num(tt.headers.second_fstr:GetWidth(), 0));
+    local offset_to_role_icon = offset_to_first + math.max(min_width, num(tt.headers.first_fstr:GetWidth(), 0));
 
     local tooltip_name = tooltip:GetName();
     local rhs_txt = _G[tooltip_name .. "TextRight" .. num_lines];
