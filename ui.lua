@@ -6869,14 +6869,8 @@ local function create_sw_ui_settings_frame(pframe)
         {
             id = "general_spellbook_button",
             txt = L["Spellbook tab button"],
-            func = function(self)
-                if __sc_frame_spellbook_tab then
-                    if self:GetChecked() then
-                        __sc_frame_spellbook_tab:Show();
-                    else
-                        __sc_frame_spellbook_tab:Hide();
-                    end
-                end
+            func = function()
+                sc.spellbook_page.sync();
             end,
         },
         {
@@ -7401,46 +7395,9 @@ local function load_sw_ui()
 end
 
 -- The spellbook is part of the load-on-demand PlayerSpellsFrame on this client,
--- so the button is added once that window exists (see ADDON_LOADED in core).
+-- so its tab is added once that window exists (see ADDON_LOADED in core).
 local function add_spell_book_button()
-    local book = sc.api.spellbook_frame();
-    local window = _G.PlayerSpellsFrame;
-    if book and window and not _G["__sc_frame_spellbook_tab"] then
-        local button = CreateFrame("Button", "__sc_frame_spellbook_tab", book);
-        button.background = button:CreateTexture(nil, "BACKGROUND");
-        button:ClearAllPoints();
-        button:SetSize(32, 32);
-        button:SetNormalTexture("Interface\\Icons\\spell_fire_elementaldevastation");
-        button:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD");
-
-        button.background:ClearAllPoints()
-        button.background:SetPoint("TOPLEFT", -3, 11)
-        button.background:SetTexture("Interface\\SpellBook\\SpellBook-SkillLineTab")
-        button:SetScript("OnClick", function()
-            if __sc_frame:IsShown() then
-                __sc_frame:Hide();
-            else
-                sw_activate_frame("spells_frame");
-            end
-        end);
-
-        -- side tab on the right edge of the window, like the classic skill line tabs
-        button:SetPoint("TOPLEFT", window, "TOPRIGHT", 0, -70);
-        button:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT");
-            GameTooltip:ClearLines();
-            GameTooltip:SetText(L["SpellCoda ability catalogue"]);
-        end);
-        button:SetScript("OnLeave", function()
-            GameTooltip:Hide();
-        end);
-
-        if config.settings.general_spellbook_button then
-            button:Show();
-        else
-            button:Hide();
-        end
-    end
+    sc.spellbook_page.attach();
 end
 
 local function add_to_options()

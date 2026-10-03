@@ -549,6 +549,17 @@ for _, v in ipairs({
   "Use target's equipment",
   "weighing",
   "While this tab is open, ability overlay & tooltips reflect the change below",
+  "Now available",
+  "Coming soon",
+  "Not yet available",
+  "Required level",
+  "Training cost",
+  "Learned from",
+  "Available total: %s",
+  "Spells to learn",
+  "Open SpellCoda",
+  "Nothing left to learn",
+  "Spell",
 }) do
   L[v] = v;
 end
