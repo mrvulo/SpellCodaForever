@@ -1,4 +1,4 @@
-# SpellCoda Forever 0.47
+# SpellCoda Forever 0.48
 
-- New: SpellCoda tab in the spellbook's tab row. Left click shows a page listing every spell you can still learn, grouped into "Now available", "Coming soon" and "Not yet available", with rank, required level and the total training cost. Right click opens the SpellCoda window.
-- Changed: the old SpellCoda side tab on the spellbook's edge is replaced by the new tab
+- Fixed: error "bad argument #2 to 'format'" in the Spells tab when SpellCoda's data contains a spell the Forever client does not have; such spells are now left out of the Spells tab and the spellbook page
+- Fixed: the same kind of error in the item planner tooltip and when checking buffs in the calculator

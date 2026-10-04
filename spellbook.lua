@@ -88,7 +88,8 @@ end
 
 local function learnable(id)
     local spell = spells[id];
-    if not spell or spell.train == 0 then
+    -- in the data but not on this client
+    if not spell or spell.train == 0 or not GetSpellInfo(id) then
         return false;
     end
     if bit.band(spell.flags, bit.bor(spell_flags.talent, spell_flags.pet)) ~= 0 then

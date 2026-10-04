@@ -423,7 +423,10 @@ local function filtered_spell_view(spell_ids, name_filter, loadout, effects, eva
                 known = spells[highest].rank > spells[id].rank;
             end
         end
-        if name_filter ~= "" and not string.find(string.lower(GetSpellInfo(id)), string.lower(name_filter)) then
+        local name = GetSpellInfo(id);
+        if not name then
+            -- in the data but not on this client
+        elseif name_filter ~= "" and not string.find(string.lower(name), string.lower(name_filter)) then
         elseif config.settings.spells_filter_already_known and known then
             filtered[i] = {spell_id = id, trigger = spell_filters.spells_filter_already_known};
         elseif config.settings.spells_filter_available and
@@ -4654,7 +4657,7 @@ local function create_calculator_items_subframe(pframe)
                 if spell_ids then
                     for _, spell_id in ipairs(spell_ids) do
                         if spell_id > 0 then
-                            GameTooltip:AddLine(select(1, GetSpellInfo(spell_id)).." ("..spell_id..")");
+                            GameTooltip:AddLine((GetSpellInfo(spell_id) or "").." ("..spell_id..")");
                         end
                     end
                 end
@@ -5444,12 +5447,18 @@ local function create_calculator_buffs_subframe(pframe)
                 if view.side == "lhs" then
                     for _, v in ipairs(view.buffs) do
                         working_buffs.player_buffs[v.id] = 1;
-                        forced_buffs_lname_to_id[GetSpellInfo(v.id)] = v.id;
+                        local lname = GetSpellInfo(v.id);
+                        if lname then
+                            forced_buffs_lname_to_id[lname] = v.id;
+                        end
                     end
                 else
                     for _, v in ipairs(view.buffs) do
                         working_buffs.target_buffs[v.id] = 1;
-                        forced_buffs_lname_to_id[GetSpellInfo(v.id)] = v.id;
+                        local lname = GetSpellInfo(v.id);
+                        if lname then
+                            forced_buffs_lname_to_id[lname] = v.id;
+                        end
                     end
                 end
             else
@@ -5512,11 +5521,17 @@ local function create_calculator_buffs_subframe(pframe)
                     if not config_buffs[self.buff_id] then
                         config_buffs[self.buff_id] = 1;
 
-                        forced_buffs_lname_to_id[GetSpellInfo(self.buff_id)] = self.buff_id;
+                        local lname = GetSpellInfo(self.buff_id);
+                        if lname then
+                            forced_buffs_lname_to_id[lname] = self.buff_id;
+                        end
                         pframe.buffs[view.side].num_checked = pframe.buffs[view.side].num_checked + 1;
                     else
                         config_buffs[self.buff_id] = nil;
-                        forced_buffs_lname_to_id[GetSpellInfo(self.buff_id)] = nil;
+                        local lname = GetSpellInfo(self.buff_id);
+                        if lname then
+                            forced_buffs_lname_to_id[lname] = nil;
+                        end
                         pframe.buffs[view.side].num_checked = pframe.buffs[view.side].num_checked - 1;
                     end
 
