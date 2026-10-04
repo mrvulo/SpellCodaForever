@@ -489,6 +489,79 @@ def effect_spells(text):
 
 FOREVER_BUILD = [DEFAULT_FOREVER_BUILD]
 
+# Forever's trainers teach spells that are runes in the Era data (train = 0
+# there, so the addon treats them as not trainable). Each one takes the
+# training cost of the Era spell it replaced; Fire Nova rank 1 costs 8 silver
+# at the Forever trainer, the same as Fire Nova Totem rank 1 in Era.
+TRAINED_REPLACEMENTS = {
+    'shaman': {408341: 1535, 408342: 8498, 408343: 8499, 408344: 11314, 408345: 11315},
+}
+
+
+# Learned spells that only trigger the spell doing the damage. The Era data
+# carries the learned spell's dummy effect (5 damage, no coefficient); the
+# damage, its level scaling and the level it stops scaling at come from the
+# triggered spell. Fire Nova hits every enemy around the caster.
+TRIGGERED_DAMAGE = {
+    'shaman': {
+        408341: (408423, 'comp_flags.unbounded_aoe'),
+        408342: (408424, 'comp_flags.unbounded_aoe'),
+        408343: (408426, 'comp_flags.unbounded_aoe'),
+        408344: (408427, 'comp_flags.unbounded_aoe'),
+        408345: (408428, 'comp_flags.unbounded_aoe'),
+    },
+}
+
+
+def patch_triggered(text, cls, fv, report):
+    for spell_id, (damage_id, comp_flags) in TRIGGERED_DAMAGE.get(cls, {}).items():
+        e = fv.effects.get((damage_id, 0))
+        if not e or e['kind'][0] != '2':
+            raise SystemExit(f'spell {damage_id}: effect 0 is not school damage')
+        m = spell_block(text, spell_id)
+        block = m.group(0)
+        school = re.search(r'^\t\t\tschool1 = (schools\.[a-z]+),$', block, re.M).group(1)
+        direct = (
+            '\t\tdirect = {\n'
+            f'\t\t\tmin = {fmt(e["min"], True)},\n'
+            f'\t\t\tmax = {fmt(e["max"], True)},\n'
+            f'\t\t\tschool1 = {school},\n'
+            f'\t\t\tcoef = {fmt(e["coef"])},\n'
+            f'\t\t\tper_lvl = {fmt(e["per_lvl"])},\n'
+            '\t\t\tper_lvl_sq = 0,\n'
+            '\t\t\tjump_amp = 1,\n'
+            f'\t\t\tflags = bit.bor(0, {comp_flags}),\n'
+            '\t\t},\n')
+        # every component the Era data had goes; the triggered damage replaces them
+        block, n = re.subn(r'^\t\t(?:direct|periodic) = \{\n.*?^\t\t\},\n', '', block, flags=re.M | re.S)
+        block = block.replace('\t\tcast_time = ', direct + '\t\tcast_time = ', 1)
+        block = re.sub(r'^\t\tlvl_max = \d+,$', f'\t\tlvl_max = {fv.levels[damage_id]["max"]},', block, flags=re.M)
+        if 'spell_flags.eval' not in block:
+            block = re.sub(r'^(\t\tflags = bit\.bor\(0, .*)\),$', r'\1, spell_flags.eval),', block, flags=re.M)
+        text = text[:m.start()] + block + text[m.end():]
+        report['changed'].append(f'{cls} {spell_id} damage from {damage_id}: {fmt(e["min"], True)}-'
+                                 f'{fmt(e["max"], True)} coef {fmt(e["coef"])}')
+    return text
+
+
+def spell_block(text, spell_id):
+    m = re.search(r'^\t\[%d\] = \{\n.*?^\t\},\n' % spell_id, text, re.M | re.S)
+    if not m:
+        raise SystemExit(f'spell {spell_id} not found')
+    return m
+
+
+def patch_trained(text, cls, report):
+    for spell_id, replaced in TRAINED_REPLACEMENTS.get(cls, {}).items():
+        cost = re.search(r'^\t\ttrain = (-?\d+),$', spell_block(text, replaced).group(0), re.M).group(1)
+        m = spell_block(text, spell_id)
+        block, n = re.subn(r'^\t\ttrain = 0,$', f'\t\ttrain = {cost},', m.group(0), flags=re.M)
+        if n != 1:
+            raise SystemExit(f'spell {spell_id}: no "train = 0" to replace')
+        text = text[:m.start()] + block + text[m.end():]
+        report['changed'].append(f'{cls} {spell_id} train 0 -> {cost} (trained like {replaced})')
+    return text
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -511,6 +584,8 @@ def main():
         patched = src
         if cls != 'all':
             patched = patch_class(patched, era, fv, report)
+            patched = patch_trained(patched, cls, report)
+            patched = patch_triggered(patched, cls, fv, report)
         patched = patch_auras(patched, era, fv, report)
         before_items = len(report['item_changed'])
         patched = patch_items(patched, items, effect_spells(patched) | shared_effect_spells, report)

@@ -1,6 +1,6 @@
 Forever 1.60.1.70009 vs Era 1.15.9.69547
 
-== changed (537)
+== changed (547)
 5179 Wrath: direct.min 63 -> 35, direct.max 73 -> 41, direct.per_lvl 1 -> 0.9, cost 70 -> 50
 9888 Healing Touch: direct.min 1516 -> 1388, direct.max 1796 -> 1644, cost 600 -> 630
 9839 Rejuvenation: periodic.min 122 -> 94, periodic.max 122 -> 94
@@ -430,6 +430,16 @@ Forever 1.60.1.70009 vs Era 1.15.9.69547
 10466 Lesser Healing Wave: direct.min 458 -> 401, direct.max 514 -> 451
 529 Lightning Bolt: direct.min 26 -> 27, direct.max 30 -> 31, direct.coef 0.314 -> 0.571
 547 Healing Wave: direct.min 129 -> 119, direct.max 155 -> 143, direct.coef 0.5 -> 0.714
+shaman 408341 train 0 -> 800 (trained like 1535)
+shaman 408342 train 0 -> 3000 (trained like 8498)
+shaman 408343 train 0 -> 8000 (trained like 8499)
+shaman 408344 train 0 -> 16000 (trained like 11314)
+shaman 408345 train 0 -> 27000 (trained like 11315)
+shaman 408341 damage from 408423: 46-54 coef 0.214
+shaman 408342 damage from 408424: 95-109 coef 0.214
+shaman 408343 damage from 408426: 172-194 coef 0.214
+shaman 408344 damage from 408427: 267-301 coef 0.214
+shaman 408345 damage from 408428: 381-425 coef 0.214
 18868 Shadowburn: direct.min 186 -> 111, direct.max 210 -> 125, direct.per_lvl 1.8 -> 1.3
 17926 Death Coil: direct.min 470 -> 454, direct.max 470 -> 454, cost 565 -> 600
 403841 Shadow Cleave: direct.min 24 -> 23

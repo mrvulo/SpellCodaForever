@@ -1,4 +1,4 @@
-# SpellCoda Forever 0.48
+# SpellCoda Forever 0.49
 
-- Fixed: error "bad argument #2 to 'format'" in the Spells tab when SpellCoda's data contains a spell the Forever client does not have; such spells are now left out of the Spells tab and the spellbook page
-- Fixed: the same kind of error in the item planner tooltip and when checking buffs in the calculator
+- Fixed: Shaman Fire Nova (taught by the trainer from level 12 on Forever) was missing from the spellbook page and the Spells tab
+- New: Fire Nova damage is now calculated (Forever values per rank, hits all enemies around you)
