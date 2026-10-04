@@ -1,4 +1,11 @@
-# SpellCoda Forever 0.49
+# SpellCoda Forever 0.50
 
-- Fixed: Shaman Fire Nova (taught by the trainer from level 12 on Forever) was missing from the spellbook page and the Spells tab
-- New: Fire Nova damage is now calculated (Forever values per rank, hits all enemies around you)
+- New: class spells that are new in Forever and taught by the trainer now show up on the spellbook page and in the Spells tab, with rank and required level. Training costs are not known yet and show as unknown; no damage or healing is calculated for these spells yet.
+  - Warrior: Slam (level 20), Tactical Mastery, Spearing Strike
+  - Paladin: Hammer of the Righteous, Seal of Fury, Swift Judgement, Summon Warhorse
+  - Hunter: Counterattack, Summon Hawk, Aspect of the Beast, Aspect of the Falcon, Strider Kick
+  - Priest: Binding Heal (all ranks)
+  - Shaman: Riptide (all ranks)
+  - Warlock: Conflagrate (levels 25 and 32), Bane of Havoc
+  - Mage: Conjure Water, Teleport: Dalaran
+  - Rogue: Sebacious, Atrophic, Numbing and Occult Poison II

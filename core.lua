@@ -44,7 +44,7 @@ sc.core                         = core;
 core.addon_name                 = "SpellCodaForever";
 
 local version_major             = 0;
-local version_minor             = 49;
+local version_minor             = 50;
 local version_build             = sc.addon_build_id;
 
 core.version_id                 = version_build + version_minor*100000 + version_major*100000000;

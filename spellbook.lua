@@ -247,11 +247,14 @@ local function show_spell(row, item)
     row.band:Hide();
     row.heading:Hide();
     row.icon:SetTexture(GetSpellTexture(id));
-    row.name:SetText(GetSpellInfo(id) or "");
+    local name, subtext = GetSpellInfo(id);
+    row.name:SetText(name or "");
     if spell.rank and spell.rank ~= 0 then
         row.rank:SetText(L["Rank"].." "..spell.rank);
     else
-        row.rank:SetText("");
+        -- spells new in Forever carry no rank in the data; the client's own
+        -- rank text stands in
+        row.rank:SetText(subtext or "");
     end
     if item.section == "available" then
         row.level:SetText("—");

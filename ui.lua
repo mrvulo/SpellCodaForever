@@ -596,7 +596,14 @@ local function populate_scrollable_spell_view(view, starting_idx)
                     spells[v.spell_id].rank
                 ));
             else
-                line.spell_name:SetText(GetSpellInfo(v.spell_id));
+                -- spells new in Forever carry no rank in the data; the client's
+                -- own rank text stands in
+                local name, subtext = GetSpellInfo(v.spell_id);
+                if subtext and subtext ~= "" then
+                    line.spell_name:SetText(name.." ("..subtext..")");
+                else
+                    line.spell_name:SetText(name);
+                end
             end
             if v.trigger == spell_filters.spells_filter_already_known then
                 line.spell_name:SetTextColor(138 / 255, 134 / 255, 125 / 255);

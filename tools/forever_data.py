@@ -32,8 +32,12 @@ def fetch(table, build):
     if not os.path.exists(path):
         url = f'https://wago.tools/db2/{table}/csv?build={build}'
         print('download', url)
-        with urllib.request.urlopen(url) as r, open(path, 'wb') as f:
-            f.write(r.read())
+        # the site answers 403 to urllib's own user agent
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as r:
+            data = r.read()
+        with open(path, 'wb') as f:
+            f.write(data)
     with open(path, encoding='utf-8') as f:
         return list(csv.DictReader(f))
 
@@ -544,6 +548,116 @@ def patch_triggered(text, cls, fv, report):
     return text
 
 
+# Class spells new in Forever that its trainers teach: the Era data lacks them
+# or carries them as a rune (train = 0). Picked from Forever's SkillLineAbility
+# (class rows with NumSkillUps 1 and AcquireMethod 0, spells new to Forever;
+# pet abilities, passives and engravings left out) on 2026-10-04. DB2 has no
+# trainer prices, so all get train = -1, "cost unknown". They are listed only:
+# no damage or healing is calculated for them. New entries get rank 0; the
+# addon then shows the rank text the client gives the spell.
+FOREVER_TRAINER_SPELLS = {
+    'warrior': [1240193, 1310185, 1310222],                 # Slam, Tactical Mastery, Spearing Strike
+    'paladin': [407632, 1310994, 1279399,                   # Hammer of the Righteous, Swift Judgement, Summon Warhorse
+                1311649, 1311656, 20163, 20419, 20421, 20422, 20423],   # Seal of Fury
+    'hunter': [469145, 1242634, 1317257,                    # Aspect of the Falcon, Counterattack, Strider Kick
+               1293241, 1293525, 1293526, 1293527,          # Summon Hawk
+               1299445, 1299446, 1299447],                  # Aspect of the Beast
+    'priest': [401937, 1240770, 1240771, 1240772, 1240773, 1240774],   # Binding Heal
+    'shaman': [408521, 1239242, 1239243],                   # Riptide
+    'warlock': [1225228, 1293817, 1293818],                 # Bane of Havoc, Conflagrate
+    'mage': [468766, 1297659],                              # Conjure Water, Teleport: Dalaran
+    'rogue': [439500, 439503, 439505, 1214168],             # Sebacious, Atrophic, Numbing, Occult Poison II
+}
+POWER_NAMES = {0: 'powers.mana', 1: 'powers.rage', 2: 'powers.focus', 3: 'powers.energy'}
+
+
+class TrainerSpells:
+    def __init__(self, fv):
+        self.names = fv.names
+        self.levels = fv.levels
+        self.cost = fv.cost
+        self.cast = fv.cast
+        self.power = {}
+        for r in fetch('SpellPower', fv.build):
+            if r.get('OrderIndex', '0') == '0':
+                self.power[int(r['SpellID'])] = int(fl(r['PowerType']))
+
+
+def table_body(text, name):
+    start = text.index(f'sc.{name} = {{\n') + len(f'sc.{name} = {{\n')
+    return start, text.index('\n};\n', start) + 1
+
+
+def patch_trainer_spells(text, cls, trainer, report):
+    wanted = FOREVER_TRAINER_SPELLS.get(cls, [])
+    if not wanted:
+        return text
+    spells_start, spells_end = table_body(text, 'spells')
+    present = {int(m.group(1)) for m in re.finditer(r'^\t\[(\d+)\] = \{$', text[spells_start:spells_end], re.M)}
+
+    # in the data as a rune
+    for sid in wanted:
+        if sid in present:
+            m = spell_block(text, sid)
+            block, n = re.subn(r'^\t\ttrain = 0,$', '\t\ttrain = -1,', m.group(0), flags=re.M)
+            if n != 1:
+                raise SystemExit(f'spell {sid}: no "train = 0" to replace')
+            text = text[:m.start()] + block + text[m.end():]
+            report['changed'].append(f'{cls} {sid} {trainer.names.get(sid)} train 0 -> -1 (Forever trainer spell)')
+
+    new = sorted((trainer.levels[s]['spell'], s) for s in wanted if s not in present)
+    entries = []
+    for level, sid in new:
+        if not trainer.names.get(sid) or level < 1:
+            raise SystemExit(f'spell {sid}: no name or level on this build')
+        cast = trainer.cast.get(sid) or 0
+        flags = ', spell_flags.instant' if cast == 0 else ''
+        power = trainer.power.get(sid, 0)
+        # DB2 stores rage in tenths, the addon's data in whole points
+        cost = trainer.cost.get(sid, 0) / (10 if power == 1 else 1)
+        entries.append(
+            f'\t[{sid}] = {{\n'
+            f'\t\tcast_time = {fmt(cast)},\n'
+            f'\t\tcost = {fmt(cost, True)},\n'
+            f'\t\tpower_type = {POWER_NAMES.get(power, "powers.mana")},\n'
+            f'\t\trank = 0,\n'
+            f'\t\tlvl_req = {level},\n'
+            f'\t\tlvl_max = {trainer.levels[sid]["max"] or 60},\n'
+            f'\t\tlvl_outdated = 60,\n'
+            f'\t\tbase_id = {sid},\n'
+            f'\t\tgcd = 1.5,\n'
+            f'\t\ttrain = -1,\n'
+            f'\t\tflags = bit.bor(0{flags}),\n'
+            f'\t}},\n')
+        report['changed'].append(f'{cls} {sid} {trainer.names[sid]} added (level {level}, Forever trainer spell)')
+    if not entries:
+        return text
+
+    spells_start, spells_end = table_body(text, 'spells')
+    text = text[:spells_end] + ''.join(entries) + text[spells_end:]
+
+    seq_start, seq_end = table_body(text, 'rank_seqs')
+    seqs = ''.join(f'\t[{sid}] = {{{sid},}},\n' for _, sid in new)
+    text = text[:seq_end] + seqs + text[seq_end:]
+
+    # level order: after the last spell of the same or a lower level
+    spells_start, spells_end = table_body(text, 'spells')
+    levels = {}
+    for m in re.finditer(r'^\t\[(\d+)\] = \{\n.*?^\t\},\n', text[spells_start:spells_end], re.M | re.S):
+        lvl = re.search(r'^\t\tlvl_req = (\d+),$', m.group(0), re.M)
+        if lvl:
+            levels[int(m.group(1))] = int(lvl.group(1))
+    m = re.search(r'^sc\.spells_lvl_ordered = \{\n(.*?) \};$', text, re.M | re.S)
+    order = [int(x) for x in m.group(1).split(',') if x.strip()]
+    for level, sid in new:
+        i = len(order)
+        while i > 0 and levels.get(order[i - 1], 0) > level:
+            i -= 1
+        order.insert(i, sid)
+    text = text[:m.start(1)] + ', '.join(map(str, order)) + ',' + text[m.end(1):]
+    return text
+
+
 def spell_block(text, spell_id):
     m = re.search(r'^\t\[%d\] = \{\n.*?^\t\},\n' % spell_id, text, re.M | re.S)
     if not m:
@@ -575,6 +689,7 @@ def main():
     report = {'changed': [], 'untraced': [], 'missing': [], 'item_changed': [],
               'aura_changed': [], 'aura_restructured': [], 'aura_traced': 0, 'aura_untraced': 0}
     items = Items()
+    trainer = TrainerSpells(fv)
     shared_effect_spells = effect_spells(io.open(os.path.join(HERE, 'era_source', 'all.lua'), encoding='utf-8').read())
     out_dir = os.path.join(ROOT, 'generated', 'vanilla')
     for cls in CLASSES + ['all']:
@@ -586,6 +701,7 @@ def main():
             patched = patch_class(patched, era, fv, report)
             patched = patch_trained(patched, cls, report)
             patched = patch_triggered(patched, cls, fv, report)
+            patched = patch_trainer_spells(patched, cls, trainer, report)
         patched = patch_auras(patched, era, fv, report)
         before_items = len(report['item_changed'])
         patched = patch_items(patched, items, effect_spells(patched) | shared_effect_spells, report)
