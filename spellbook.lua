@@ -17,7 +17,7 @@ local highest_learned_rank                      = sc.utils.highest_learned_rank;
 
 -------------------------------------------------------------------------------
 local skin = {
-    icon        = "Interface\\Icons\\spell_fire_elementaldevastation",
+    icon        = "Interface\\AddOns\\SpellCodaForever\\media\\icon",
     tab         = "spellbook-Tab-Frame-C60",
     tab_active  = "spellbook-Tab-Frame-Glow-C60",
     tab_glow    = "spellbook-Tab-Frame-glow-gradient-C60",

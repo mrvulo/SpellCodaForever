@@ -1,12 +1,15 @@
 ## Interface: 16001
 ## Title: SpellCoda |cff9b6cffForever|r
 ## Notes: All things Spells! Spell calculator for World of Warcraft: Forever.
-## Notes-frFR: Tout sur les sorts !
+## Notes-frFR: Tout sur les sorts ! Calculateur de sorts pour World of Warcraft: Forever.
+## Notes-esES: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever.
+## Notes-esMX: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever.
+## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever.
 ## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
 ## Author: Vulo
-## Version: 0.50
+## Version: 0.51
 ## X-Curse-Project-ID: 1716723
-## IconTexture: Interface\Icons\spell_fire_elementaldevastation
+## IconTexture: Interface\AddOns\SpellCodaForever\media\icon
 ## SavedVariablesPerCharacter: SpellCodaForeverCharDB
 ## SavedVariables: SpellCodaForeverDB
 ## OptionalDeps: LibStub, CallbackHandler-1.0, LibUIDropDownMenu

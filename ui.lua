@@ -7376,7 +7376,7 @@ local function load_sw_ui()
 
         libstub_launcher = libstub_data_broker:NewDataObject(sc.core.addon_name, {
             type = "launcher",
-            icon = "Interface\\Icons\\spell_fire_elementaldevastation",
+            icon = "Interface\\AddOns\\SpellCodaForever\\media\\icon",
             OnClick = function(self, button)
                 if button == "MiddleButton" then
                     __sc_frame_setting_general_libstub_minimap_icon:Click();
@@ -7474,7 +7474,7 @@ local function locale_warning_popup()
             local icon = frame:CreateTexture(nil, "ARTWORK");
             icon:SetSize(24, 24);
             icon:SetPoint("TOPLEFT", 0, 0);
-            icon:SetTexture("Interface\\Icons\\spell_fire_elementaldevastation");
+            icon:SetTexture("Interface\\AddOns\\SpellCodaForever\\media\\icon");
 
             local text = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight");
             text:SetPoint("TOPLEFT", 25, -30);
