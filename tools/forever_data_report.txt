@@ -1,6 +1,6 @@
 Forever 1.60.1.70009 vs Era 1.15.9.69547
 
-== changed (588)
+== changed (592)
 5179 Wrath: direct.min 63 -> 35, direct.max 73 -> 41, direct.per_lvl 1 -> 0.9, cost 70 -> 50
 9888 Healing Touch: direct.min 1516 -> 1388, direct.max 1796 -> 1644, cost 600 -> 630
 9839 Rejuvenation: periodic.min 122 -> 94, periodic.max 122 -> 94
@@ -473,6 +473,10 @@ shaman 408343 damage from 408426: 172-194 coef 0.214
 shaman 408344 damage from 408427: 267-301 coef 0.214
 shaman 408345 damage from 408428: 381-425 coef 0.214
 shaman 408521 Riptide train 0 -> -1 (Forever trainer spell)
+shaman 36936 Totemic Recall added (level 20, Forever trainer spell)
+shaman 66842 Call of the Elements added (level 20, Forever trainer spell)
+shaman 66843 Call of the Ancestors added (level 30, Forever trainer spell)
+shaman 66844 Call of the Spirits added (level 40, Forever trainer spell)
 shaman 1239242 Riptide added (level 50, Forever trainer spell)
 shaman 1239243 Riptide added (level 60, Forever trainer spell)
 18868 Shadowburn: direct.min 186 -> 111, direct.max 210 -> 125, direct.per_lvl 1.8 -> 1.3

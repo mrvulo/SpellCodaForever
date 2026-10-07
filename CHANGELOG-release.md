@@ -1,4 +1,3 @@
-# SpellCoda Forever 0.51
+# SpellCoda Forever 0.52
 
-- New: SpellCoda Forever has its own icon in the addon list, on the minimap button, on the spellbook tab and in the options
-- New: the spellbook page is translated into French, Spanish and Russian; the addon description in the addon list is now available in these languages too
+- New: Shaman Call of the Elements and Totemic Recall (level 20, 63 silver), Call of the Ancestors (level 30) and Call of the Spirits (level 40) now show up on the spellbook page and in the Spells tab

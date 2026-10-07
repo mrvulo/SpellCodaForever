@@ -551,10 +551,12 @@ def patch_triggered(text, cls, fv, report):
 # Class spells new in Forever that its trainers teach: the Era data lacks them
 # or carries them as a rune (train = 0). Picked from Forever's SkillLineAbility
 # (class rows with NumSkillUps 1 and AcquireMethod 0, spells new to Forever;
-# pet abilities, passives and engravings left out) on 2026-10-04. DB2 has no
-# trainer prices, so all get train = -1, "cost unknown". They are listed only:
-# no damage or healing is calculated for them. New entries get rank 0; the
-# addon then shows the rank text the client gives the spell.
+# pet abilities, passives and engravings left out) on 2026-10-04, plus spells
+# seen at the trainer in game (their rows carry NumSkillUps 0). DB2 has no
+# trainer prices: a spell gets its price from FOREVER_TRAINER_PRICES when it
+# was read off the trainer, else train = -1, "cost unknown". They are listed
+# only: no damage or healing is calculated for them. New entries get rank 0;
+# the addon then shows the rank text the client gives the spell.
 FOREVER_TRAINER_SPELLS = {
     'warrior': [1240193, 1310185, 1310222],                 # Slam, Tactical Mastery, Spearing Strike
     'paladin': [407632, 1310994, 1279399,                   # Hammer of the Righteous, Swift Judgement, Summon Warhorse
@@ -563,10 +565,16 @@ FOREVER_TRAINER_SPELLS = {
                1293241, 1293525, 1293526, 1293527,          # Summon Hawk
                1299445, 1299446, 1299447],                  # Aspect of the Beast
     'priest': [401937, 1240770, 1240771, 1240772, 1240773, 1240774],   # Binding Heal
-    'shaman': [408521, 1239242, 1239243],                   # Riptide
+    'shaman': [408521, 1239242, 1239243,                    # Riptide
+               66842, 66843, 66844, 36936],                 # Call of the Elements/Ancestors/Spirits, Totemic Recall
     'warlock': [1225228, 1293817, 1293818],                 # Bane of Havoc, Conflagrate
     'mage': [468766, 1297659],                              # Conjure Water, Teleport: Dalaran
     'rogue': [439500, 439503, 439505, 1214168],             # Sebacious, Atrophic, Numbing, Occult Poison II
+}
+# copper, as read off the Forever trainer
+FOREVER_TRAINER_PRICES = {
+    66842: 6300,    # Call of the Elements, 63 silver (2026-10-07)
+    36936: 6300,    # Totemic Recall, 63 silver (2026-10-07)
 }
 POWER_NAMES = {0: 'powers.mana', 1: 'powers.rage', 2: 'powers.focus', 3: 'powers.energy'}
 
@@ -599,11 +607,12 @@ def patch_trainer_spells(text, cls, trainer, report):
     for sid in wanted:
         if sid in present:
             m = spell_block(text, sid)
-            block, n = re.subn(r'^\t\ttrain = 0,$', '\t\ttrain = -1,', m.group(0), flags=re.M)
+            price = FOREVER_TRAINER_PRICES.get(sid, -1)
+            block, n = re.subn(r'^\t\ttrain = 0,$', f'\t\ttrain = {price},', m.group(0), flags=re.M)
             if n != 1:
                 raise SystemExit(f'spell {sid}: no "train = 0" to replace')
             text = text[:m.start()] + block + text[m.end():]
-            report['changed'].append(f'{cls} {sid} {trainer.names.get(sid)} train 0 -> -1 (Forever trainer spell)')
+            report['changed'].append(f'{cls} {sid} {trainer.names.get(sid)} train 0 -> {price} (Forever trainer spell)')
 
     new = sorted((trainer.levels[s]['spell'], s) for s in wanted if s not in present)
     entries = []
@@ -626,7 +635,7 @@ def patch_trainer_spells(text, cls, trainer, report):
             f'\t\tlvl_outdated = 60,\n'
             f'\t\tbase_id = {sid},\n'
             f'\t\tgcd = 1.5,\n'
-            f'\t\ttrain = -1,\n'
+            f'\t\ttrain = {FOREVER_TRAINER_PRICES.get(sid, -1)},\n'
             f'\t\tflags = bit.bor(0{flags}),\n'
             f'\t}},\n')
         report['changed'].append(f'{cls} {sid} {trainer.names[sid]} added (level {level}, Forever trainer spell)')
