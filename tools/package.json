@@ -1,0 +1,11 @@
+{
+  "name": "spellcodaforever-tools",
+  "private": true,
+  "description": "Pre-release checks for SpellCodaForever",
+  "scripts": {
+    "check": "python check.py"
+  },
+  "dependencies": {
+    "luaparse": "^0.3.1"
+  }
+}

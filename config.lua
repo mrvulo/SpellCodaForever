@@ -401,6 +401,7 @@ local function default_p_acc()
         localization_notified = false,
         -- set once the Forever default (translation on) was applied to this account
         localization_default_forever = false,
+        window_scale = sc.utils.client_matches(sc.client_flags.forever) and 1.25 or 1.0,
     };
 end
 

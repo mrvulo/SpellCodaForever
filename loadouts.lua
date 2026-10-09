@@ -14,18 +14,25 @@ local value_idx                         = sc.aura_idx_value;
 local subject_idx                       = sc.aura_idx_subject;
 local flags_idx                         = sc.aura_idx_flags;
 local iid_idx                           = sc.aura_idx_iid; -- internal index within this spell id
+local scale_idx                         = sc.aura_idx_scale;
+local curve_idx                         = sc.aura_idx_curve;
 
 local mana_per_int                      = sc.scaling.mana_per_int;
 local hp_per_stam                       = sc.scaling.hp_per_stam;
-local ap_per_str                        = sc.scaling.ap_per_str;
-local ap_per_agi                        = sc.scaling.ap_per_agi;
-local rap_per_agi                       = sc.scaling.rap_per_agi;
+local ap_per_str                        = sc.ap_per_str;
+local ap_per_agi                        = sc.ap_per_agi;
+local rap_per_agi                       = sc.rap_per_agi;
+local cat_form_ap_per_agi               = sc.cat_form_ap_per_agi;
 local armor_per_agi                     = sc.scaling.armor_per_agi;
 local cr_weights                        = sc.scaling.cr_weights;
 local spirit_mana_regen                 = sc.scaling.spirit_mana_regen;
 
 local write_item_info_from_link         = sc.utils.write_item_info_from_link;
 local combat_ratings                    = sc.utils.combat_ratings;
+local client_matches                    = sc.utils.client_matches;
+local is_secret                         = sc.utils.is_secret;
+local any_secret                        = sc.utils.any_secret;
+local client_flags                      = sc.client_flags;
 local spell_lname                       = sc.utils.spell_lname;
 
 local config                            = sc.config;
@@ -87,6 +94,7 @@ local loadout_numbers = {
     "m1_speed",
     "m2_speed",
     "shapeshift",
+    "shapeshift_feral_skill",
     "shapeshift_no_weapon",
     "target_defense",
     "target_creature_mask",
@@ -287,10 +295,10 @@ local effects_additive = {
     -- effects that affects the base value (points) of other subauras
     -- indexed by the aura internal idx
     aura_pts = {
-        -1, 0, 1, 2, 3, 4
+        -1, 0, 1, 2, 3, 4, 5
     },
     aura_pts_flat = {
-        -1, 0, 1, 2, 3, 4
+        -1, 0, 1, 2, 3, 4, 5
     },
     wpn_subclass = {
         "phys_crit",
@@ -1656,7 +1664,53 @@ local function manual_effects_zero_diff()
     };
 end
 
-local function effects_add_manual_diff(effects, diff)
+-- clients that show these combat stats as percentages, where a manual diff is typed in percent
+local ratings_in_pct = client_matches(bit.bor(client_flags.vanilla, client_flags.forever));
+
+local manual_diff_ratings = {
+    crit_rating = {
+        pct = true,
+        {"spell_crit_rating_flat", combat_ratings.CR_CRIT_SPELL},
+        {"melee_crit_rating_flat", combat_ratings.CR_CRIT_MELEE},
+        {"ranged_crit_rating_flat", combat_ratings.CR_CRIT_RANGED},
+    },
+    hit_rating = {
+        pct = true,
+        {"spell_hit_rating_flat", combat_ratings.CR_HIT_SPELL},
+        {"melee_hit_rating_flat", combat_ratings.CR_HIT_MELEE},
+        {"ranged_hit_rating_flat", combat_ratings.CR_HIT_RANGED},
+    },
+    haste_rating = {
+        pct = true,
+        {"spell_haste_rating_flat", combat_ratings.CR_HASTE_SPELL},
+        {"melee_haste_rating_flat", combat_ratings.CR_HASTE_MELEE},
+        {"ranged_haste_rating_flat", combat_ratings.CR_HASTE_RANGED},
+    },
+    dodge_rating = {
+        pct = true,
+        {"dodge_rating_flat", combat_ratings.CR_DODGE},
+    },
+    parry_rating = {
+        pct = true,
+        {"parry_rating_flat", combat_ratings.CR_PARRY},
+    },
+    expertise_rating = {
+        {"expertise_rating_flat", combat_ratings.CR_EXPERTISE},
+    },
+    defense_skill_rating = {
+        {"defense_skill_rating_flat", combat_ratings.CR_DEFENSE_SKILL},
+    },
+    resilience_rating = {
+        {"resilience_crit_taken_rating_flat", combat_ratings.CR_RESILIENCE_CRIT_TAKEN},
+        {"resilience_dmg_taken_rating_flat", combat_ratings.CR_RESILIENCE_PLAYER_DAMAGE_TAKEN},
+    },
+};
+
+local function manual_diff_in_pct(key)
+    return ratings_in_pct and manual_diff_ratings[key] and manual_diff_ratings[key].pct;
+end
+
+local function effects_add_manual_diff(loadout, effects, diff)
 
     effects.by_attr.stat_flat[attr.stamina] = effects.by_attr.stat_flat[attr.stamina] + diff.stam;
     effects.by_attr.stat_flat[attr.strength] = effects.by_attr.stat_flat[attr.strength] + diff.str;
@@ -1671,21 +1725,16 @@ local function effects_add_manual_diff(effects, diff)
 
     effects.raw.mp5_flat = effects.raw.mp5_flat + diff.mp5;
 
-    effects.raw.spell_haste_rating_flat = effects.raw.spell_haste_rating_flat + diff.haste_rating;
-    effects.raw.melee_haste_rating_flat = effects.raw.melee_haste_rating_flat + diff.haste_rating;
-    effects.raw.ranged_haste_rating_flat = effects.raw.ranged_haste_rating_flat + diff.haste_rating;
-    effects.raw.spell_crit_rating_flat = effects.raw.spell_crit_rating_flat + diff.crit_rating;
-    effects.raw.melee_crit_rating_flat = effects.raw.melee_crit_rating_flat + diff.crit_rating;
-    effects.raw.ranged_crit_rating_flat = effects.raw.ranged_crit_rating_flat + diff.crit_rating;
-    effects.raw.spell_hit_rating_flat = effects.raw.spell_hit_rating_flat + diff.hit_rating;
-    effects.raw.melee_hit_rating_flat = effects.raw.melee_hit_rating_flat + diff.hit_rating;
-    effects.raw.ranged_hit_rating_flat = effects.raw.ranged_hit_rating_flat + diff.hit_rating;
-    effects.raw.expertise_rating_flat = effects.raw.expertise_rating_flat + diff.expertise_rating;
-    effects.raw.dodge_rating_flat = effects.raw.dodge_rating_flat + diff.dodge_rating;
-    effects.raw.parry_rating_flat = effects.raw.parry_rating_flat + diff.parry_rating;
-    effects.raw.defense_skill_rating_flat = effects.raw.defense_skill_rating_flat + diff.defense_skill_rating;
-    effects.raw.resilience_crit_taken_rating_flat = effects.raw.resilience_crit_taken_rating_flat + diff.resilience_rating;
-    effects.raw.resilience_dmg_taken_rating_flat = effects.raw.resilience_dmg_taken_rating_flat + diff.resilience_rating;
+    for key, targets in pairs(manual_diff_ratings) do
+        local val = diff[key];
+        for _, target in ipairs(targets) do
+            local rating_per_val = 1;
+            if targets.pct and ratings_in_pct then
+                rating_per_val = loadout.cr_scaling * cr_weights[target[2]];
+            end
+            effects.raw[target[1]] = effects.raw[target[1]] + val * rating_per_val;
+        end
+    end
 
     for i = 1, 7 do
         effects.by_school.target_res_flat[i] = effects.by_school.target_res_flat[i] - diff.pen;
@@ -1802,15 +1851,15 @@ local function effects_finalize_forced(loadout, effects)
     local dodge_from_agi = 0.01*(sc.dodge_to_agi[loadout.lvl] or 0)*effects.by_attr.stat_flat[attr.agility];
     effects.raw.dodge = effects.raw.dodge + dodge_from_agi;
 
-    local agi_ap_class = class;
+    local agi_ap = ap_per_agi;
     if class == classes.druid and loadout.shapeshift == 3 then
         -- cat form
-        agi_ap_class = classes.rogue;
+        agi_ap = cat_form_ap_per_agi;
     end
 
     local added_ap =
-        effects.by_attr.stat_flat[attr.strength] * ap_per_str[class] +
-        effects.by_attr.stat_flat[attr.agility] * ap_per_agi[agi_ap_class];
+        effects.by_attr.stat_flat[attr.strength] * ap_per_str +
+        effects.by_attr.stat_flat[attr.agility] * agi_ap;
 
     effects.raw.ap_flat = 
         (1.0 + effects.raw.ap_mod + effects.raw.ap_mod_forced)
@@ -1822,7 +1871,7 @@ local function effects_finalize_forced(loadout, effects)
         );
 
 
-    local added_rap = effects.by_attr.stat_flat[attr.agility] * rap_per_agi[class];
+    local added_rap = effects.by_attr.stat_flat[attr.agility] * rap_per_agi;
     effects.raw.rap_flat = 
         (1.0 + effects.raw.rap_mod + effects.raw.rap_mod_forced)
         *
@@ -1840,23 +1889,34 @@ local function effects_finalize_forced(loadout, effects)
     effects.finalized = true;
 end
 
--- Every client read below can come back as a secret value on Forever (unit
--- stats and auras in combat, health and power always). A secret is never used
--- in arithmetic: the previous readable value (prev) stays in place instead.
-local function dynamic_loadout(loadout, prev)
+local function keep_if_secret(v, previous)
+    if is_secret(v) then
+        return previous;
+    end
+    return v;
+end
+
+local function scaled_keep_if_secret(v, scale, previous)
+    if is_secret(v) then
+        return previous;
+    end
+    return scale*v;
+end
+
+local function dynamic_loadout(loadout)
     if not config.settings.loadout_use_custom_lvl then
-        loadout.lvl = num(UnitLevel("player"), prev.lvl);
+        loadout.lvl = keep_if_secret(UnitLevel("player"), loadout.lvl);
     else
         loadout.lvl = config.settings.loadout_lvl;
     end
 
     for i = 1, 5 do
-        local _, s = UnitStat("player", i);
-        loadout.stats[i] = num(s, prev.stats[i]);
+        local _, s, _, _ = UnitStat("player", i);
+        loadout.stats[i] = keep_if_secret(s, loadout.stats[i]);
     end
 
     for pwr, _ in pairs(loadout.resources_max) do
-        loadout.resources_max[pwr] = math.max(1, num(UnitPowerMax("player", pwr), prev.resources_max[pwr]));
+        loadout.resources_max[pwr] = math.max(1, keep_if_secret(UnitPowerMax("player", pwr), loadout.resources_max[pwr] or 1));
     end
     if config.settings.loadout_always_max_resource then
         for pwr, _ in pairs(loadout.resources) do
@@ -1864,8 +1924,11 @@ local function dynamic_loadout(loadout, prev)
         end
     else
         for pwr, _ in pairs(loadout.resources) do
-            -- current power of the player is secret on Forever; the max stands in
-            loadout.resources[pwr] = num(UnitPower("player", pwr), loadout.resources_max[pwr]);
+            local power = UnitPower("player", pwr);
+            if is_secret(power) then
+                power = loadout.resources_max[pwr];
+            end
+            loadout.resources[pwr] = power;
         end
     end
     -- always put at least 1 combo point to at least resemble spell descriptions
@@ -1876,91 +1939,100 @@ local function dynamic_loadout(loadout, prev)
         loadout.base_mana = sc.base_mana_by_lvl[loadout.lvl] or 0;
     end
 
-    -- no combat ratings in vanilla gameplay
-    for _, v in ipairs(ratings) do
-        loadout[v[2]] = 0;
-    end
-    -- dummy combat rating 1 always yield 1% in vanilla
-    loadout.cr_scaling = 1;
+    if client_matches(bit.bnot(bit.bor(client_flags.vanilla, client_flags.forever))) then
+        for _, v in ipairs(ratings) do
+            loadout[v[2]] = keep_if_secret(GetCombatRating(v[1]), loadout[v[2]]);
+        end
 
-    loadout.healing_power = num(GetSpellBonusHealing(), prev.healing_power);
-    for i = 1, 7 do
-        loadout.spell_dmg_by_school[i] = num(GetSpellBonusDamage(i), prev.spell_dmg_by_school[i]);
-    end
-    -- use holy as +all schools baseline, write to physical so singular sp by schools can be
-    -- detected for multischool spells
-    loadout.spell_dmg_by_school[1] = loadout.spell_dmg_by_school[2];
-
-    -- right after load GetSpellHitModifier may return nil
-    local spell_hit = num(GetSpellHitModifier());
-    for i = 1, 7 do
-        if spell_hit then
-            loadout.spell_dmg_hit_by_school[i] = 0.01*spell_hit;
+        if loadout.lvl <= 60 then
+            loadout.cr_scaling = (math.max(loadout.lvl, 10) - 8) / 52
+        elseif loadout.lvl <= 70 then
+            loadout.cr_scaling = 82 / (262 - 3 * loadout.lvl)
         else
-            loadout.spell_dmg_hit_by_school[i] = prev.spell_dmg_hit_by_school[i];
+            loadout.cr_scaling = (41/26) * ((131/63)^((loadout.lvl - 70) / 10))
+        end
+    else
+        for _, v in ipairs(ratings) do
+            loadout[v[2]] = 0;
+        end
+        -- dummy combat rating 1 always yield 1% in vanilla
+        loadout.cr_scaling = 1;
+    end
+
+    --loadout.phys_hit = 0;
+    --local phys_hit = GetHitModifier();
+    --if phys_hit then
+    --    loadout.phys_hit = 0.01*phys_hit;
+    --end
+
+    if client_matches(bit.bnot(client_flags.wotlk)) then
+        loadout.healing_power = keep_if_secret(GetSpellBonusHealing(), loadout.healing_power);
+        for i = 1, 7 do
+            loadout.spell_dmg_by_school[i] = keep_if_secret(GetSpellBonusDamage(i), loadout.spell_dmg_by_school[i]);
+        end
+        loadout.spell_dmg_by_school[1] = loadout.spell_dmg_by_school[2];
+        -- use holy as +all schools baseline, write to physical so singular sp by schools can be 
+        -- detected for multischool spells
+
+        -- right after load GetSpellHitModifier seems to sometimes returns a nil.... so check first I guess
+       local spell_hit = 0;
+       local api_hit = GetSpellHitModifier();
+       if is_secret(api_hit) then
+           spell_hit = loadout.spell_dmg_hit_by_school[1] or 0;
+       elseif api_hit then
+           spell_hit = 0.01*api_hit;
+       end
+       for i = 1, 7 do
+           loadout.spell_dmg_hit_by_school[i] = spell_hit;
+       end
+    else
+        -- in wotlk, healing power will equate to spell power
+        loadout.spell_power = GetSpellBonusHealing();
+        for i = 1, 7 do
+            loadout.spell_dmg_by_school[i] = GetSpellBonusDamage(i) - loadout.spell_power;
         end
     end
 
     for i = 1, 7 do
-        local crit = num(GetSpellCritChance(i));
-        if crit then
-            loadout.spell_crit_by_school[i] = crit*0.01;
-        else
-            loadout.spell_crit_by_school[i] = prev.spell_crit_by_school[i];
-        end
+        loadout.spell_crit_by_school[i] = scaled_keep_if_secret(GetSpellCritChance(i), 0.01, loadout.spell_crit_by_school[i]);
+    end
+    local ap_src1, ap_src2, ap_src3 = UnitAttackPower("player");
+    if not any_secret(ap_src1, ap_src2, ap_src3) then
+        loadout.ap = ap_src1 + ap_src2 + ap_src3;
+    end
+    local rap_src1, rap_src2, rap_src3 = UnitRangedAttackPower("player");
+    if not any_secret(rap_src1, rap_src2, rap_src3) then
+        loadout.rap = rap_src1 + rap_src2 + rap_src3;
     end
 
-    local ap1, ap2, ap3 = UnitAttackPower("player");
-    ap1, ap2, ap3 = num(ap1), num(ap2), num(ap3);
-    if ap1 and ap2 and ap3 then
-        loadout.ap = ap1 + ap2 + ap3;
-    else
-        loadout.ap = prev.ap;
-    end
-    local rap1, rap2, rap3 = UnitRangedAttackPower("player");
-    rap1, rap2, rap3 = num(rap1), num(rap2), num(rap3);
-    if rap1 and rap2 and rap3 then
-        loadout.rap = rap1 + rap2 + rap3;
-    else
-        loadout.rap = prev.rap;
+    loadout.melee_crit = scaled_keep_if_secret(GetCritChance(), 0.01, loadout.melee_crit);
+    loadout.ranged_crit = scaled_keep_if_secret(GetRangedCritChance(), 0.01, loadout.ranged_crit);
+    loadout.block = scaled_keep_if_secret(GetBlockChance(), 0.01, loadout.block);
+
+    --loadout.r_speed, loadout.r_min, loadout.r_max, loadout.r_pos, loadout.r_neg, loadout.r_mod = UnitRangedDamage("player");
+
+    local attack_min_mh, attack_max_mh, _, _, attack_pos, attack_neg, attack_mod = UnitDamage("player");
+    if not any_secret(attack_min_mh, attack_max_mh, attack_pos, attack_neg, attack_mod) then
+        loadout.attack_min_mh, loadout.attack_max_mh = attack_min_mh, attack_max_mh;
+        loadout.attack_pos, loadout.attack_neg, loadout.attack_mod = attack_pos, attack_neg, attack_mod;
     end
 
-    -- per hand attack skill is not exposed on this client, weapon skills come from the skill lines
-    loadout.ranged_skill = 0;
-    loadout.m1_skill = 0;
-    loadout.m2_skill = 0;
-
-    local melee_crit = num(GetCritChance());
-    loadout.melee_crit = melee_crit and melee_crit*0.01 or prev.melee_crit;
-    local ranged_crit = num(GetRangedCritChance());
-    loadout.ranged_crit = ranged_crit and ranged_crit*0.01 or prev.ranged_crit;
-    local block = num(GetBlockChance());
-    loadout.block = block and block*0.01 or prev.block;
-
-    local min_mh, max_mh, _, _, pos, neg, mod = UnitDamage("player");
-    min_mh, max_mh, pos, neg, mod = num(min_mh), num(max_mh), num(pos), num(neg), num(mod);
-    if min_mh and max_mh and pos and neg and mod then
-        loadout.attack_min_mh, loadout.attack_max_mh = min_mh, max_mh;
-        loadout.attack_pos, loadout.attack_neg, loadout.attack_mod = pos, neg, mod;
-    else
-        loadout.attack_min_mh, loadout.attack_max_mh = prev.attack_min_mh, prev.attack_max_mh;
-        loadout.attack_pos, loadout.attack_neg, loadout.attack_mod = prev.attack_pos, prev.attack_neg, prev.attack_mod;
+    local attack_delay_mh, attack_delay_oh = UnitAttackSpeed("player");
+    if not any_secret(attack_delay_mh, attack_delay_oh) then
+        loadout.attack_delay_mh, loadout.attack_delay_oh = attack_delay_mh, attack_delay_oh;
     end
-    -- the damage mod divides later on, never leave it unset
-    if not loadout.attack_mod or loadout.attack_mod == 0 then
-        loadout.attack_mod = 1;
-    end
-    loadout.attack_min_mh = loadout.attack_min_mh or 0;
-    loadout.attack_max_mh = loadout.attack_max_mh or 0;
 
-    local mh_speed, oh_speed = UnitAttackSpeed("player");
-    loadout.attack_delay_mh = num(mh_speed, prev.attack_delay_mh) or 2.0;
-    loadout.attack_delay_oh = num(oh_speed, prev.attack_delay_oh);
-
-    loadout.shapeshift = num(GetShapeshiftForm(), prev.shapeshift) or 0;
+    loadout.shapeshift = keep_if_secret(GetShapeshiftForm(), loadout.shapeshift);
     if class == classes.druid and loadout.shapeshift ~= 0 and loadout.shapeshift ~= 5 then
-        loadout.shapeshift_no_weapon = 1;
+        loadout.shapeshift_feral_skill = 1;
+        -- forever forms attack with the weapon's damage, older clients ignore the weapon
+        if client_matches(client_flags.forever) then
+            loadout.shapeshift_no_weapon = 0;
+        else
+            loadout.shapeshift_no_weapon = 1;
+        end
     else
+        loadout.shapeshift_feral_skill = 0;
         loadout.shapeshift_no_weapon = 0;
     end
 
@@ -1969,17 +2041,18 @@ local function dynamic_loadout(loadout, prev)
     loadout.target_name = str(UnitName("target"));
     loadout.mouseover_name = str(UnitName("mouseover"));
 
-    local dodge = num(GetDodgeChance());
-    loadout.dodge = dodge and 0.01*dodge or prev.dodge;
-    local parry = num(GetParryChance());
-    loadout.parry = parry and 0.01*parry or prev.parry;
-    local def_base, def_bonus = UnitDefense("player");
-    if def_base then
-        loadout.defense = def_base + def_bonus;
-    elseif prev.defense and prev.defense > 0 then
-        loadout.defense = prev.defense;
+    loadout.dodge = scaled_keep_if_secret(GetDodgeChance() or 0, 0.01, loadout.dodge);
+    loadout.parry = scaled_keep_if_secret(GetParryChance() or 0, 0.01, loadout.parry);
+    if client_matches(client_flags.forever) then
+        local def_base, def_bonus = UnitDefenseSkill("player");
+        if is_secret(def_base) or is_secret(def_bonus) then
+            loadout.defense = loadout.lvl*5;
+        else
+            loadout.defense = def_base + def_bonus;
+        end
     else
-        loadout.defense = 5*loadout.lvl;
+        local def_base, def_bonus = UnitDefense("player");
+        loadout.defense = def_base + def_bonus;
     end
 
     loadout.target_res = config.settings.loadout_target_res;
@@ -1994,9 +2067,11 @@ local function dynamic_loadout(loadout, prev)
                                          bit.bnot(loadout_flags.target_friendly),
                                          bit.bnot(loadout_flags.target_pvp)));
 
-    loadout.player_hp_max = math.max(num(UnitHealthMax("player"), prev.player_hp_max), 1);
-    -- player health is always secret on Forever; assume full health then
-    loadout.player_hp = num(UnitHealth("player"), loadout.player_hp_max);
+    loadout.player_hp_max = math.max(keep_if_secret(UnitHealthMax("player"), loadout.player_hp_max or 1), 1);
+    loadout.player_hp = UnitHealth("player");
+    if is_secret(loadout.player_hp) then
+        loadout.player_hp = loadout.player_hp_max;
+    end
 
     loadout.enemy_hp_perc = config.settings.loadout_default_target_hp_perc*0.01;
 
@@ -2043,20 +2118,27 @@ local function dynamic_loadout(loadout, prev)
     end
     -- unit health is secret on Forever; the configured default stays unless it is readable
     if loadout.hostile_towards == "target" and bit.band(loadout.flags, loadout_flags.target_friendly) == 0 then
-        local hp, hp_max = num(UnitHealth("target")), num(UnitHealthMax("target"));
-        if hp and hp_max then
-            loadout.enemy_hp_perc = hp/math.max(hp_max, 1);
+        local enemy_hp, enemy_hp_max = UnitHealth("target"), UnitHealthMax("target");
+        if not is_secret(enemy_hp) and not is_secret(enemy_hp_max) then
+            loadout.enemy_hp_perc = enemy_hp/math.max(enemy_hp_max, 1);
         end
     end
 
-    loadout.friendly_hp_max = math.max(num(UnitHealthMax(loadout.friendly_towards), 1), 1);
-    loadout.friendly_hp_perc = num(UnitHealth(loadout.friendly_towards), loadout.friendly_hp_max)/loadout.friendly_hp_max;
+    local friendly_hp, friendly_hp_max = UnitHealth(loadout.friendly_towards), UnitHealthMax(loadout.friendly_towards);
+    if is_secret(friendly_hp) or is_secret(friendly_hp_max) then
+        loadout.friendly_hp_max = 1;
+        loadout.friendly_hp_perc = 1;
+    else
+        loadout.friendly_hp_max = math.max(friendly_hp_max, 1);
+        loadout.friendly_hp_perc = friendly_hp/loadout.friendly_hp_max;
+    end
 
     loadout.target_defense = 5*loadout.target_lvl;
 
     local base_armor, armor = UnitArmor("player");
-    loadout.base_armor = num(base_armor, prev.base_armor or 0);
-    loadout.armor = num(armor, prev.armor or 0);
+    if not any_secret(base_armor, armor) then
+        loadout.base_armor, loadout.armor = base_armor, armor;
+    end
 
     loadout.target_pvpres = config.settings.loadout_target_pvpres;
 
@@ -2082,7 +2164,7 @@ local function dynamic_loadout(loadout, prev)
     loadout.calculator_mode = false;
 end
 
-local function apply_effect(effects, spid, auras, forced, stacks, undo, player_owned, shapeshift)
+local function apply_effect(effects, spid, auras, forced, stacks, undo, player_owned, shapeshift, rank)
     if not auras then
         --if __spellcoda_debug__ then
         --    print("Missing aura", spid);
@@ -2104,7 +2186,7 @@ local function apply_effect(effects, spid, auras, forced, stacks, undo, player_o
         if bit.band(aura[flags_idx], sc.aura_flags.apply_aura) ~= 0 then
             for _, k in pairs(aura[subject_idx]) do
                 if sc[aura[effect_idx]][k] then
-                    apply_effect(effects, k, sc[aura[effect_idx]][k], forced, stacks, undo);
+                    apply_effect(effects, k, sc[aura[effect_idx]][k], forced, stacks, undo, nil, nil, rank);
                 end
             end
         elseif bit.band(aura[flags_idx], sc.aura_flags.requires_ownership) ~= 0 and not player_owned then
@@ -2129,11 +2211,17 @@ local function apply_effect(effects, spid, auras, forced, stacks, undo, player_o
             if effects.aura_pts[aura[iid_idx]] and effects.aura_pts[aura[iid_idx]][spid] then
                 mul = mul + effects.aura_pts[aura[iid_idx]][spid];
             end
+            local base;
+            if rank and aura[curve_idx] then
+                base = sc.curves[aura[curve_idx]][rank] * aura[scale_idx];
+            else
+                base = aura[value_idx];
+            end
             local val;
             if stacks > 1 and bit.band(aura[flags_idx], sc.aura_flags.stacks_as_charges) == 0 then
-                val = (aura[value_idx] + add) * mul * stacks;
+                val = (base + add) * mul * stacks;
             else
-                val = (aura[value_idx] + add) * mul;
+                val = (base + add) * mul;
             end
 
             if bit.band(aura[flags_idx], sc.aura_flags.inactive_forced) == 0 or forced then
@@ -2149,14 +2237,17 @@ local function apply_effect(effects, spid, auras, forced, stacks, undo, player_o
                     --end
 
                     val = 1.0 + val;
-                    if undo then
-                        val = 1/val;
-                    end
-                    if aura[category_idx] == "raw" then
-                        effects["mul"][aura[category_idx]][aura_effect] = effects["mul"][aura[category_idx]][aura_effect] * val;
-                    else
-                        for _, i in pairs(aura[subject_idx]) do
-                            effects["mul"][aura[category_idx]][aura_effect][i] = (effects["mul"][aura[category_idx]][aura_effect][i] or 1.0) * val;
+                    -- a zero factor can not be divided back out by undo and stat diffs
+                    if val ~= 0 then
+                        if undo then
+                            val = 1/val;
+                        end
+                        if aura[category_idx] == "raw" then
+                            effects["mul"][aura[category_idx]][aura_effect] = effects["mul"][aura[category_idx]][aura_effect] * val;
+                        else
+                            for _, i in pairs(aura[subject_idx]) do
+                                effects["mul"][aura[category_idx]][aura_effect][i] = (effects["mul"][aura[category_idx]][aura_effect][i] or 1.0) * val;
+                            end
                         end
                     end
                 else
@@ -2179,6 +2270,21 @@ local function apply_effect(effects, spid, auras, forced, stacks, undo, player_o
                         end
                     end
                 end
+            end
+        end
+    end
+end
+
+-- adds the aura values times amount, for additive auras scaled by a count like the points of an item stat
+local function apply_flat_scaled(effects, auras, amount)
+    for _, aura in pairs(auras) do
+        local val = aura[value_idx] * amount;
+        if aura[category_idx] == "raw" then
+            effects.raw[aura[effect_idx]] = effects.raw[aura[effect_idx]] + val;
+        else
+            local by_subject = effects[aura[category_idx]][aura[effect_idx]];
+            for _, i in pairs(aura[subject_idx]) do
+                by_subject[i] = (by_subject[i] or 0.0) + val;
             end
         end
     end
@@ -2239,9 +2345,9 @@ local function update_loadout_and_effects(relaxed_update_dt)
     else
         other = loadout_base1;
     end
-    dynamic_loadout(other, loadout_front);
+    dynamic_loadout(other);
 
-    if not spellbook_shown() and
+    if not sc.utils.spell_book_shown() and
         not loadouts.force_update and
         not sc.core.equipment_update_needed and
         not sc.core.talents_update_needed and
@@ -2367,7 +2473,7 @@ local function update_loadout_and_effects_diffed_from_ui()
     sc.equipment.apply_items_cmp(loadout, diffed, new_items_buffer, old_items_buffer, true, true, true);
 
     -- Manual stat changes
-    effects_add_manual_diff(diffed, stats_diff_last);
+    effects_add_manual_diff(loadout, diffed, stats_diff_last);
 
     -- Buffs
     if buffs_cfg.use_custom then
@@ -2395,6 +2501,7 @@ loadouts.talented                                     = talented;
 loadouts.empty_effects                                = empty_effects;
 loadouts.effects_add                                  = effects_add;
 loadouts.effects_add_manual_diff                      = effects_add_manual_diff;
+loadouts.manual_diff_in_pct                           = manual_diff_in_pct;
 loadouts.effects_finalize_forced                      = effects_finalize_forced;
 loadouts.cpy_effects                                  = cpy_effects;
 loadouts.manual_effects_zero_diff                     = manual_effects_zero_diff;
@@ -2403,6 +2510,7 @@ loadouts.update_loadout_and_effects                   = update_loadout_and_effec
 loadouts.update_loadout_and_effects_diffed_from_ui    = update_loadout_and_effects_diffed_from_ui;
 loadouts.loadout_flags                                = loadout_flags;
 loadouts.apply_effect                                 = apply_effect;
+loadouts.apply_flat_scaled                            = apply_flat_scaled;
 loadouts.stats_diff_format                            = stats_diff_format;
 loadouts.stats_format                                 = stats_format;
 loadouts.init_lnames                                  = init_lnames;

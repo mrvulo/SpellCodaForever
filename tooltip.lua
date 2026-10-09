@@ -26,6 +26,7 @@ local spell_cast_time                           = sc.utils.spell_cast_time;
 local format_number                             = sc.utils.format_number;
 local color_by_lvl_diff                         = sc.utils.color_by_lvl_diff;
 local write_item_info_from_link                 = sc.utils.write_item_info_from_link;
+local secret_or                                 = sc.utils.secret_or;
 
 local update_loadout_and_effects                = sc.loadouts.update_loadout_and_effects;
 local update_loadout_and_effects_diffed_from_ui = sc.loadouts.update_loadout_and_effects_diffed_from_ui;
@@ -35,11 +36,13 @@ local empty_effects                             = sc.loadouts.empty_effects;
 local stats_diff_format                         = sc.loadouts.stats_diff_format;
 
 local apply_items_cmp                           = sc.equipment.apply_items_cmp;
+local item_in_data                              = sc.equipment.item_in_data;
 local slots                                     = sc.equipment.slots;
 local wpn_skill_for_slot                        = sc.equipment.wpn_skill_for_slot;
 local inv_type_to_slot_ids                      = sc.equipment.inv_type_to_slot_ids;
 
 local talent_pts                                = sc.talents.talent_pts;
+local talent_idx                                = sc.talent_idx;
 
 local fight_types                               = sc.calc.fight_types;
 local stat_weights                              = sc.calc.stat_weights;
@@ -100,15 +103,15 @@ local function format_bounce_spell(min_hit, max_hit, bounces, falloff)
     local bounce_str = "     + ";
     for _ = 1, bounces - 1 do
         bounce_str = bounce_str .. string.format(" %.0f %s %.0f  + ",
-            falloff * math.floor(min_hit),
+            math.floor(falloff * min_hit),
             L["to"],
-            falloff * math.ceil(max_hit));
+            math.ceil(falloff * max_hit));
         falloff = falloff * falloff;
     end
     bounce_str = bounce_str .. string.format(" %.0f %s %.0f",
-        falloff * math.floor(min_hit),
+        math.floor(falloff * min_hit),
             L["to"],
-        falloff * math.ceil(max_hit));
+        math.ceil(falloff * max_hit));
     return bounce_str;
 end
 
@@ -195,9 +198,6 @@ text:SetFont(GameTooltipText:GetFont())
 text_small:SetFont(GameTooltipTextSmall:GetFont())
 
 sc_stat_calc_tooltip:AddFontStrings(header_txt, text, text_small);
--- Font for some reason is always larger than GameTooltip even though
--- they have same fonts and size. Downscale instead
-sc_stat_calc_tooltip:SetScale(0.75);
 
 local spell_id_of_cleared_tooltip = 0;
 local clear_tooltip_refresh_id = 463;
@@ -1255,7 +1255,7 @@ local function append_tooltip_spell_eval(tooltip, spell, spell_id, loadout, effe
                               (1.0 - direct_ratio) * 100,
                               L["periodic"]);
         end
-        if config.settings.general_average_proc_effects and spell.base_id == spids.shadow_bolt and talent_pts(effects_finalized, 301) ~= 0 then
+        if config.settings.general_average_proc_effects and spell.base_id == spids.shadow_bolt and talent_pts(effects_finalized, talent_idx.improved_shadow_bolt) ~= 0 then
             local isb_uptime = 1.0 - math.pow(1.0 - stats.crit, 4);
 
             extra_info_st = extra_info_st .. string.format("%s %.1f%%", L["ISB debuff uptime"], 100 * isb_uptime);
@@ -1876,10 +1876,10 @@ local function write_tooltip_spell_info(tooltip, spell, spell_id, loadout, effec
         return;
     end
 
-    if config.settings.tooltip_clear_original or tooltip ~= GameTooltip or not GetSpellInfo(spell.base_id) then
+    if config.settings.tooltip_clear_original or tooltip ~= GameTooltip or not C_Spell.DoesSpellExist(spell.base_id) then
         local txt_left = getglobal("GameTooltipTextLeft1");
         if txt_left then
-            local lname = GetSpellInfo(spell.base_id);
+            local lname = C_Spell.GetSpellName(spell.base_id);
             if not lname then
                 lname = "" .. spell.base_id;
             end
@@ -2039,6 +2039,8 @@ local function write_spell_tooltip()
         if config.settings.general_calc_secondary_tooltip then
             sc_stat_calc_tooltip:ClearLines();
             sc_stat_calc_tooltip:SetOwner(GameTooltip, "ANCHOR_LEFT", 0, -num(select(2, sc_stat_calc_tooltip:GetSize()), 0));
+            local parent = sc_stat_calc_tooltip:GetParent();
+            sc_stat_calc_tooltip:SetScale(GameTooltip:GetEffectiveScale() / (parent and parent:GetEffectiveScale() or 1));
 
             write_tooltip_spell_info(
                 sc_stat_calc_tooltip,
@@ -2196,7 +2198,7 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
     end
 
     _, _, tt.new_item.quality, tt.new_item.ilvl, _, _, _, _, tt.new_item.inv_type, tt.new_item.tex, _, tt.new_item.class_id, tt.new_item.subclass_id =
-        GetItemInfo(tt.new_item.link);
+        C_Item.GetItemInfo(tt.new_item.link);
 
     if not tt.new_item.inv_type or
         not tt.new_item.tex or
@@ -2229,6 +2231,12 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
         if key and config.settings["tooltip_item_ignore_"..key] then
             return;
         end
+    end
+
+    if not item_in_data(tt.new_item.id) then
+        tooltip:AddLine(L["Item missing from SpellCoda dataset. An update may be needed"], 1, 0.2, 0.2);
+        tooltip:Show();
+        return;
     end
 
     local loadout, effects, effects_finalized, update_id = update_loadout_and_effects();
@@ -2288,7 +2296,7 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
             if old_item.link then
 
                 _, _, old_item.quality, old_item.ilvl, _, _, _, _, old_item.inv_type, old_item.tex, _, old_item.class_id, old_item.subclass_id =
-                    GetItemInfo(old_item.link);
+                    C_Item.GetItemInfo(old_item.link);
             else
                 old_item.tex = empty_tex;
             end
@@ -2308,7 +2316,7 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
                 (inv == "INVTYPE_WEAPON" and slot == slots.SecondaryHandSlot) then
 
                 local mh_link = loadout.item_links[slots.MainHandSlot];
-                if mh_link and select(4, GetItemInfoInstant(mh_link)) == "INVTYPE_2HWEAPON" then
+                if mh_link and select(4, C_Item.GetItemInfoInstant(mh_link)) == "INVTYPE_2HWEAPON" then
                     -- offhand knocks out 2H
                     slot_knocked_out = slots.MainHandSlot;
                 end
@@ -2327,7 +2335,7 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
                 if knocked_slot_data.link then
 
                     _, _, knocked_slot_data.quality, knocked_slot_data.ilvl, _, _, _, _, knocked_slot_data.inv_type, knocked_slot_data.tex, _, knocked_slot_data.class_id, knocked_slot_data.subclass_id =
-                        GetItemInfo(knocked_slot_data.link);
+                        C_Item.GetItemInfo(knocked_slot_data.link);
                 else
                     knocked_slot_data.tex = empty_tex;
                 end
@@ -2594,10 +2602,13 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
 
     local min_width = 95;
 
-    -- a tooltip filled by secure code (quest rewards) lays its lines out as
-    -- secret values, and the headers anchored into it inherit that
-    local offset_to_first = math.max(min_width, num(tt.headers.second_fstr:GetWidth(), 0));
-    local offset_to_role_icon = offset_to_first + math.max(min_width, num(tt.headers.first_fstr:GetWidth(), 0));
+    -- anchors to tooltip lines left from the last show make the width secret when those lines are secret
+    tt.headers.first_fstr:ClearAllPoints();
+    tt.headers.second_fstr:ClearAllPoints();
+    local offset_to_first = math.max(min_width,
+        secret_or(tt.headers.second_fstr:GetWidth(), min_width, "item tooltip header 2 width"));
+    local offset_to_role_icon = offset_to_first + math.max(min_width,
+        secret_or(tt.headers.first_fstr:GetWidth(), min_width, "item tooltip header 1 width"));
 
     local tooltip_name = tooltip:GetName();
     local rhs_txt = _G[tooltip_name .. "TextRight" .. num_lines];
@@ -2744,13 +2755,21 @@ local function on_hide_tooltip(tooltip)
 end
 
 local function on_show_tooltip(tooltip)
+    local t = GetTime();
+    if t > last_needs_update_time + tooltip_update_cd then
+        spell_tooltip_cached.needs_update = true;
+        last_needs_update_time = t;
+    end
+end
+
+local function on_show_tooltip_legacy(tooltip)
     local spell_name, _ = tooltip:GetSpell();
     if not readable(spell_name) then
         return;
     end
     if not spell_name then
         -- Attack tooltip may be a dummy, so link it to its actual spell id
-        local attack_lname = GetSpellInfo(sc.auto_attack_spell_id);
+        local attack_lname = C_Spell.GetSpellName(sc.auto_attack_spell_id);
         local txt = getglobal("GameTooltipTextLeft1");
         local txt_str = txt and txt:GetText();
         if readable(txt_str) and txt_str and txt_str == attack_lname then
@@ -2758,11 +2777,7 @@ local function on_show_tooltip(tooltip)
             tooltip:SetSpellByID(sc.auto_attack_spell_id);
         end
     end
-    local t = GetTime();
-    if t > last_needs_update_time + tooltip_update_cd then
-        spell_tooltip_cached.needs_update = true;
-        last_needs_update_time = t;
-    end
+    on_show_tooltip(tooltip);
 end
 
 tooltip_export.sort_stat_weights                = sort_stat_weights;
@@ -2774,6 +2789,7 @@ tooltip_export.append_tooltip_spell_rank        = append_tooltip_spell_rank;
 tooltip_export.eval_mode_scroll_fn              = eval_mode_scroll_fn;
 tooltip_export.on_clear_tooltip                 = on_clear_tooltip;
 tooltip_export.on_show_tooltip                  = on_show_tooltip;
+tooltip_export.on_show_tooltip_legacy           = on_show_tooltip_legacy;
 tooltip_export.on_hide_tooltip                  = on_hide_tooltip;
 tooltip_export.stat_diffs_included_effects_str  = stat_diffs_included_effects_str;
 tooltip_export.colored_diff_str                 = colored_diff_str;

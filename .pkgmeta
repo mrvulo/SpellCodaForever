@@ -21,6 +21,8 @@ ignore:
   - .pkgmeta
   - .gitignore
   - CHANGELOG-release.md
+  - CLAUDE.md
+  - README.md
   - "*.zip"
 
 # No stripped-down "nolib" package: the libraries are part of the addon.

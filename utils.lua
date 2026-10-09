@@ -13,6 +13,47 @@ local spell_flags                   = sc.spell_flags;
 local rank_seqs                     = sc.rank_seqs;
 ---------------------------------------------------------------------------------------------------
 
+local function client_matches(mask)
+    return bit.band(sc.client_flag, mask) ~= 0;
+end
+
+-- Forever returns secret numbers for e.g. UnitHealth/UnitPower, which addons cannot do arithmetic on
+local is_secret = issecretvalue or function() return false; end;
+
+local function any_secret(...)
+    for i = 1, select("#", ...) do
+        if is_secret((select(i, ...))) then
+            return true;
+        end
+    end
+    return false;
+end
+
+local reported_secrets = {};
+
+-- for values not expected to be secret: returns fallback instead, debug mode reports each site once
+local function secret_or(v, fallback, what)
+    if not is_secret(v) then
+        return v;
+    end
+    if __spellcoda_debug__ and not reported_secrets[what] then
+        reported_secrets[what] = true;
+        print(string.format("|cFFFF4040SpellCoda secret:|r %s, in combat: %s, at %s",
+            what,
+            tostring(InCombatLockdown()),
+            (debugstack(2, 1, 0) or ""):gsub("\n", "")
+        ));
+    end
+    return fallback;
+end
+
+local function spell_book_shown()
+    if SpellBookFrame then
+        return SpellBookFrame:IsShown();
+    end
+    return PlayerSpellsFrame and PlayerSpellsFrame.SpellBookFrame:IsVisible();
+end
+
 local function deep_table_copy(obj, seen)
   if type(obj) ~= 'table' then
       return obj;
@@ -38,7 +79,7 @@ end
 
 local function spell_cost(spell_id)
 
-    local costs = GetSpellPowerCost(spell_id);
+    local costs = C_Spell.GetSpellPowerCost(spell_id);
     if costs then
         local cost_table = costs[1];
         if cost_table then
@@ -53,7 +94,9 @@ end
 
 local function spell_cast_time(spell_id)
 
-    local cast_time = select(4, GetSpellInfo(spell_id));
+    -- nil for a spell the client does not have
+    local info = C_Spell.GetSpellInfo(spell_id);
+    local cast_time = info and info.castTime;
     if cast_time  then
         cast_time = cast_time/1000;
     end
@@ -246,13 +289,20 @@ local function add_threat_mod_all_ranks(list)
         end
     end
 end
+local function alias_all_ranks(base_id, alias_id)
+    for _, spid in ipairs(rank_seqs[base_id]) do
+        local spell = spells[spid];
+        spell.alias = alias_id;
+        spell.flags = bit.bor(spell.flags, spell_flags.alias);
+    end
+end
 
 
 local lname_cache = {};
 local function spell_lname(spell_id)
     local lname = lname_cache[spell_id];
     if not lname then
-        local name = GetSpellInfo(spell_id);
+        local name = C_Spell.GetSpellName(spell_id);
         lname_cache[spell_id] = name;
         return name;
     else
@@ -260,15 +310,41 @@ local function spell_lname(spell_id)
     end
 end
 
+local function curve_value(pts, curve_id)
+    if pts == 0 then
+        return 0;
+    end
+    local curve = sc.curves[curve_id];
+    local val = curve and curve[pts];
+    if not val then
+        if __spellcoda_debug__ then
+            print("SpellCoda: Missing curve point, curve id:", curve_id, " pts:", pts);
+        end
+        return 0;
+    end
+    return val;
+end
+
 local dummy_min_idx = 1;
 local dummy_max_idx = 2;
 local dummy_iid_idx = 3;
-local function dummy_value(dummy_id, iid)
+local dummy_curve_idx = 4;
+local function dummy_value(dummy_id, iid, pts)
     local dummy = sc.dummies[dummy_id];
     if dummy then
         for _, v in pairs(dummy) do
             if v[dummy_iid_idx] == iid then
-                return v[dummy_min_idx];
+                local curve_id = v[dummy_curve_idx];
+                if not curve_id then
+                    return v[dummy_min_idx];
+                end
+                if not pts then
+                    if __spellcoda_debug__ then
+                        print("Dummy has curve id but no pts given, spell id:", dummy_id, " iid:", iid, " curve id:", curve_id);
+                    end
+                    return 0;
+                end
+                return curve_value(pts, curve_id);
             end
         end
     end
@@ -308,8 +384,8 @@ local function write_item_info_from_link(info, link)
     info.gem3 = tonumber(gem3);
     info.gem4 = tonumber(gem4);
 
-    _, _, _, info.inv_type, _, info.class_id, info.subclass_id = GetItemInfoInstant(link);
-    _, _, info.quality, info.ilvl = GetItemInfo(link); -- might not work when data is cold
+    _, _, _, info.inv_type, _, info.class_id, info.subclass_id = C_Item.GetItemInfoInstant(link);
+    _, _, info.quality, info.ilvl = C_Item.GetItemInfo(link); -- might not work when data is cold
 
     return true;
 end
@@ -348,6 +424,11 @@ local function table_from_schema(dst, src, schema)
 end
 
 --------------------------------------------------------------------------------
+utils.client_matches                = client_matches;
+utils.spell_book_shown              = spell_book_shown;
+utils.is_secret                     = is_secret;
+utils.any_secret                    = any_secret;
+utils.secret_or                     = secret_or;
 utils.deep_table_copy               = deep_table_copy;
 utils.clear_table                   = clear_table;
 utils.spell_cost                    = spell_cost;
@@ -364,7 +445,9 @@ utils.effect_colors                 = effect_colors;
 utils.spell_coef_lvl_adjusted       = spell_coef_lvl_adjusted;
 utils.add_threat_flat_by_rank       = add_threat_flat_by_rank;
 utils.add_threat_mod_all_ranks      = add_threat_mod_all_ranks;
+utils.alias_all_ranks               = alias_all_ranks;
 utils.spell_lname                   = spell_lname;
+utils.curve_value                   = curve_value;
 utils.dummy_value                   = dummy_value;
 utils.assign_color_tag              = assign_color_tag;
 utils.write_item_info_from_link     = write_item_info_from_link;

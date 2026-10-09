@@ -2,12 +2,10 @@ local _, sc = ...;
 
 local L                                     = sc.L;
 
-local spells                                = sc.spells;
-local spell_flags                           = sc.spell_flags;
-
-local clear_table                           = sc.utils.clear_table;
-
 local load_localization                     = sc.loc.load_localization;
+
+local client_matches                        = sc.utils.client_matches;
+local client_flags                          = sc.client_flags;
 
 local load_sw_ui                            = sc.ui.load_sw_ui;
 local create_sw_base_ui                     = sc.ui.create_sw_base_ui;
@@ -23,7 +21,6 @@ local config                                = sc.config;
 local load_config                           = sc.config.load_config;
 local save_config                           = sc.config.save_config;
 local set_active_settings                   = sc.config.set_active_settings;
-local set_active_loadout                    = sc.config.set_active_loadout;
 local activate_settings                     = sc.config.activate_settings;
 
 local reassign_overlay_icon                 = sc.overlay.reassign_overlay_icon;
@@ -35,6 +32,7 @@ local write_spell_tooltip                   = sc.tooltip.write_spell_tooltip;
 local write_item_tooltip                    = sc.tooltip.write_item_tooltip;
 local on_clear_tooltip                      = sc.tooltip.on_clear_tooltip;
 local on_show_tooltip                       = sc.tooltip.on_show_tooltip;
+local on_show_tooltip_legacy                = sc.tooltip.on_show_tooltip_legacy;
 local on_hide_tooltip                       = sc.tooltip.on_hide_tooltip;
 
 -------------------------------------------------------------------------
@@ -44,7 +42,7 @@ sc.core                         = core;
 core.addon_name                 = "SpellCodaForever";
 
 local version_major             = 0;
-local version_minor             = 52;
+local version_minor             = 53;
 local version_build             = sc.addon_build_id;
 
 core.version_id                 = version_build + version_minor*100000 + version_major*100000000;
@@ -288,8 +286,12 @@ local event_dispatch = {
         if arg == core.addon_name then
             load_config();
             load_localization();
-        elseif arg == "Blizzard_PlayerSpells" and core.sw_addon_loaded then
-            sc.ui.add_spell_book_button();
+        elseif arg == "Blizzard_PlayerSpells" and client_matches(client_flags.forever) then
+            sc.overlay.hook_spell_book();
+            -- the tab is added after login; before that post_login_load does it
+            if core.sw_addon_loaded then
+                sc.ui.add_spell_book_button();
+            end
         end
     end,
     ["PLAYER_LOGOUT"] = function()
@@ -315,6 +317,18 @@ local event_dispatch = {
         sc.overlay.setup_action_bars();
         core.sw_addon_loaded = true;
         table.insert(UISpecialFrames, __sc_frame:GetName()) -- Allows ESC to close frame
+        if client_matches(client_flags.vanilla) and C_Engraving.IsEngravingEnabled then
+            --after fresh login the runes cannot be queried until
+            --character frame has been opened!!!
+
+            if CharacterFrame then
+                ShowUIPanel(CharacterFrame);
+                if CharacterFrameTab1 then
+                    CharacterFrameTab1:Click();
+                end
+                HideUIPanel(CharacterFrame);
+            end
+        end
         sc.ui.post_login_load();
         sc.buffs.post_login_load();
         if __spellcoda_debug__ or __spellcoda_test_all_data__ or __spellcoda_test_all_spells__ then
@@ -333,10 +347,13 @@ local event_dispatch = {
         if __spellcoda_debug__ then
             version_warning_build_threshold_days = 0;
         end
-        -- Forever (1.60.x) always differs from the Classic Era build the spell data is
-        -- generated from, so the mismatch warning only applies to other clients
-        local is_forever = sc.client_version_loaded:match("^1%.6") ~= nil;
-        if not is_forever and config.settings.general_version_mismatch_notify and
+        -- the original addon runs on Forever too; both own the same frame and
+        -- slash command names, so the one loaded last takes over the other
+        if C_AddOns.IsAddOnLoaded("SpellCoda") then
+            print("|cFF9B6CFFSpellCodaForever:|r "..L["The original SpellCoda is enabled as well. Both use the same windows and commands, please disable one of them."]);
+        end
+
+        if config.settings.general_version_mismatch_notify and
             generated_data_is_outdated(sc.client_version_loaded, sc.client_version_src) and
             client_age_days() > version_warning_build_threshold_days then
             print(core.addon_name..": "..L["detected client and addon data mismatch for over 2 weeks. Consider checking for an update."]);
@@ -451,6 +468,11 @@ local event_dispatch = {
     ["PLAYER_REGEN_ENABLED"] = function()
         sc.loadouts.force_update = true;
     end,
+    --["LEARNED_SPELL_IN_TAB"] = function()
+    --    sc.spells_feed.external_feed_highest_ranks_update();
+    --    core.old_ranks_checks_needed = true;
+    --    sc.loadouts.force_update = true;
+    --end,
     ["SPELLS_CHANGED"] = function()
         sc.spells_feed.external_feed_highest_ranks_update();
         core.old_ranks_checks_needed = true;
@@ -477,38 +499,56 @@ local event_dispatch = {
     end,
 };
 
-local event_dispatch_client_exceptions = {};
+local event_client_filters = {
+    ["ENGRAVING_MODE_CHANGED"] = client_flags.vanilla,
+    ["RUNE_UPDATED"]           = client_flags.vanilla,
+
+    ["GLYPH_ADDED"]            = client_flags.wotlk,
+    ["GLYPH_REMOVED"]          = client_flags.wotlk,
+    ["GLYPH_UPDATED"]          = client_flags.wotlk,
+};
 
 core.event_dispatch = event_dispatch;
-core.event_dispatch_client_exceptions = event_dispatch_client_exceptions;
+core.event_client_filters = event_client_filters;
 
 
--- Mainline tooltips have no OnTooltipSetSpell/OnTooltipSetItem scripts; the
--- tooltip data processor runs after the client filled a tooltip.
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(tooltip)
-    if tooltip ~= GameTooltip then
-        return;
-    end
+local function on_tooltip_set_spell()
     if not config.settings.tooltip_disable then
         core.activate_tooltip_refresh();
         sc.tooltip_mod = key_mod_flags()
         write_spell_tooltip();
     end
-end);
+end
 
 local item_tooltip_mod = 0;
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(tooltip)
-    if tooltip ~= GameTooltip then
-        return;
-    end
+local function on_tooltip_set_item(self)
     if not config.settings.tooltip_disable_item then
         core.activate_tooltip_refresh();
         local mod = key_mod_flags();
         local mod_change = mod ~= item_tooltip_mod;
         item_tooltip_mod = mod;
-        write_item_tooltip(tooltip, mod, mod_change);
+        write_item_tooltip(self, mod, mod_change);
     end
-end);
+end
+
+local legacy_tooltip_scripts = GameTooltip:HasScript("OnTooltipSetSpell");
+if legacy_tooltip_scripts then
+    GameTooltip:HookScript("OnTooltipSetSpell", on_tooltip_set_spell);
+    GameTooltip:HookScript("OnTooltipSetItem", on_tooltip_set_item);
+else
+    -- Retail based clients removed OnTooltipSetSpell/OnTooltipSetItem scripts
+    -- Post calls fire for every tooltip, restrict to GameTooltip like the script hooks
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, function(self)
+        if self == GameTooltip then
+            on_tooltip_set_spell();
+        end
+    end);
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, function(self)
+        if self == GameTooltip then
+            on_tooltip_set_item(self);
+        end
+    end);
+end
 
 hooksecurefunc(ItemRefTooltip, "SetHyperlink", function(self, link)
     if not config.settings.tooltip_disable_item then
@@ -537,9 +577,12 @@ GameTooltip:HookScript("OnHide", function(self)
     core.deactivate_tooltip_refresh();
 end);
 GameTooltip:HookScript("OnShow", function(self)
-    on_show_tooltip(self);
+    if legacy_tooltip_scripts then
+        on_show_tooltip_legacy(self);
+    else
+        on_show_tooltip(self);
+    end
 end);
-
 
 local function command(arg)
     arg = string.lower(arg);

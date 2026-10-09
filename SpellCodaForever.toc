@@ -7,7 +7,7 @@
 ## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever.
 ## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
 ## Author: Vulo
-## Version: 0.52
+## Version: 0.53
 ## X-Curse-Project-ID: 1716723
 ## IconTexture: Interface\AddOns\SpellCodaForever\media\icon
 ## SavedVariablesPerCharacter: SpellCodaForeverCharDB
@@ -23,19 +23,19 @@ lib/LibUIDropDownMenu/LibUIDropDownMenu.lua
 
 api.lua
 
-generated/vanilla/defs.lua
-generated/vanilla/localized_defs.lua
-generated/vanilla/all.lua
+generated/Camelot/defs.lua
+generated/Camelot/localized_defs.lua
+generated/Camelot/all.lua
 
-generated/vanilla/druid.lua
-generated/vanilla/hunter.lua
-generated/vanilla/mage.lua
-generated/vanilla/paladin.lua
-generated/vanilla/priest.lua
-generated/vanilla/rogue.lua
-generated/vanilla/shaman.lua
-generated/vanilla/warlock.lua
-generated/vanilla/warrior.lua
+generated/Camelot/druid.lua
+generated/Camelot/hunter.lua
+generated/Camelot/mage.lua
+generated/Camelot/paladin.lua
+generated/Camelot/priest.lua
+generated/Camelot/rogue.lua
+generated/Camelot/shaman.lua
+generated/Camelot/warlock.lua
+generated/Camelot/warrior.lua
 
 generated/locale_strings.lua
 
@@ -57,8 +57,8 @@ utils.lua
 
 override.lua
 
-vanilla/override.lua
-vanilla/scaling.lua
+Camelot/override.lua
+Camelot/scaling.lua
 
 config.lua
 loadouts.lua
@@ -66,7 +66,7 @@ equipment.lua
 buffs.lua
 talents.lua
 calc_defs.lua
-vanilla/mechanics.lua
+Camelot/mechanics.lua
 calc.lua
 overlay.lua
 tooltip.lua

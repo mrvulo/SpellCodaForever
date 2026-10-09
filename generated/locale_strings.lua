@@ -264,6 +264,7 @@ for _, v in ipairs({
   "IS ON",
   "Item comparison in tooltips",
   "Item ID viewer",
+  "Item missing from SpellCoda dataset. An update may be needed",
   "Item planner",
   "Jump amplifier",
   "Label",
@@ -560,6 +561,7 @@ for _, v in ipairs({
   "Open SpellCoda",
   "Nothing left to learn",
   "Spell",
+  "The original SpellCoda is enabled as well. Both use the same windows and commands, please disable one of them.",
 }) do
   L[v] = v;
 end

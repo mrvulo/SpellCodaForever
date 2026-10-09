@@ -1,13 +1,9 @@
 local _, sc               = ...;
 
-local class               = sc.class;
-local classes             = sc.classes;
-
 local apply_effect        = sc.loadouts.apply_effect;
-
-local has_enchant         = sc.equipment.has_enchant;
-
-local config              = sc.config;
+local is_secret           = sc.utils.is_secret;
+local client_matches      = sc.utils.client_matches;
+local client_flags        = sc.client_flags;
 
 local GetSpellInfo        = sc.api.GetSpellInfo;
 local readable            = sc.api.readable;
@@ -30,7 +26,7 @@ for k, _ in pairs(sc.class_buffs) do
     if not unique_buffs[k] then
         unique_buffs[k] = {
             id = k,
-            lname = GetSpellInfo(k),
+            lname = C_Spell.GetSpellName(k),
             cat = buff_category.class,
         };
     end
@@ -39,7 +35,7 @@ for k, _ in pairs(sc.player_buffs) do
     if not unique_buffs[k] then
         unique_buffs[k] = {
             id = k,
-            lname = GetSpellInfo(k),
+            lname = C_Spell.GetSpellName(k),
             cat = buff_category.player,
         };
     end
@@ -50,8 +46,8 @@ for k, _ in pairs(sc.enchant_effects) do
     if k > 0 and not unique_buffs[k] then
         unique_buffs[k] = {
             id = k,
-            --lname = GetSpellInfo(sc.enchant_effects[k]),
-            lname = GetSpellInfo(k),
+            --lname = C_Spell.GetSpellName(sc.enchant_effects[k]),
+            lname = C_Spell.GetSpellName(k),
             cat = buff_category.enchant,
         };
     end
@@ -60,7 +56,7 @@ for k, _ in pairs(sc.hostile_buffs) do
     if not unique_target_buffs[k] then
         unique_target_buffs[k] = {
             id = k,
-            lname = GetSpellInfo(k),
+            lname = C_Spell.GetSpellName(k),
             cat = buff_category.hostile,
         };
     end
@@ -69,7 +65,7 @@ for k, _ in pairs(sc.friendly_buffs) do
     if not unique_target_buffs[k] then
         unique_target_buffs[k] = {
             id = k,
-            lname = GetSpellInfo(k),
+            lname = C_Spell.GetSpellName(k),
             cat = buff_category.friendly,
         };
     end
@@ -88,75 +84,36 @@ end
 unique_buffs = nil;
 unique_target_buffs = nil;
 
--- Last readable aura snapshot per unit. While auras are secret (combat) the
--- client refuses addon reads, so the snapshot taken before combat keeps
--- feeding the calculation.
-local aura_snapshot = {
-    player = { by_id = {}, by_lname = {}, name = nil },
-    target = { by_id = {}, by_lname = {}, name = nil },
-    mouseover = { by_id = {}, by_lname = {}, name = nil },
+local aura_getters = {
+    { get = C_UnitAuras.GetBuffDataByIndex, filter = "HELPFUL" },
+    { get = C_UnitAuras.GetDebuffDataByIndex, filter = "HARMFUL" },
 };
+local should_aura_index_be_secret = C_Secrets and C_Secrets.ShouldUnitAuraIndexBeSecret;
 
-local function scan_filter(unit, filter, by_id, by_lname)
-    local i = 1;
-    while true do
-        local aura = C_UnitAuras.GetAuraDataByIndex(unit, i, filter);
-        if not aura then
-            break;
-        end
-        local spell_id = aura.spellId;
-        if readable(spell_id) and spell_id then
-            local count = aura.applications;
-            if not readable(count) or not count or count == 0 then
-                count = 1;
-            end
-            -- player owned takes priority
-            local source = aura.sourceUnit;
-            local player_owned = readable(source) and source == "player";
-            if not by_id[spell_id] or player_owned then
-                local buff_info = { count = count, id = spell_id, player_owned = player_owned };
-                by_id[spell_id] = buff_info;
-                if readable(aura.name) and aura.name then
-                    by_lname[aura.name] = buff_info;
-                end
-            end
-        end
-        i = i + 1;
-    end
+local is_player_owned;
+if client_matches(client_flags.forever) then
+    -- AuraData has no sourceUnit on Forever
+    is_player_owned = function(aura) return aura.isFromPlayerOrPlayerPet; end;
+else
+    is_player_owned = function(aura) return aura.sourceUnit == "player"; end;
 end
 
-local function scan_unit(unit)
-    local by_id, by_lname = {}, {};
-    if not UnitExists(unit) then
-        return true, by_id, by_lname;
-    end
-    local ok = pcall(scan_filter, unit, "HELPFUL", by_id, by_lname) and
-        pcall(scan_filter, unit, "HARMFUL", by_id, by_lname);
-    return ok, by_id, by_lname;
-end
+-- Last readable auras per unit. While auras are secret (combat) the client
+-- refuses addon reads; the snapshot taken before keeps feeding the calculation.
+local aura_snapshot = {
+    player = {},
+    target = {},
+    mouseover = {},
+};
 
 local function detect_buffs(loadout)
 
-    local restricted = auras_restricted();
-
-    for unit, snap in pairs(aura_snapshot) do
-        local unit_name = loadout[unit.."_name"];
-        if not restricted then
-            local ok, by_id, by_lname = scan_unit(unit);
-            if ok then
-                snap.by_id = by_id;
-                snap.by_lname = by_lname;
-                snap.name = unit_name;
-            end
-        elseif snap.name ~= unit_name then
-            -- different unit than the snapshot and nothing readable: assume no auras
-            snap.by_id = {};
-            snap.by_lname = {};
-            snap.name = unit_name;
-        end
-        loadout.dynamic_buffs[unit] = snap.by_id;
-        loadout.dynamic_buffs_lname[unit] = snap.by_lname;
-    end
+    loadout.dynamic_buffs["player"] = {};
+    loadout.dynamic_buffs["target"] = {};
+    loadout.dynamic_buffs["mouseover"] = {};
+    loadout.dynamic_buffs_lname["player"] = {};
+    loadout.dynamic_buffs_lname["target"] = {};
+    loadout.dynamic_buffs_lname["mouseover"] = {};
 
     if loadout.player_name == loadout.target_name then
         loadout.dynamic_buffs["target"] = loadout.dynamic_buffs["player"]
@@ -170,26 +127,106 @@ local function detect_buffs(loadout)
         loadout.dynamic_buffs["mouseover"] = loadout.dynamic_buffs["target"]
         loadout.dynamic_buffs_lname["mouseover"] = loadout.dynamic_buffs_lname["target"]
     end
+
+    for k, v in pairs(loadout.dynamic_buffs) do
+        for _, getter in ipairs(aura_getters) do
+            local i = 1;
+            while true do
+                -- querying a restricted aura index errors, stop reading auras of this unit
+                if should_aura_index_be_secret and should_aura_index_be_secret(k, i, getter.filter) then
+                    break;
+                end
+                local aura = getter.get(k, i);
+                if not aura then
+                    break;
+                end
+                local spell_id = aura.spellId;
+                if not is_secret(spell_id) and not is_secret(aura.name) then
+                    -- player owned takes priority
+                    local player_owned = is_player_owned(aura);
+                    if not v[spell_id] or player_owned then
+                        local buff_info = { count = aura.applications, id = spell_id, player_owned = player_owned };
+                        v[spell_id] = buff_info;
+                        loadout.dynamic_buffs_lname[k][aura.name] = buff_info;
+                    end
+                end
+                i = i + 1;
+            end
+        end
+    end
+
+    -- the scan above reads nothing while auras are restricted: the last
+    -- readable auras of the same unit stand in
+    local restricted = auras_restricted();
+    for unit, snap in pairs(aura_snapshot) do
+        local unit_name = loadout[unit.."_name"];
+        if not restricted then
+            snap.by_id = loadout.dynamic_buffs[unit];
+            snap.by_lname = loadout.dynamic_buffs_lname[unit];
+            snap.name = unit_name;
+        elseif snap.by_id and snap.name == unit_name then
+            loadout.dynamic_buffs[unit] = snap.by_id;
+            loadout.dynamic_buffs_lname[unit] = snap.by_lname;
+        end
+    end
+
+    if __spellcoda_test_all_data__ then
+        for k, v in pairs(loadout.dynamic_buffs) do
+            for _, list in ipairs({buffs, target_buffs}) do
+                for _, b in ipairs(list) do
+                    if not v[b.id] then
+                        local buff_info = { count = 1, id = b.id, player_owned = true };
+                        v[b.id] = buff_info;
+                        if b.lname then
+                            loadout.dynamic_buffs_lname[k][b.lname] = buff_info;
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 local function apply_buffs(loadout, effects, forced, undo)
 
-    for k, v in pairs(loadout.dynamic_buffs["player"]) do
-        if sc.class_buffs[k] then
-            apply_effect(effects, k, sc.class_buffs[k], forced, v.count, undo, v.player_owned);
-        elseif sc.player_buffs[k] then
-            apply_effect(effects, k, sc.player_buffs[k], forced, v.count, undo, v.player_owned);
+    if __spellcoda_test_all_data__ then
+        -- Testing all buffs
+        local buffs_applied = 0;
+        for k, v in pairs(sc.player_buffs) do
+            apply_effect(effects, k, v, true, 1, undo, true);
+            buffs_applied = buffs_applied + 1;
         end
-    end
-    for k, v in pairs(loadout.dynamic_buffs[loadout.friendly_towards]) do
-        if sc.friendly_buffs[k] then
-            apply_effect(effects, k, sc.friendly_buffs[k], forced, v.count, undo, v.player_owned);
+        for k, v in pairs(sc.class_buffs) do
+            apply_effect(effects, k, v, true, 1, undo, true);
+            buffs_applied = buffs_applied + 1;
         end
-    end
-    if loadout.hostile_towards ~= "" then
-        for k, v in pairs(loadout.dynamic_buffs[loadout.hostile_towards]) do
-            if sc.hostile_buffs[k] then
-                apply_effect(effects, k, sc.hostile_buffs[k], forced, v.count, undo, v.player_owned);
+        for k, v in pairs(sc.friendly_buffs) do
+            apply_effect(effects, k, v, true, 1, undo, true);
+            buffs_applied = buffs_applied + 1;
+        end
+        for k, v in pairs(sc.hostile_buffs) do
+            apply_effect(effects, k, v, true, 1, undo, true);
+            buffs_applied = buffs_applied + 1;
+        end
+        print(buffs_applied, "gen buffs applied");
+    else
+        for k, v in pairs(loadout.dynamic_buffs["player"]) do
+            if sc.class_buffs[k] then
+                apply_effect(effects, k, sc.class_buffs[k], forced, v.count, undo, v.player_owned);
+            elseif sc.player_buffs[k] then
+                apply_effect(effects, k, sc.player_buffs[k], forced, v.count, undo, v.player_owned);
+            end
+        end
+        for k, v in pairs(loadout.dynamic_buffs[loadout.friendly_towards]) do
+            if sc.friendly_buffs[k] then
+                apply_effect(effects, k, sc.friendly_buffs[k], forced, v.count, undo, v.player_owned);
+            end
+        end
+        if loadout.hostile_towards ~= "" then
+            for k, v in pairs(loadout.dynamic_buffs[loadout.hostile_towards]) do
+                if sc.hostile_buffs[k] then
+                    apply_effect(effects, k, sc.hostile_buffs[k], forced, v.count, undo, v.player_owned);
+                end
             end
         end
     end
@@ -200,28 +237,6 @@ local function apply_buffs(loadout, effects, forced, undo)
         for _, k in pairs(sc.shapeshift_id_to_effects[loadout.shapeshift]) do
             apply_effect(effects, k, sc.shapeshift_passives[k], forced, 1, undo);
         end
-    end
-
-    if __spellcoda_test_all_data__ then
-        -- Testing all buffs
-        local buffs_applied = 0;
-        for k, v in pairs(sc.player_buffs) do
-            apply_effect(effects, k, v, true, 1, false, true);
-            buffs_applied = buffs_applied + 1;
-        end
-        for k, v in pairs(sc.class_buffs) do
-            apply_effect(effects, k, v, true, 1, false, true);
-            buffs_applied = buffs_applied + 1;
-        end
-        for k, v in pairs(sc.friendly_buffs) do
-            apply_effect(effects, k, v, true, 1, false, true);
-            buffs_applied = buffs_applied + 1;
-        end
-        for k, v in pairs(sc.hostile_buffs) do
-            apply_effect(effects, k, v, true, 1, false, true);
-            buffs_applied = buffs_applied + 1;
-        end
-        print(buffs_applied, "gen buffs applied");
     end
 end
 
@@ -265,6 +280,9 @@ end
 
 local function get_buff_by_lname(loadout, unit, lname, only_self_buff, require_ownership)
 
+    if __spellcoda_debug__ and not lname then
+        print("SpellCoda: buff lookup with nil name at", ((debugstack(2, 1, 0) or ""):gsub("\n", "")));
+    end
     if unit ~= "" and
         (not loadout.calculator_mode or not sandbox_buffs_cfg.use_custom or sandbox_buffs_cfg.preserve_active) then
 
@@ -289,6 +307,9 @@ end
 
 local function get_buff(loadout, unit, id, only_self_buff, require_ownership)
 
+    if __spellcoda_debug__ and not id then
+        print("SpellCoda: buff lookup with nil id at", ((debugstack(2, 1, 0) or ""):gsub("\n", "")));
+    end
     if unit ~= "" and
         (not loadout.calculator_mode or not sandbox_buffs_cfg.use_custom or sandbox_buffs_cfg.preserve_active) then
 

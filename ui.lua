@@ -20,6 +20,8 @@ local format_locale_dump                        = sc.loc.format_locale_dump;
 
 local clear_table                               = sc.utils.clear_table;
 local assign_color_tag                          = sc.utils.assign_color_tag;
+local client_matches                            = sc.utils.client_matches;
+local client_flags                              = sc.client_flags;
 local highest_learned_rank                      = sc.utils.highest_learned_rank;
 local effect_color                              = sc.utils.effect_color;
 local write_item_info_from_link                 = sc.utils.write_item_info_from_link;
@@ -69,6 +71,36 @@ local font = "GameFontHighlightSmall";
 local libstub_data_broker = LibStub("LibDataBroker-1.1", true);
 local libstub_icon = libstub_data_broker and LibStub("LibDBIcon-1.0", true);
 local libstub_launcher;
+
+local function fix_minimap_button()
+    local button = libstub_icon:GetMinimapButton(sc.core.addon_name);
+    if client_matches(sc.client_flags.forever) then
+        -- forever has the retail minimap border art, lay it out like LibDBIcon does on retail
+        for _, region in ipairs({button:GetRegions()}) do
+            if region:IsObjectType("Texture") then
+                local layer = region:GetDrawLayer();
+                if layer == "OVERLAY" then
+                    region:SetSize(50, 50);
+                    region:ClearAllPoints();
+                    region:SetPoint("TOPLEFT", button, "TOPLEFT");
+                elseif layer == "BACKGROUND" then
+                    region:SetSize(24, 24);
+                    region:ClearAllPoints();
+                    region:SetPoint("CENTER", button, "CENTER");
+                end
+            end
+        end
+        button.icon:SetSize(18, 18);
+        button.icon:ClearAllPoints();
+        button.icon:SetPoint("CENTER", button, "CENTER");
+    end
+    -- the square icon relies on the border art to hide its corners
+    local mask = button:CreateMaskTexture();
+    mask:SetTexture("Interface\\CharacterFrame\\TempPortraitAlphaMask", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
+    mask:SetAllPoints(button.icon);
+    button.icon:AddMaskTexture(mask);
+end
+
 local libDD = LibStub("LibUIDropDownMenu-4.0", true);
 
 local colored_text_frames = {};
@@ -518,13 +550,13 @@ local function filtered_spell_view(spell_ids, name_filter, loadout, effects, eva
     end
     local cost_str = "";
     if avail_cost ~= 0 then
-        cost_str = cost_str.."   |cFF00FF00"..L["Available cost:"].."|r "..GetCoinTextureString(avail_cost);
+        cost_str = cost_str.."   |cFF00FF00"..L["Available cost:"].."|r "..C_CurrencyInfo.GetCoinTextureString(avail_cost);
     end
     if next_cost ~= 0 then
-        cost_str = cost_str.."   |cFFFF8C00"..L["Next level"].." "..next_lvl..L[" cost:"].."|r "..GetCoinTextureString(next_cost);
+        cost_str = cost_str.."   |cFFFF8C00"..L["Next level"].." "..next_lvl..L[" cost:"].."|r "..C_CurrencyInfo.GetCoinTextureString(next_cost);
     end
     if total_cost ~= 0 then
-        cost_str = cost_str.."   |cFFFF0000"..L["Total cost:"].."|r "..GetCoinTextureString(total_cost);
+        cost_str = cost_str.."   |cFFFF0000"..L["Total cost:"].."|r "..C_CurrencyInfo.GetCoinTextureString(total_cost);
     end
     __sc_frame.spells_frame.footer_cost:SetText(cost_str);
 
@@ -583,7 +615,7 @@ local function populate_scrollable_spell_view(view, starting_idx)
         if v.spell_id then
             --line.spell_icon.__id = v.spell_id;
             line.tooltip_area.__id = v.spell_id;
-            line.spell_tex:SetTexture(GetSpellTexture(v.spell_id));
+            line.spell_tex:SetTexture((C_Spell.GetSpellTexture(v.spell_id)));
             line.spell_icon:Show();
             line.spell_tex:Show();
             line.tooltip_area:Show();
@@ -592,7 +624,7 @@ local function populate_scrollable_spell_view(view, starting_idx)
 
             if spells[v.spell_id].rank ~= 0 then
                 line.spell_name:SetText(string.format("%s ("..L["Rank"].." %d)",
-                    GetSpellInfo(v.spell_id),
+                    C_Spell.GetSpellName(v.spell_id),
                     spells[v.spell_id].rank
                 ));
             else
@@ -623,14 +655,14 @@ local function populate_scrollable_spell_view(view, starting_idx)
                 if v.trigger == spell_filters.spells_filter_already_known or v.is_dual then
                     line.cost_str:SetText("");
                 else
-                    line.cost_str:SetText(GetCoinTextureString(spells[v.spell_id].train));
+                    line.cost_str:SetText(C_CurrencyInfo.GetCoinTextureString(spells[v.spell_id].train));
                 end
                 line.cost_str:Show();
             elseif spells[v.spell_id].train < -1 then
                 if v.trigger == spell_filters.spells_filter_already_known or v.is_dual then
                 else
                     line.book_icon.__id = -spells[v.spell_id].train;
-                    line.book_tex:SetTexture(GetItemIcon(-spells[v.spell_id].train));
+                    line.book_tex:SetTexture(C_Item.GetItemIconByID(-spells[v.spell_id].train));
                     line.book_tex:Show();
                     line.book_icon:Show();
                 end
@@ -885,7 +917,7 @@ local function create_sw_spell_id_viewer()
             __sc_frame.spell_id_viewer_editbox_label:Hide();
         end
         local id = tonumber(txt);
-        if GetSpellInfo(id) or spells[id] then
+        if id and C_Spell.DoesSpellExist(id) or spells[id] then
             self:SetTextColor(0, 1, 0);
         else
             self:SetTextColor(1, 0, 0);
@@ -909,7 +941,7 @@ local function create_sw_spell_id_viewer()
             self:SetText(tostring(spids[txt]));
         end
         local id = tonumber(txt);
-        if id and id <= bit.lshift(1, 31) and (GetSpellInfo(id) or spells[id]) then
+        if id and id <= bit.lshift(1, 31) and (C_Spell.DoesSpellExist(id) or spells[id]) then
             self:SetTextColor(0, 1, 0);
         else
             self:SetTextColor(1, 0, 0);
@@ -917,14 +949,14 @@ local function create_sw_spell_id_viewer()
         end
 
         if id == 0 then
-            __sc_frame.spell_icon_tex:SetTexture(GetSpellTexture(265));
-        elseif not GetSpellInfo(id) then
+            __sc_frame.spell_icon_tex:SetTexture((C_Spell.GetSpellTexture(265)));
+        elseif not C_Spell.DoesSpellExist(id) then
             __sc_frame.spell_icon_tex:SetTexture(135791);
         else
-            __sc_frame.spell_icon_tex:SetTexture(GetSpellTexture(id));
+            __sc_frame.spell_icon_tex:SetTexture((C_Spell.GetSpellTexture(id)));
         end
         GameTooltip:SetOwner(__sc_frame.spell_icon, "ANCHOR_BOTTOMRIGHT");
-        if not GetSpellInfo(id) and spells[id] then
+        if not C_Spell.DoesSpellExist(id) and spells[id] then
 
             GameTooltip:SetSpellByID(__sc_frame.spell_viewer_invalid_spell_id);
         else
@@ -947,7 +979,7 @@ local function create_sw_spell_id_viewer()
 
     local tex = __sc_frame.spell_icon:CreateTexture(nil);
     tex:SetAllPoints(__sc_frame.spell_icon);
-    tex:SetTexture(GetSpellTexture(265));
+    tex:SetTexture((C_Spell.GetSpellTexture(265)));
     __sc_frame.spell_icon_tex = tex;
 
     local tooltip_viewer_on = function(self)
@@ -959,7 +991,7 @@ local function create_sw_spell_id_viewer()
             id = 0;
         end
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
-        if not GetSpellInfo(id) and spells[id] then
+        if not C_Spell.DoesSpellExist(id) and spells[id] then
 
             GameTooltip:SetSpellByID(__sc_frame.spell_viewer_invalid_spell_id);
         else
@@ -998,7 +1030,7 @@ local function create_sw_item_id_viewer()
             __sc_frame.item_id_viewer_editbox_label:Hide();
         end
         local id = tonumber(txt);
-        if id and GetItemInfo(id) then
+        if id and C_Item.GetItemInfo(id) then
             self:SetTextColor(0, 1, 0);
         else
             self:SetTextColor(1, 0, 0);
@@ -1007,7 +1039,7 @@ local function create_sw_item_id_viewer()
     end
 
     local invalid_item_id = 1728;
-    local invalid_item_tex = GetItemIcon(1728);
+    local invalid_item_tex = C_Item.GetItemIconByID(1728);
 
     __sc_frame.item_id_viewer_editbox:SetScript("OnEnterPressed", tooltip_overwrite_editbox);
     __sc_frame.item_id_viewer_editbox:SetScript("OnEscapePressed", tooltip_overwrite_editbox);
@@ -1026,7 +1058,7 @@ local function create_sw_item_id_viewer()
             __sc_frame.item_id_viewer_editbox_label:Hide();
         end
         local id = tonumber(txt);
-        if id and id <= bit.lshift(1, 31) and GetItemInfo(id) then
+        if id and id <= bit.lshift(1, 31) and C_Item.GetItemInfo(id) then
             self:SetTextColor(0, 1, 0);
         else
             self:SetTextColor(1, 0, 0);
@@ -1038,7 +1070,7 @@ local function create_sw_item_id_viewer()
             __sc_frame.item_icon.id = invalid_item_id;
             GameTooltip:Hide();
         else
-            __sc_frame.item_icon_tex:SetTexture(GetItemIcon(id));
+            __sc_frame.item_icon_tex:SetTexture(C_Item.GetItemIconByID(id));
 
             __sc_frame.item_icon.id = id;
             GameTooltip:SetOwner(__sc_frame.item_icon, "ANCHOR_BOTTOMRIGHT");
@@ -1059,7 +1091,7 @@ local function create_sw_item_id_viewer()
         if not self.id or not IsModifiedClick("CHATLINK") or btn ~= "LeftButton" then
             return;
         end
-        local _, link = GetItemInfo(self.id);
+        local _, link = C_Item.GetItemInfo(self.id);
         if not link then
             return;
         end
@@ -1079,7 +1111,7 @@ local function create_sw_item_id_viewer()
         elseif not id then
             id = 0;
         end
-        if GetItemInfo(id) then
+        if C_Item.GetItemInfo(id) then
             GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
             GameTooltip:SetItemByID(id);
             GameTooltip:Show();
@@ -1158,9 +1190,9 @@ local function make_frame_scrollable(frame)
     end
     local f = CreateFrame("Slider", nil, frame, "UIPanelScrollBarTrimTemplate");
     f:SetOrientation('VERTICAL');
-    f:SetPoint("RIGHT", frame, "RIGHT", 10, 0);
+    f:SetPoint("RIGHT", frame, "RIGHT", 10, 9);
     f:SetWidth(20);
-    f:SetHeight(height-25);
+    f:SetHeight(height-43);
     f:SetScript("OnValueChanged", function(self, val)
         for _, grp in ipairs({{frame:GetChildren()}, {frame:GetRegions()}}) do
             for _, v in ipairs(grp) do
@@ -1395,8 +1427,8 @@ local function create_sw_ui_spells_frame(pframe)
     -- sliders
     f = CreateFrame("Slider", nil, pframe, "UIPanelScrollBarTrimTemplate");
     f:SetOrientation('VERTICAL');
-    f:SetPoint("RIGHT", pframe, "RIGHT", 10, -15);
-    f:SetHeight(pframe:GetHeight()-63);
+    f:SetPoint("RIGHT", pframe, "RIGHT", 10, -6);
+    f:SetHeight(pframe:GetHeight()-81);
     f:SetScript("OnValueChanged", function(self, val)
         pframe.slider_val = val;
         populate_scrollable_spell_view(pframe.filtered_list, math.floor(val));
@@ -3274,14 +3306,14 @@ local default_buffs_plan = {
 };
 
 local working_item_plan = {};
-local working_stats = {};
+local working_stats = sc.loadouts.manual_effects_zero_diff();
 local working_talents = sc.utils.deep_table_copy(default_talents_plan);
 local working_buffs = sc.utils.deep_table_copy(default_buffs_plan);
 local working_name = "";
 
 local function item_planner_add_slot(item_link)
 
-    local inv_loc = select(4, GetItemInfoInstant(item_link));
+    local inv_loc = select(4, C_Item.GetItemInfoInstant(item_link));
     if not inv_loc then
         return false;
     end
@@ -3323,7 +3355,7 @@ local function item_planner_add_slot(item_link)
             -- offhand knocks out 2H
 
             local mh = working_item_plan[slots.MainHandSlot];
-            if mh and mh.link and select(4, GetItemInfoInstant(mh.link)) == "INVTYPE_2HWEAPON" then
+            if mh and mh.link and select(4, C_Item.GetItemInfoInstant(mh.link)) == "INVTYPE_2HWEAPON" then
 
                 working_item_plan[slots.MainHandSlot] = {};
             end
@@ -3340,7 +3372,7 @@ local function update_calculator_item_frame(frame, allow_empty)
     local quality, tex, ilvl;
 
     if link then
-        _, _, quality, ilvl, _, _, _, _, _, tex = GetItemInfo(link);
+        _, _, quality, ilvl, _, _, _, _, _, tex = C_Item.GetItemInfo(link);
     end
 
     if tex and quality then
@@ -3450,7 +3482,7 @@ local function update_item_plan_slot_gems(frames, slot_info)
             frames.gems[i].icon:Hide();
         else
             frames.gems[i].gem_item_id = gem_item_id;
-            local tex = select(10, GetItemInfo(gem_item_id));
+            local tex = select(10, C_Item.GetItemInfo(gem_item_id));
             frames.gems[i].icon:SetTexture(tex);
             frames.gems[i].icon:Show();
         end
@@ -3619,7 +3651,7 @@ local function update_buffs_frame()
                 end
             end
 
-            v.icon.tex:SetTexture(GetSpellTexture(buff_info.id));
+            v.icon.tex:SetTexture((C_Spell.GetSpellTexture(buff_info.id)));
 
             local buff_name_max_len = 28;
             local name_appear =  buff_info.lname;
@@ -3916,7 +3948,7 @@ local function item_planner_gem_enchant_dropdown_build_entries(mode, active_id)
     local retry_needed = false;
     if mode == "gem" then
         for item_id in pairs(sc.gem_items) do
-            local lname, _, quality, _, _, _, _, _, _, tex = GetItemInfo(item_id);
+            local lname, _, quality, _, _, _, _, _, _, tex = C_Item.GetItemInfo(item_id);
             if not lname then
                 retry_needed = true;
             end
@@ -4208,7 +4240,7 @@ local function item_planner_gem_enchant_dropdown_create(parent)
                 if spell_ids then
                     for _, spell_id in ipairs(spell_ids) do
                         if spell_id > 0 then
-                            local spell_name = select(1, GetSpellInfo(spell_id));
+                            local spell_name = C_Spell.GetSpellName(spell_id);
                             if spell_name then
                                 GameTooltip:AddLine(spell_name.." ("..spell_id..")");
                             else
@@ -5075,19 +5107,29 @@ local function create_calculator_stats_subframe(pframe)
         },
         expertise_rating = {
             label_str = L["Expertise"],
+            clients = bit.bnot(bit.bor(client_flags.vanilla, client_flags.forever)),
         },
         extra_mana = {
             label_str = L["Extra mana"],
         },
         resilience_rating = {
-            label_str = L["Resilience"]
+            label_str = L["Resilience"],
+            clients = bit.bnot(bit.bor(client_flags.vanilla, client_flags.forever)),
         },
     };
 
-    local comparison_stats_listing_order = {
+    local comparison_stats_listing_order = {};
+    for _, k in ipairs({
         "str", "agi", "stam", "int", "spirit", "mp5", "extra_mana", "armor", "defense_skill_rating", "dodge_rating", "parry_rating", "resilience_rating",
         "crit_rating", "hit_rating", "haste_rating", "expertise_rating", "ap", "rap", "weapon_skill", "sp", "sd", "hp", "pen",
-    };
+    }) do
+        local clients = pframe.stats.stat_fields[k].clients;
+        if not clients or client_matches(clients) then
+            table.insert(comparison_stats_listing_order, k);
+        else
+            pframe.stats.stat_fields[k] = nil;
+        end
+    end
 
     local new_column_breakpoint = "crit_rating";
 
@@ -5124,6 +5166,13 @@ local function create_calculator_stats_subframe(pframe)
         v.editbox:SetAutoFocus(false);
         v.editbox:SetSize(100, 10);
         v.editbox.index = i;
+        if sc.loadouts.manual_diff_in_pct(k) then
+            local pct = v.editbox:CreateFontString(nil, "OVERLAY");
+            pct:SetFontObject(font);
+            pct:SetPoint("RIGHT", v.editbox, "RIGHT", -2, 0);
+            pct:SetText("%");
+            v.editbox:SetTextInsets(0, pct:GetStringWidth() + 4, 0, 0);
+        end
         v.editbox:SetScript("OnTextChanged", function(self)
 
             if string.match(self:GetText(), "[^-+0123456789. ()]") ~= nil then
@@ -5176,11 +5225,6 @@ local function create_calculator_stats_subframe(pframe)
     f:SetHeight(20);
     f:SetWidth(120);
     f:SetText(L["Clear stats"]);
-
-    if sc.expansion == sc.expansions.vanilla then
-        pframe.stats.stat_fields.expertise_rating.editbox:Hide();
-        pframe.stats.stat_fields.expertise_rating.label:Hide();
-    end
 
     if __spellcoda_test_all_data__ then
         for _, v in pairs(pframe.stats.stat_fields) do
@@ -6919,7 +6963,7 @@ local function create_sw_ui_settings_frame(pframe)
             f:SetScript("OnClick", function()
 
                 dump_text(
-                    "Missing strings need to go into SpellCoda/locale/"..sc.locale..".lua",
+                    "Missing strings need to go into SpellCodaForever/locale/"..sc.locale..".lua",
                     format_locale_dump(sc.loc.missing_strings)
                 );
             end);
@@ -6935,7 +6979,7 @@ local function create_sw_ui_settings_frame(pframe)
             f:SetScript("OnClick", function()
 
                 dump_text(
-                    "Obsolete strings should be removed from SpellCoda/locale/"..sc.locale..".lua",
+                    "Obsolete strings should be removed from SpellCodaForever/locale/"..sc.locale..".lua",
                     format_locale_dump(sc.loc.obsolete_strings)
                 );
             end);
@@ -7226,6 +7270,36 @@ local function create_sw_base_ui()
     __sc_frame:SetHeight(height);
     __sc_frame:SetPoint("TOPLEFT", 400, -30);
 
+    -- drag to scale the window; above the metal frame, inside its rim
+    local scale_grip = CreateFrame("Button", nil, __sc_frame);
+    scale_grip:SetSize(20, 20);
+    scale_grip:SetPoint("BOTTOMRIGHT", -6, 6);
+    scale_grip:SetFrameLevel(__sc_frame:GetFrameLevel() + blizz_window.top_level);
+    scale_grip:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up");
+    scale_grip:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight");
+    scale_grip:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down");
+    scale_grip:SetScript("OnMouseDown", function(self)
+        self:SetScript("OnUpdate", function()
+            local scale = __sc_frame:GetScale();
+            local left = __sc_frame:GetLeft() * scale;
+            local top = __sc_frame:GetTop() * scale;
+            local cursor_x, cursor_y = GetCursorPosition();
+            local ui_scale = UIParent:GetEffectiveScale();
+            cursor_x = cursor_x / ui_scale;
+            cursor_y = cursor_y / ui_scale;
+
+            local new_scale = 0.5 * ((cursor_x - left) / width + (top - cursor_y) / height);
+            new_scale = math.max(0.5, math.min(2.5, new_scale));
+            __sc_frame:SetScale(new_scale);
+            __sc_frame:ClearAllPoints();
+            __sc_frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left / new_scale, top / new_scale);
+        end);
+    end);
+    scale_grip:SetScript("OnMouseUp", function(self)
+        self:SetScript("OnUpdate", nil);
+        SpellCodaForeverDB.window_scale = __sc_frame:GetScale();
+    end);
+
     __sc_frame.title = __sc_frame.top:CreateFontString(nil, "OVERLAY");
     __sc_frame.title:SetFontObject(GameFontNormal);
     __sc_frame.title:SetText(sc.core.addon_name.." v"..sc.core.version);
@@ -7255,15 +7329,10 @@ local function create_sw_base_ui()
     end
 
     for k, _ in pairs(sc.core.event_dispatch) do
-        if not sc.core.event_dispatch_client_exceptions[k] or
-                sc.core.event_dispatch_client_exceptions[k] == sc.expansion then
+        local client_filter = sc.core.event_client_filters[k];
+        if not client_filter or client_matches(client_filter) then
 
-            --__sc_frame:RegisterEvent(k);
-            --BROKEN PTR TEMPORARY FIX: remember to grep for this phrase to remove later, event missing
-            local ok, err = pcall(function() __sc_frame:RegisterEvent(k) end);
-            if __spellcoda_debug__ and not ok then
-                print("DEBUG: Event does not exist:", k);
-            end
+            __sc_frame:RegisterEvent(k);
         end
     end
 
@@ -7275,6 +7344,8 @@ local function create_sw_base_ui()
 end
 
 local function load_sw_ui()
+
+    __sc_frame:SetScale(SpellCodaForeverDB.window_scale);
 
     local tab_display_names = {
         spells_frame = L["Spells"],
@@ -7361,11 +7432,7 @@ local function load_sw_ui()
                 tooltip:AddLine("|cFF9CD6DE"..L["Right click"]..":|r |cFFFF0000("..L["IS OFF"]..")|r "..L["Toggle old rank warning overlay"]);
             end
             tooltip:AddLine(" ");
-            -- Forever plays vanilla spells, so the data comes from the Classic Era client on purpose
-            local data_src = "Classic Era "..sc.client_version_src;
-            if sc.forever_data_build then
-                data_src = "Forever "..sc.forever_data_build;
-            end
+            local data_src = "Forever "..sc.client_version_src;
             tooltip:AddDoubleLine("|cFF9CD6DE"..L["Addon data generated from"]..":|r",
                 data_src, nil, nil, nil, 1, 1, 1);
             tooltip:AddDoubleLine("|cFF9CD6DE"..L["Current client build"]..":|r",
@@ -7399,7 +7466,9 @@ local function load_sw_ui()
             end,
             OnTooltipShow = tooltip_show_fn
         });
+        -- LibDBIcon 55 creates the button on Register
         libstub_icon:Register(sc.core.addon_name, libstub_launcher, config.settings.libstub_icon_conf);
+        fix_minimap_button();
     end
 
 

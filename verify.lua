@@ -246,7 +246,7 @@ function verify.run(all)
         local _, class = UnitClass("player");
         local header = {
             string.format("SpellCoda Forever verify - data %s, client %s, level %d %s, %s",
-                sc.forever_data_build or sc.client_version_src, sc.client_version_loaded, lvl, class or "?",
+                sc.client_version_src, sc.client_version_loaded, lvl, class or "?",
                 all and "all class spells" or "known spells"),
             string.format("checked %d: ok %d, mismatch %d, skipped %d (no absolute values or no description)",
                 #ids, report.ok, report.mismatch, report.skipped),

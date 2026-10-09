@@ -11,118 +11,55 @@ local GetSpellName          = sc.api.GetSpellName;
 local talents_export        = {};
 
 local expansion_short = "classic";
-if sc.expansion == sc.expansions.tbc then
+local talent_code_prefix = "";
+local talent_code_suffix = "";
+if sc.utils.client_matches(sc.client_flags.tbc) then
     expansion_short = "tbc";
+elseif sc.utils.client_matches(sc.client_flags.forever) then
+    expansion_short = "forever";
+    talent_code_prefix = "v2";
+    talent_code_suffix = "t0";
 end
 
 local function wowhead_talent_link(code)
     local lowercase_class = string.lower(class);
-    return "https://wowhead.com/"..expansion_short.."/talent-calc/" .. lowercase_class .. "/" .. code;
+    return "https://wowhead.com/"..expansion_short.."/talent-calc/" .. lowercase_class .. "/" .. talent_code_prefix .. code;
 end
 
 local function wowhead_talent_code_from_url(link)
-    local last_slash_index = 1;
-    local i = 1;
-
-    while link:sub(i, i) ~= "" do
-        if link:sub(i, i) == "/" then
-            last_slash_index = i;
-        end
-        i = i + 1;
+    -- forever links append the talent allocation order as one more path segment after the code
+    local code = link:match("talent%-calc/[^/]+/([^/]*)") or link:match("[^/]*$");
+    if code:sub(1, #talent_code_prefix) == talent_code_prefix then
+        code = code:sub(#talent_code_prefix + 1);
     end
-    return link:sub(last_slash_index + 1, i);
+    return code;
 end
 
--- Forever keeps talents in a C_Traits tree instead of GetTalentInfo. Talents are
--- matched to the generated data by spell: every rank spell id of every talent,
--- and the talent's name as a fallback for trait definitions that point at a
--- different rank spell.
-local talent_idx_by_spell = nil;
-local talent_idx_by_lname = nil;
-
-local function build_talent_lookups()
-    talent_idx_by_spell = {};
-    talent_idx_by_lname = {};
-    for idx, ranks in pairs(sc.talent_ranks) do
-        for rank, spell_id in pairs(ranks) do
-            talent_idx_by_spell[spell_id] = { idx = idx, rank = rank };
-        end
-        if ranks[1] then
-            local lname = GetSpellName(ranks[1]);
-            if lname then
-                talent_idx_by_lname[lname] = idx;
-            end
-        end
-    end
-end
-
-local function active_talent_config_id()
-    local group = C_SpecializationInfo.GetActiveSpecGroup and C_SpecializationInfo.GetActiveSpecGroup();
-    local config_id;
-    if group and C_SpecializationInfo.GetCombatConfigIDForSpecGroup then
-        config_id = C_SpecializationInfo.GetCombatConfigIDForSpecGroup(group);
-    end
-    if not config_id and C_ClassTalents and C_ClassTalents.GetActiveConfigID then
-        config_id = C_ClassTalents.GetActiveConfigID();
-    end
-    return config_id;
-end
-
--- talent points by internal index (tree*100 + position), nil when not queryable yet
-local function talent_points_by_idx()
-    local config_id = active_talent_config_id();
-    if not config_id then
-        return nil;
-    end
-    local config_info = C_Traits.GetConfigInfo(config_id);
-    if not config_info or not config_info.treeIDs then
-        return nil;
-    end
-    if not talent_idx_by_spell then
-        build_talent_lookups();
-    end
-
-    local pts_by_idx = {};
-    for _, tree_id in pairs(config_info.treeIDs) do
-        for _, node_id in pairs(C_Traits.GetTreeNodes(tree_id) or {}) do
-            local node = C_Traits.GetNodeInfo(config_id, node_id);
-            local rank = node and (node.currentRank or node.ranksPurchased) or 0;
-            if rank > 0 and node.activeEntry and node.activeEntry.entryID then
-                local entry = C_Traits.GetEntryInfo(config_id, node.activeEntry.entryID);
-                local def = entry and entry.definitionID and C_Traits.GetDefinitionInfo(entry.definitionID);
-                local spell_id = def and (def.spellID or def.overriddenSpellID);
-                if spell_id then
-                    local idx, pts;
-                    local by_spell = talent_idx_by_spell[spell_id];
-                    if by_spell then
-                        -- the node rank decides; a definition may point at any rank spell
-                        idx = by_spell.idx;
-                        pts = rank;
-                    else
-                        local lname = GetSpellName(spell_id);
-                        idx = lname and talent_idx_by_lname[lname];
-                        pts = rank;
-                    end
-                    if idx then
-                        local max_pts = #sc.talent_ranks[idx];
-                        pts_by_idx[idx] = math.min(math.max(pts_by_idx[idx] or 0, pts), max_pts);
-                    end
-                end
-            end
-        end
-    end
-    return pts_by_idx;
+local talent_trees;
+local talent_rank;
+if sc.talent_ranks then
+    talent_trees = sc.talent_order;
+    talent_rank = function(tree, talent_index)
+        local _, _, _, _, pts = GetTalentInfo(tree, talent_index);
+        return pts;
+    end;
+else
+    talent_trees = sc.talent_nodes;
+    talent_rank = function(_, node_id)
+        local node = C_Traits.GetNodeInfo(C_ClassTalents.GetActiveConfigID(), node_id);
+        return node and node.currentRank or 0;
+    end;
 end
 
 local function wowhead_talent_code()
     local talent_code = "";
 
-    local pts_by_idx = talent_points_by_idx() or {};
-
     local sub_codes = { "", "", "" };
     for i = 1, 3 do
-        for pos = 1, #(sc.talent_order[i] or {}) do
-            sub_codes[i] = sub_codes[i]..tostring(pts_by_idx[i*100 + pos] or 0);
+        -- NOTE: GetNumTalents(i) will return 0 on early calls after logging in,
+        --       but works fine after reload
+        for _, v in ipairs(talent_trees[i]) do
+            sub_codes[i] = sub_codes[i]..tostring(talent_rank(i, v));
         end
         local num_redundant = 0;
         local n = #sub_codes[i];
@@ -145,11 +82,18 @@ local function wowhead_talent_code()
         talent_code = sub_codes[1] .. "-" .. sub_codes[2] .. "-" .. sub_codes[3];
     end
 
-    return talent_code .. "_";
+    if talent_code == "" then
+        return "_";
+    end
+    return talent_code .. "_" .. talent_code_suffix;
 end
 
 local function talent_pts(effects, idx)
     return effects.talent_pts[idx] or 0;
+end
+
+local function talent_curve_value(effects, idx, curve_id)
+    return sc.utils.curve_value(talent_pts(effects, idx), curve_id);
 end
 
 local function apply_talents(loadout, effects, wowhead_code, forced, undo)
@@ -175,9 +119,8 @@ local function apply_talents(loadout, effects, wowhead_code, forced, undo)
             local idx = tree_index*100 + talent_index;
 
             effects.talent_pts[idx] = (effects.talent_pts[idx] or 0) + pts_change;
-            if pts > 0 and sc.talent_ranks[idx] then
-
-                local effect_id = sc.talent_ranks[idx][pts];
+            if pts > 0 and sc.talent_ranks then
+                local effect_id = sc.talent_ranks[idx] and sc.talent_ranks[idx][pts];
                 if effect_id then
                     apply_effect(effects,
                                  effect_id,
@@ -185,6 +128,20 @@ local function apply_talents(loadout, effects, wowhead_code, forced, undo)
                                  forced,
                                  1,
                                  undo);
+                end
+            elseif pts > 0 then
+                local node_id = sc.talent_nodes[tree_index] and sc.talent_nodes[tree_index][talent_index];
+                local effect_id = node_id and sc.node_id_to_spell_id[node_id];
+                if effect_id then
+                    apply_effect(effects,
+                                 effect_id,
+                                 sc.talent_effects[effect_id],
+                                 forced,
+                                 1,
+                                 undo,
+                                 nil,
+                                 nil,
+                                 pts);
                 end
             end
 
@@ -206,14 +163,29 @@ local function apply_talents(loadout, effects, wowhead_code, forced, undo)
 
         -- Testing all talents
         local applied = 0;
-        for k, _  in pairs(sc.talent_ranks) do
-            effects.talent_pts[k] = #sc.talent_ranks[k];
-        end
+        if sc.talent_ranks then
+            for k, _  in pairs(sc.talent_ranks) do
+                effects.talent_pts[k] = #sc.talent_ranks[k];
+            end
 
-        for _, v in pairs(sc.talent_ranks) do
-            for _, i in pairs(v) do
-                apply_effect(effects, i, sc.talent_effects[i], true, 1, false, true, true);
-                applied = applied + 1;
+            for _, v in pairs(sc.talent_ranks) do
+                for _, i in pairs(v) do
+                    apply_effect(effects, i, sc.talent_effects[i], true, 1, false, true, true);
+                    applied = applied + 1;
+                end
+            end
+        else
+            local config_id = C_ClassTalents.GetActiveConfigID();
+            for tree, nodes in pairs(sc.talent_nodes) do
+                for j, node_id in ipairs(nodes) do
+                    local max_rank = C_Traits.GetNodeInfo(config_id, node_id).maxRanks;
+                    local spell_id = sc.node_id_to_spell_id[node_id];
+                    effects.talent_pts[tree*100 + j] = max_rank;
+                    for rank = 1, max_rank do
+                        apply_effect(effects, spell_id, sc.talent_effects[spell_id], true, 1, false, true, true, rank);
+                        applied = applied + 1;
+                    end
+                end
             end
         end
         print(applied, "gen talents applied");
@@ -221,25 +193,40 @@ local function apply_talents(loadout, effects, wowhead_code, forced, undo)
     end
 end
 
+local GetNumSkillLines = C_SkillInfo and C_SkillInfo.GetNumSkillLines or GetNumSkillLines;
+
+local skill_line_name_rank;
+if C_SkillInfo then
+    skill_line_name_rank = function(i)
+        local info = C_SkillInfo.GetSkillLineInfo(i);
+        return info and info.name, info and info.rank;
+    end;
+else
+    skill_line_name_rank = function(i)
+        local name, _, _, rank = GetSkillLineInfo(i);
+        return name, rank;
+    end;
+end
+
 local function loadout_talents_info(loadout)
 
     --loadout_front.talents.code = sc.talents.wowhead_talent_code();
     loadout.talents.code = wowhead_talent_code();
 
-    -- weapon skills
-    -- no talent config exists before the first talent point
-    local success = GetNumSkillLines() ~= 0 and
-        (active_talent_config_id() ~= nil or UnitLevel("player") < 10);
+    -- weapon skills 
+    local success = GetNumSkillLines() ~= 0;
     for i = 1, GetNumSkillLines() do
-        local skill_lname, _, _, skill = GetSkillLineInfo(i);
-        local wep_subclass = skill_lname and sc.wpn_skill_lname_to_subclass[skill_lname];
-        if wep_subclass and skill then
+        local skill_lname, skill = skill_line_name_rank(i);
+        local wep_subclass = sc.wpn_skill_lname_to_subclass[skill_lname];
+        if wep_subclass then
             loadout.wpn_skills[wep_subclass] = skill;
         end
     end
 
+    -- TODO: never triggers, loadout.talents_code is a typo of loadout.talents.code. Fixing only that would retry
+    --       forever, since addon_running_time is compared against an absolute GetTime() based grace time
     if sc.core.addon_running_time < sc.core.login_grace_time and
-        loadout.talents.code == "_" and
+        loadout.talents_code == "_" and
         UnitLevel("player") >= 10 then
         -- edge case when the talents query won't work shortly after logging in
         success = false;
@@ -254,6 +241,7 @@ talents_export.wowhead_talent_code_from_url = wowhead_talent_code_from_url;
 talents_export.wowhead_talent_code = wowhead_talent_code;
 talents_export.loadout_talents_info = loadout_talents_info;
 talents_export.talent_pts = talent_pts;
+talents_export.talent_curve_value = talent_curve_value;
 talents_export.apply_talents = apply_talents;
 
 sc.talents = talents_export;

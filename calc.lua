@@ -25,6 +25,8 @@ local best_rank_by_lvl                              = sc.utils.best_rank_by_lvl;
 local spell_lname                                   = sc.utils.spell_lname;
 local dummy_value                                   = sc.utils.dummy_value;
 local combat_ratings                                = sc.utils.combat_ratings;
+local client_matches                                = sc.utils.client_matches;
+local client_flags                                  = sc.client_flags;
 
 local config                                        = sc.config;
 
@@ -33,9 +35,11 @@ local effects_add_manual_diff                       = sc.loadouts.effects_add_ma
 local effects_finalize_forced                       = sc.loadouts.effects_finalize_forced;
 local empty_effects                                 = sc.loadouts.empty_effects;
 local cpy_effects                                   = sc.loadouts.cpy_effects;
+local apply_effect                                  = sc.loadouts.apply_effect;
 local loadout_flags                                 = sc.loadouts.loadout_flags;
 
 local num_set_pieces                                = sc.equipment.num_set_pieces;
+local feral_skill                                   = sc.equipment.feral_skill;
 
 local get_buff                                      = sc.buffs.get_buff;
 local get_buff_by_lname                             = sc.buffs.get_buff_by_lname;
@@ -48,11 +52,13 @@ local effect_flags                                  = sc.calc.effect_flags;
 local add_extra_effect                              = sc.calc.add_extra_effect;
 
 local talent_pts                                    = sc.talents.talent_pts;
+local talent_idx                                    = sc.talent_idx;
 
 local gcd_max                                       = sc.mechanics.gcd;
 local gcd_min                                       = sc.mechanics.gcd_min;
 local client_class_stats_spell                      = sc.mechanics.client_class_stats_spell;
 local client_special_abilities                      = sc.mechanics.client_special_abilities;
+local client_class_cast_time                       = sc.mechanics.client_class_cast_time;
 local stats_glance                                  = sc.mechanics.stats_glance;
 local caster_coef_multiplier                        = sc.mechanics.caster_coef_multiplier;
 
@@ -186,6 +192,29 @@ end
 
 local special_abilities;
 
+-- TODO forever-transition: assumed, not verified in game: forms swing at a fixed speed
+--      (bear 2.5, cat 1.0) and the weapon's damage is scaled to that speed
+local feral_form_speed = {[1] = 2.5, [3] = 1.0};
+
+-- main hand min, max and delay, as the attack uses them
+local function mh_weapon(loadout, effects)
+    local min = effects.raw.wpn_min_mh;
+    local max = effects.raw.wpn_max_mh;
+    local delay = effects.raw.wpn_delay_mh;
+    local form_speed = loadout.shapeshift_feral_skill ~= 0 and feral_form_speed[loadout.shapeshift];
+    if form_speed then
+        if delay ~= 0 then
+            min = min*form_speed/delay;
+            max = max*form_speed/delay;
+        end
+        return min, max, form_speed;
+    end
+    if delay == 0 then
+        delay = 2.0;
+    end
+    return min, max, delay;
+end
+
 
 -- For physical mechanics, formulas are based on this
 -- @src: https://github.com/magey/classic-warrior/wiki/Attack-table
@@ -200,16 +229,9 @@ local function stats_attack_skill(comp, spell, loadout, effects, eval_flags)
     local wpn_skill;
     local subclass = nil;
 
-    if loadout.shapeshift_no_weapon ~= 0 then
+    if loadout.shapeshift_feral_skill ~= 0 then
         subclass = sc.feral_skill_as_wpn_subclass_hack;
-        -- feral skill as weapon skill only works in vanilla
-        -- I think we did this hack because some things could increase
-        -- the feral skill i.e. weapon skill for some druid forms
-        -- The following is needed to fix TBC
-        wpn_skill = loadout.wpn_skills[subclass];
-        if wpn_skill == 1 then
-            wpn_skill = loadout.lvl*5;
-        end
+        wpn_skill = feral_skill(loadout);
     else
         if bit.band(eval_flags, evaluation_flags.isolate_oh) ~= 0 and
             bit.band(comp.flags, comp_flags.applies_oh) ~= 0 then
@@ -248,7 +270,7 @@ local function stats_attack_skill(comp, spell, loadout, effects, eval_flags)
         end
     end
 
-    if loadout.shapeshift_no_weapon ~= 0 then
+    if loadout.shapeshift_feral_skill ~= 0 then
         subclass = nil;
     elseif bit.band(eval_flags, evaluation_flags.fix_weapon_skill_to_level) ~= 0 then
 
@@ -572,6 +594,10 @@ local function stats_sp(sp_extra, bid, comp, spell, loadout, effects)
 
     local sp;
 
+    if comp.coef_attr then
+        return loadout.stats[comp.coef_attr] + effects.by_attr.stat_flat[comp.coef_attr];
+    end
+
     if bit.band(spell.flags, bit.bor(spell_flags.heal, spell_flags.absorb)) ~= 0 then
         sp = loadout.healing_power + effects.raw.healing_power_flat;
     elseif comp.school1 == schools.physical or
@@ -611,6 +637,8 @@ local function stats_coef(stats, bid, comp, spell, loadout, effects, eval_flags)
     local coef, coef_max;
     if bid == auto_wand_spell_id or bit.band(comp.flags, comp_flags.no_coef) ~= 0 then
         coef = 0;
+    elseif comp.coef_attr then
+        coef = comp.coef;
     elseif comp.school1 == schools.physical or
         bit.band(comp.flags, comp_flags.magic_scaling_as_ap) ~= 0 then
 
@@ -650,10 +678,9 @@ local function stats_coef(stats, bid, comp, spell, loadout, effects, eval_flags)
             else
                 if bit.band(comp.flags, comp_flags.normalized_weapon) ~= 0 then
                     speed = sc.wep_subclass_to_normalized_speed[effects.raw.wpn_subclass_mh] or 2.4;
-                elseif effects.raw.wpn_delay_mh == 0 then
-                    speed = 2.0;
                 else
-                    speed = effects.raw.wpn_delay_mh;
+                    local _, _, wpn_delay = mh_weapon(loadout, effects);
+                    speed = wpn_delay;
                 end
             end
 
@@ -846,12 +873,7 @@ local function stats_cast_time(stats, bid, comp, spell, loadout, effects, eval_f
                 local haste_mul_from_rating = 1.0 +
                     0.01*(loadout.melee_haste_rating+effects.raw.melee_haste_rating_flat)/
                         (loadout.cr_scaling * cr_weights[CR_HASTE_MELEE]);
-                local mh_delay;
-                if effects.raw.wpn_delay_mh == 0 then
-                    mh_delay = 2.0;
-                else
-                    mh_delay = effects.raw.wpn_delay_mh;
-                end
+                local _, _, mh_delay = mh_weapon(loadout, effects);
                 cast_time = mh_delay /
                     (effects.mul.raw.melee_haste*effects.mul.raw.melee_haste_forced*haste_mul_from_rating);
             end
@@ -909,16 +931,7 @@ local function stats_cast_time(stats, bid, comp, spell, loadout, effects, eval_f
         -- thus expected cast time changes with hit chance with misses only taking up one gcd
         cast_time = cast_time * (1.0 - stats.miss_ot) + gcd * stats.miss_ot;
     end
-    if class == classes.druid and config.settings.general_average_proc_effects then
-         --nature's grace
-        if talent_pts(effects, 113) ~= 0 and spell.direct and bit.band(spell.flags, bit.bor(spell_flags.instant, spell_flags.channel)) == 0 then
-            if bid == spids.wrath then
-                gcd = gcd - 0.5;
-            end
-
-            cast_time = (1.0 - stats.crit) * cast_time + stats.crit * (math.max(gcd, cast_time-0.5));
-        end
-    end
+    cast_time, gcd = client_class_cast_time(bid, spell, stats, cast_time, gcd, loadout, effects);
 
     local cast_time_nogcd = cast_time;
     cast_time = math.max(cast_time, gcd);
@@ -1279,14 +1292,14 @@ local class_stats_spell = (function()
                         add_extra_effect(stats,
                             effect_flags.is_periodic,
                             1.0,
-                            spell_lname(467586),
-                            0.01*dummy_value(467586, 0),
+                            spell_lname(lookups.t2_priest_healer_6p),
+                            0.01*dummy_value(lookups.t2_priest_healer_6p, 0),
                             5,
                             3
                         );
                     elseif bid == spids.penance then
-                        local lname = spell_lname(467586);
-                        local val = 0.01*dummy_value(467586, 0);
+                        local lname = spell_lname(lookups.t2_priest_healer_6p);
+                        local val = 0.01*dummy_value(lookups.t2_priest_healer_6p, 0);
                         add_extra_effect(stats, effect_flags.is_periodic, 1.0, lname, val, 5, 3 );
                         add_extra_effect(
                             stats,
@@ -1299,6 +1312,8 @@ local class_stats_spell = (function()
                         );
                     end
                 end
+            elseif bid == spids.mana_burn then
+                stats.target_vuln_mod_mul = stats.target_vuln_mod_mul * 0.5;
             end
         end
     elseif class == classes.shaman then
@@ -1308,12 +1323,12 @@ local class_stats_spell = (function()
         return function(anycomp, bid, stats, spell, loadout, effects)
             if bit.band(spell.flags, bit.bor(spell_flags.heal, spell_flags.absorb)) == 0 then
                 -- clearcast
-                local pts = talent_pts(effects, 106);
+                local pts = talent_pts(effects, talent_idx.arcane_concentration);
                 if pts ~= 0 then
                     stats.clearcast_p = stats.clearcast_p + 0.02 * pts;
                 end
 
-                local pts = talent_pts(effects, 212);
+                local pts = talent_pts(effects, talent_idx.master_of_elements);
                 if pts ~= 0 and spell.direct and 
                     (spell.direct.school1 == schools.fire or spell.direct.school1 == schools.frost) then
                     -- master of elements
@@ -1322,7 +1337,7 @@ local class_stats_spell = (function()
                 end
 
                 -- ignite
-                local pts = talent_pts(effects, 203);
+                local pts = talent_pts(effects, talent_idx.ignite);
                 if pts ~= 0 and spell.direct and spell.direct.school1 == schools.fire then
                     -- % ignite double dips in % multipliers
                     local double_dip = stats.spell_dmg_mod_mul *
@@ -1347,7 +1362,7 @@ local class_stats_spell = (function()
                 -- class_misc tracking freeze effects
                 if effects.raw.class_misc > 0 then
 
-                    stats.extra_crit = talent_pts(effects, 313) * 0.1;
+                    stats.extra_crit = talent_pts(effects, talent_idx.shatter) * 0.1;
 
                     if bid == spids.ice_lance then
                         stats.target_vuln_mod_mul = stats.target_vuln_mod_mul * 3;
@@ -1361,18 +1376,6 @@ local class_stats_spell = (function()
         end
     elseif class == classes.druid then
         return function(anycomp, bid, stats, spell, loadout, effects)
-            -- clearcast
-            local pts = talent_pts(effects, 109);
-            if pts and pts ~= 0 then
-                if anycomp.school1 == schools.physical then
-                    stats.clearcast_p = stats.clearcast_p + 0.1*pts;
-
-                elseif bit.band(sc.game_mode, sc.game_modes.season_of_discovery) ~= 0 and
-                       bit.band(spell_flags.instant, spell.flags) == 0 then
-
-                    stats.clearcast_p = stats.clearcast_p + 0.1*pts;
-                end
-            end
 
             if (bid == spids.healing_touch or bid == spids.nourish) then
                 if num_set_pieces(effects, 521) >= 8 then
@@ -1407,7 +1410,7 @@ local function post_process_stats(comp, spell, stats, loadout, effects)
     if spell.base_id == spids.shadow_bolt and config.settings.general_average_proc_effects then
         -- Averages out ISB effect uptime based on crit for expectation
         -- but hit values displayed use the full buff if present
-        local isb_pts = talent_pts(effects, 301);
+        local isb_pts = talent_pts(effects, talent_idx.improved_shadow_bolt);
         if isb_pts ~= 0 then
             local isb_buff_val = nil;
 
@@ -1477,7 +1480,8 @@ local function stats_for_spell(stats, spell, loadout, effects, eval_flags)
     stats.extra_crit = 0.0;
     stats.extra_spell_power = 0.0;
 
-    -- flat spell damage / attack power against the target's creature type
+    -- flat spell damage / attack power against the target's creature type, from
+    -- items (equipment.lua reads them from the item stats)
     if loadout.target_creature_mask ~= 0 and
         bit.band(spell.flags, bit.bor(spell_flags.heal, spell_flags.absorb)) == 0 then
 
@@ -1492,7 +1496,7 @@ local function stats_for_spell(stats, spell, loadout, effects, eval_flags)
         end
     end
 
-    stats.target_armor = math.max(0, (loadout.target_armor + effects.by_school.target_res_flat[schools.physical]) * (1.0 + effects.by_school.target_res[schools.physical]));
+    stats.target_armor =math.max(0, (loadout.target_armor + effects.by_school.target_res_flat[schools.physical]) * (1.0 + effects.by_school.target_res[schools.physical]));
 
     stats.cost_actual, stats.original_base_cost = stats_cost(bid, spell, loadout, effects);
 
@@ -1871,6 +1875,14 @@ local function direct_info(info, spell, loadout, stats, effects, eval_flags)
         base_mod_flat = 0;
         -- if this branch is not taken, base mod will affect the additional flat damage from spell instead
     end
+    local flat_min = direct.base_min;
+    local flat_max = direct.base_max;
+    if direct.base_per_lvl then
+        local flat_lvl = direct.base_per_lvl * clvl + direct.base_per_lvl_sq * clvl * clvl;
+        flat_min = flat_min + flat_lvl;
+        flat_max = flat_max + flat_lvl;
+    end
+
     if effects.raw.wpn_delay_oh > 0 and
         bit.band(direct.flags, comp_flags.applies_oh) ~= 0 and
         bit.band(eval_flags, evaluation_flags.isolate_oh) ~= 0 then
@@ -1882,8 +1894,8 @@ local function direct_info(info, spell, loadout, stats, effects, eval_flags)
             mod_oh = 1.0 + effects.raw.offhand_mod;
         end
 
-        base_min = (base_mod_mul*(direct.base_min + base_mod_flat) + effects.raw.wpn_min_oh*mod_oh) * base_min;
-        base_max = (base_mod_mul*(direct.base_max + base_mod_flat) + effects.raw.wpn_max_oh*mod_oh) * base_max;
+        base_min = (base_mod_mul*(flat_min + base_mod_flat) + effects.raw.wpn_min_oh*mod_oh) * base_min;
+        base_max = (base_mod_mul*(flat_max + base_mod_flat) + effects.raw.wpn_max_oh*mod_oh) * base_max;
 
         base_mod_mul = 1;
         base_mod_flat = 0;
@@ -1896,11 +1908,12 @@ local function direct_info(info, spell, loadout, stats, effects, eval_flags)
             local m1_min_base = (loadout.attack_min_mh/loadout.attack_mod) - ap_reduce_min;
             local m1_max_base = (loadout.attack_max_mh/loadout.attack_mod) - ap_reduce_max;
 
-            base_min = (base_mod_mul*(direct.base_min + base_mod_flat) + m1_min_base) * base_min;
-            base_max = (base_mod_mul*(direct.base_max + base_mod_flat) + m1_max_base) * base_max;
+            base_min = (base_mod_mul*(flat_min + base_mod_flat) + m1_min_base) * base_min;
+            base_max = (base_mod_mul*(flat_max + base_mod_flat) + m1_max_base) * base_max;
         else
-            base_min = (base_mod_mul*(direct.base_min + base_mod_flat) + effects.raw.wpn_min_mh) * base_min;
-            base_max = (base_mod_mul*(direct.base_max + base_mod_flat) + effects.raw.wpn_max_mh) * base_max;
+            local wpn_min, wpn_max = mh_weapon(loadout, effects);
+            base_min = (base_mod_mul*(flat_min + base_mod_flat) + wpn_min) * base_min;
+            base_max = (base_mod_mul*(flat_max + base_mod_flat) + wpn_max) * base_max;
         end
 
         base_mod_mul = 1;
@@ -1912,8 +1925,8 @@ local function direct_info(info, spell, loadout, stats, effects, eval_flags)
             ammo_flat = 0;
         end
 
-        base_min = (base_mod_mul*(direct.base_min + base_mod_flat) + effects.raw.wpn_min_ranged + ammo_flat) * base_min;
-        base_max = (base_mod_mul*(direct.base_max + base_mod_flat) + effects.raw.wpn_max_ranged + ammo_flat) * base_max;
+        base_min = (base_mod_mul*(flat_min + base_mod_flat) + effects.raw.wpn_min_ranged + ammo_flat) * base_min;
+        base_max = (base_mod_mul*(flat_max + base_mod_flat) + effects.raw.wpn_max_ranged + ammo_flat) * base_max;
 
         base_mod_mul = 1;
         base_mod_flat = 0;
@@ -2043,12 +2056,13 @@ local function periodic_info(info, spell, loadout, stats, effects, eval_flags)
                 *
                 base_tick_max;
         else
+            local wpn_min, wpn_max = mh_weapon(loadout, effects);
             base_tick_min =
-                (base_mod_ot_mul*(periodic.base_min + base_mod_ot_flat) + effects.raw.wpn_min_mh)
+                (base_mod_ot_mul*(periodic.base_min + base_mod_ot_flat) + wpn_min)
                 *
                 base_tick_min;
             base_tick_max =
-                (base_mod_ot_mul*(periodic.base_max + base_mod_ot_flat) + effects.raw.wpn_max_mh)
+                (base_mod_ot_mul*(periodic.base_max + base_mod_ot_flat) + wpn_max)
                 *
                 base_tick_max;
         end
@@ -2430,6 +2444,14 @@ local function resource_regen_info(info, spell, spell_id, loadout, effects, _)
             local added_effect = direct.per_lvl * clvl + direct.per_lvl_sq * clvl * clvl;
             min = direct.min * (direct.base_min + added_effect);
         end
+        if direct.coef_attr then
+            min = min + loadout.stats[direct.coef_attr] + effects.by_attr.stat_flat[direct.coef_attr];
+        end
+        local added = 0;
+        if direct.coef ~= 0 then
+            added = stats_sp(0, bid, direct, spell, loadout, effects);
+        end
+
         min =
             (
                 (
@@ -2439,6 +2461,8 @@ local function resource_regen_info(info, spell, spell_id, loadout, effects, _)
                 )
                 +
                 (effects.ability.effect_mod_flat[bid] or 0.0)
+                +
+                added
             )
             *
             (1.0 + (effects.ability.effect_mod[bid] or 0.0));
@@ -2455,6 +2479,14 @@ local function resource_regen_info(info, spell, spell_id, loadout, effects, _)
             local added_effect = periodic.per_lvl * clvl + periodic.per_lvl_sq * clvl * clvl;
             min = periodic.min * (periodic.base_min + added_effect);
         end
+        if periodic.coef_attr then
+            min = min + loadout.stats[periodic.coef_attr] + effects.by_attr.stat_flat[periodic.coef_attr];
+        end
+        local added = 0;
+        if periodic.coef ~= 0 then
+            added = stats_sp(0, bid, periodic, spell, loadout, effects);
+        end
+
         min =
             (
                 (
@@ -2464,6 +2496,8 @@ local function resource_regen_info(info, spell, spell_id, loadout, effects, _)
                 )
                 +
                 (effects.ability.effect_mod_ot_flat[bid] or 0.0)
+                +
+                added
             )
             *
             (1.0 + (effects.ability.effect_mod_ot[bid] or 0.0));
@@ -2819,19 +2853,21 @@ local ranged_stat_weights = {
 };
 
 -- vanilla only
-if sc.expansion == sc.expansions.vanilla then
+if client_matches(client_flags.vanilla) then
     for _, v in ipairs({melee_stat_weights, ranged_stat_weights}) do
         v[#v+1] = {display = "Skill", key = "weapon_skill"};
     end
 end
 
 -- tbc and beyond
-if sc.expansion ~= sc.expansions.vanilla then
+if client_matches(bit.bnot(bit.bor(client_flags.vanilla, client_flags.forever))) then
     for _, v in ipairs({dmg_magic_stat_weights, heal_stat_weights, melee_stat_weights, ranged_stat_weights}) do
         v[#v+1] = {display = "Haste", key = "haste_rating"};
     end
     for _, v in ipairs({melee_stat_weights, ranged_stat_weights}) do
-        v[#v+1] = {display = "Expr", key = "expertise_rating"};
+        if not client_matches(client_flags.forever) then
+            v[#v+1] = {display = "Expr", key = "expertise_rating"};
+        end
         v[#v+1] = {display = "Pen", key = "pen"};
     end
 end
@@ -2865,7 +2901,7 @@ local function stat_weights(normal_info, spell, loadout, effects, eval_flags, sp
         diff[v.key] = 1;
 
         cpy_effects(effects_diffed, effects);
-        effects_add_manual_diff(effects_diffed, diff);
+        effects_add_manual_diff(loadout, effects_diffed, diff);
         effects_finalize_forced(loadout, effects_diffed)
 
         spell_stats_info(info_diff, spell_stats_diffed, spell, loadout, effects_diffed, eval_flags, spell_id);
@@ -2931,42 +2967,34 @@ local function stat_weights(normal_info, spell, loadout, effects, eval_flags, sp
     return weights, normalize_table;
 end
 
--- evaluate spell with and without stat change coming from a buff spell aliased such as Slice and Dice
-local function eval_spell_buff_diffed(alias_info, alias_spell_id, table_to_change, table_key, buff_value, buff_is_mul, info, stats, spell, loadout, effects, eval_flags, spell_id)
+-- gain of a buff spell such as Slice and Dice, evaluated as the difference it makes to the aliased spell
+local function eval_buff_alias(alias_info, info, stats, spell, loadout, effects, eval_flags, spell_id)
     for _, v in pairs(expectation_variations) do
         info[v] = 0;
     end
     info.num_periodic_effects = 0;
     info.num_direct_effects = 0;
 
-    spell_stats_info(alias_info, stats, spells[alias_spell_id], loadout, effects, eval_flags, alias_spell_id);
+    local auras = class_buffs[spell_id];
+    local alias_id = spell.alias;
+    local active = get_buff(loadout, "player", spell_id, true) ~= nil;
 
-    local table_val_prev = table_to_change[table_key];
+    spell_stats_info(alias_info, stats, spells[alias_id], loadout, effects, eval_flags, alias_id);
+    local effect_per_sec = alias_info.effect_per_sec;
+    local threat_per_sec = alias_info.threat_per_sec;
 
-    if get_buff(loadout, "player", spell_id, true) then
-        info.effect_per_sec = alias_info.effect_per_sec;
-        info.threat_per_sec = alias_info.threat_per_sec;
-        if buff_is_mul then
-            table_to_change[table_key] = (table_to_change[table_key] or 1.0)/(1.0 + buff_value);
-        else
-            table_to_change[table_key] = (table_to_change[table_key] or 0.0)-buff_value;
-        end
-        spell_stats_info(alias_info, stats, spells[alias_spell_id], loadout, effects, eval_flags, alias_spell_id);
-        info.effect_per_sec = info.effect_per_sec - alias_info.effect_per_sec;
-        info.threat_per_sec = info.threat_per_sec - alias_info.threat_per_sec;
+    -- forced so that buffs already reflected in client queries, like attack speed, are toggled on top
+    apply_effect(effects, spell_id, auras, true, 1, active, true);
+    spell_stats_info(alias_info, stats, spells[alias_id], loadout, effects, eval_flags, alias_id);
+    apply_effect(effects, spell_id, auras, true, 1, not active, true);
+
+    if active then
+        info.effect_per_sec = effect_per_sec - alias_info.effect_per_sec;
+        info.threat_per_sec = threat_per_sec - alias_info.threat_per_sec;
     else
-        info.effect_per_sec = -alias_info.effect_per_sec;
-        info.threat_per_sec = -alias_info.threat_per_sec;
-        if buff_is_mul then
-            table_to_change[table_key] = (table_to_change[table_key] or 1.0)*(1.0 + buff_value);
-        else
-            table_to_change[table_key] = (table_to_change[table_key] or 0.0)+buff_value;
-        end
-        spell_stats_info(alias_info, stats, spells[alias_spell_id], loadout, effects, eval_flags, alias_spell_id);
-        info.effect_per_sec = info.effect_per_sec + alias_info.effect_per_sec;
-        info.threat_per_sec = info.threat_per_sec + alias_info.threat_per_sec;
+        info.effect_per_sec = alias_info.effect_per_sec - effect_per_sec;
+        info.threat_per_sec = alias_info.threat_per_sec - threat_per_sec;
     end
-    table_to_change[table_key] = table_val_prev;
     stats_for_spell(stats, spell, loadout, effects, eval_flags);
 
     info.expected_ot_st = info.effect_per_sec*stats.dur_ot;
@@ -3001,40 +3029,20 @@ end
 
 local alias_info = {};
 
+-- alias spells are only evaluated through their buff
+-- TODO: swiftmend needs its own handler, it consumes the aliased hot instead of buffing it
+for spell_id, spell in pairs(spells) do
+    if bit.band(spell.flags, spell_flags.alias) ~= 0 and not class_buffs[spell_id] then
+        spell.flags = bit.band(spell.flags, bit.bnot(spell_flags.eval));
+    end
+end
+
 spell_stats_info = function(info, stats, spell, loadout, effects, eval_flags, spell_id)
     if bit.band(spell.flags, spell_flags.alias) == 0 then
         stats_for_spell(stats, spell, loadout, effects, eval_flags);
         spell_info(info, spell, stats, loadout, effects, eval_flags, spell_id);
-
     else
-        -- handle spells that fully or partially alias other spells
-        if spell.base_id == spids.swiftmend then
-
-        elseif spell.base_id == spids.slice_and_dice then
-            eval_spell_buff_diffed(alias_info,
-                                   spell.alias,
-                                   effects.mul.raw,
-                                   "melee_haste_forced",
-                                   class_buffs[spell_id][1][sc.aura_idx_value],
-                                   true,
-                                   info, stats, spell, loadout, effects, eval_flags, spell_id);
-        elseif spell.base_id == spids.tigers_fury then
-            eval_spell_buff_diffed(alias_info,
-                                   spell.alias,
-                                   effects.ability.base_mod_flat,
-                                   spell.alias,
-                                   class_buffs[spell_id][1][sc.aura_idx_value],
-                                   false,
-                                   info, stats, spell, loadout, effects, eval_flags, spell_id);
-        elseif spell.base_id == spids.tigers_fury_2 then
-            eval_spell_buff_diffed(alias_info,
-                                   spell.alias,
-                                   effects.mul.raw,
-                                   "phys_mod",
-                                   class_buffs[spell_id][1][sc.aura_idx_value],
-                                   true,
-                                   info, stats, spell, loadout, effects, eval_flags, spell_id);
-        end
+        eval_buff_alias(alias_info, info, stats, spell, loadout, effects, eval_flags, spell_id);
     end
 end
 
@@ -3065,7 +3073,7 @@ end
 
 local function spell_diff(out, fight_type, spell, spell_id, loadout, effects_finalized, effects_d, eval_flags)
 
-    out.name = GetSpellInfo(spell_id);
+    out.name = C_Spell.GetSpellName(spell_id);
 
     if bit.band(spell.flags, bit.bor(spell_flags.finishing_move_dmg, spell_flags.finishing_move_dur)) ~= 0 then
 
@@ -3087,7 +3095,7 @@ local function spell_diff(out, fight_type, spell, spell_id, loadout, effects_fin
 
     out.disp = out.name..out.extra;
     out.id = spell_id;
-    out.tex = GetSpellTexture(spell_id);
+    out.tex = C_Spell.GetSpellTexture(spell_id);
 
     out.heal_like = bit.band(spell.flags, bit.bor(spell_flags.heal, spell_flags.absorb)) ~= 0;
     out.tank_like = false;
