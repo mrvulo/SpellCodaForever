@@ -1,0 +1,6 @@
+# keep LF in the working copy too: upstream merges (git merge-file) and the
+# tools compare text byte for byte
+* text=auto eol=lf
+*.tga binary
+*.ttf binary
+*.png binary

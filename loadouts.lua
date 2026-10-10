@@ -170,6 +170,11 @@ local function loadout_zero()
             empty[k][kk] = vv;
         end
     end
+    empty.attack_min_mh, empty.attack_max_mh = 1, 1;
+    empty.attack_pos, empty.attack_neg, empty.attack_mod = 0, 0, 1;
+    empty.attack_delay_mh = 2;
+    empty.base_armor, empty.armor = 0, 0;
+
     empty.dynamic_buffs = {};
     empty.dynamic_buffs_lname = {};
     for _, v in ipairs(loadout_units) do
@@ -2036,10 +2041,15 @@ local function dynamic_loadout(loadout)
         loadout.shapeshift_no_weapon = 0;
     end
 
-    -- unit names turn secret where unit identity is restricted
-    loadout.player_name = str(UnitName("player"));
-    loadout.target_name = str(UnitName("target"));
-    loadout.mouseover_name = str(UnitName("mouseover"));
+    loadout.player_name = UnitName("player");
+    loadout.target_name = UnitName("target");
+    if is_secret(loadout.target_name) then
+        loadout.target_name = "target";
+    end
+    loadout.mouseover_name = UnitName("mouseover");
+    if is_secret(loadout.mouseover_name) then
+        loadout.mouseover_name = "mouseover";
+    end
 
     loadout.dodge = scaled_keep_if_secret(GetDodgeChance() or 0, 0.01, loadout.dodge);
     loadout.parry = scaled_keep_if_secret(GetParryChance() or 0, 0.01, loadout.parry);
@@ -2103,8 +2113,8 @@ local function dynamic_loadout(loadout)
                 loadout.target_lvl = target_lvl;
             end
 
-            local creature = str(UnitCreatureType("target"));
-            if creature then
+            local creature = UnitCreatureType("target");
+            if creature and not is_secret(creature) then
                 local creature_id = sc.creature_lname_to_id[creature];
                 if creature_id then
                     loadout.target_creature_mask = bit.lshift(1, creature_id-1);

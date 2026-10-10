@@ -83,7 +83,7 @@ Release only after the user tested, or when they say so.
 ## Taking upstream changes
 
 Upstream: `https://github.com/jezzi23/spellcoda`, data in `jezzi23/spellcoda-generated`
-(`Camelot/` folder). Current merge base: **v0.12.2892** (generated b4dbf85). Procedure:
+(`Camelot/` folder). Current merge base: **v0.12.2897** (generated 9a5eddf). Procedure:
 1. Clone upstream at the old base tag and the new tag (with submodule).
 2. Per shared file: `git merge-file ours base theirs` (base = old tag, theirs = new tag).
 3. Resolve: calculation logic from upstream; our look, our modules and our fixes stay. After
@@ -106,4 +106,5 @@ Upstream: `https://github.com/jezzi23/spellcoda`, data in `jezzi23/spellcoda-gen
 ## Shell pitfalls
 
 - Bash heredocs eat backslashes here: write Lua/Python containing `\` with the Write/Edit tools.
-- Files are LF in the repo; git warns about CRLF on Windows, harmless.
+- `.gitattributes` keeps the working copy LF. Without it git checks files out as CRLF and
+  `git merge-file` against upstream (LF) turns every file into one big conflict.

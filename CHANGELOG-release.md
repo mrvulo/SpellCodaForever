@@ -1,3 +1,7 @@
-# SpellCoda Forever 0.54
+# SpellCoda Forever 0.55
 
-- New: French, Spanish (Spain and Latin America) and Russian translations are now complete; the remaining calculator, loadout and settings texts no longer show in English
+Includes the fixes of SpellCoda 0.12.2897.
+
+- Fixed: mana-returning spells counted both their stat-based and their spell-power-based bonus
+- Fixed: more errors from protected (secret) values on Forever: auras, target and mouseover names and creature types, cast bar spell ids, item links in the item planner
+- Changed: spell data refreshed for Forever client 1.60.1.70338
