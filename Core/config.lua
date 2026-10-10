@@ -109,7 +109,7 @@ local default_settings     = {
     overlay_ehp_display_idx                                     = 3,
 
     overlay_update_freq                                         = 3,
-    overlay_font                                                = {"Interface\\AddOns\\SpellCodaForever\\font\\Oswald-Bold.ttf", "THICKOUTLINE"},
+    overlay_font                                                = {"Interface\\AddOns\\SpellCodaForever\\Media\\Oswald-Bold.ttf", "THICKOUTLINE"},
     overlay_top_enabled                                         = false,
     overlay_top_x                                               = 1.0,
     overlay_top_y                                               = -3.0,
@@ -478,6 +478,11 @@ local function load_config()
     end
     for _, v in pairs(SpellCodaForeverDB.profiles) do
         load_persistent_data(v.settings, default_settings);
+        -- the bundled font moved from font\ to Media\ in 0.56
+        local font = v.settings.overlay_font;
+        if type(font) == "table" and font[1] == "Interface\\AddOns\\SpellCodaForever\\font\\Oswald-Bold.ttf" then
+            font[1] = "Interface\\AddOns\\SpellCodaForever\\Media\\Oswald-Bold.ttf";
+        end
     end
 
     -- load settings

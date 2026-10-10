@@ -2,47 +2,47 @@
   "snapshot": "659e8042049df854c114714f8ecd640823a1cd5c",
   "accepted": [
     {
-      "file": "core.lua",
+      "file": "Core/core.lua",
       "kind": "namespace",
       "name": "C_Engraving"
     },
     {
-      "file": "overlay.lua",
+      "file": "UI/overlay.lua",
       "kind": "global",
       "name": "GetSpellTabInfo"
     },
     {
-      "file": "overlay.lua",
+      "file": "UI/overlay.lua",
       "kind": "global",
       "name": "SpellBook_GetCurrentPage"
     },
     {
-      "file": "talents.lua",
+      "file": "Calc/talents.lua",
       "kind": "global",
       "name": "GetTalentInfo"
     },
     {
-      "file": "ui.lua",
+      "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc_frame_setting_tooltip_disable"
     },
     {
-      "file": "ui.lua",
+      "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc_frame_setting_general_libstub_minimap_icon"
     },
     {
-      "file": "ui.lua",
+      "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc_frame_setting_overlay_old_rank"
     },
     {
-      "file": "ui.lua",
+      "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc_frame_setting_overlay_disable"
     },
     {
-      "file": "ui.lua",
+      "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc__localization_notifiedButton"
     }

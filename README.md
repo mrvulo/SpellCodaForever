@@ -25,4 +25,5 @@ License, including its spell and item data. This project adapts it for World of 
 ## Development
 
 - `python tools/check.py` — all pre-release checks (needs node; run `npm install` in `tools/` once)
+- `python tools/upstream_merge.py <old tag> <new tag>` — take a new upstream SpellCoda version
 - Rules, layout and release/merge procedures: see `CLAUDE.md`

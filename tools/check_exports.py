@@ -23,7 +23,7 @@ def toc_files():
     toc = os.path.join(ROOT, 'SpellCodaForever.toc')
     for line in open(toc, encoding='utf-8'):
         line = line.strip()
-        if line.endswith('.lua') and not line.startswith('#') and not line.startswith('lib/'):
+        if line.endswith('.lua') and not line.startswith('#') and not line.startswith('Libs/'):
             yield line
 
 

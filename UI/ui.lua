@@ -1562,6 +1562,8 @@ local function create_sw_ui_spells_frame(pframe)
                                 config.settings.spells_ignore_list[spell_options.__spid] = 1;
                             end
                             update_spells_frame(nil, nil, nil, true);
+                            -- the spellbook page lists from the same ignore list
+                            sc.spellbook_page.refresh();
                         end,
                     }
                 );
@@ -2158,7 +2160,7 @@ local fonts = {
     "Fonts\\MORPHEUS.TTF",
     "Fonts\\SKURRI.TTF",
     "Fonts\\2002.TTF",
-    "Interface\\AddOns\\SpellCodaForever\\font\\Oswald-Bold.ttf",
+    "Interface\\AddOns\\SpellCodaForever\\Media\\Oswald-Bold.ttf",
 };
 
 local font_dropdowns = {};
@@ -7446,7 +7448,7 @@ local function load_sw_ui()
 
         libstub_launcher = libstub_data_broker:NewDataObject(sc.core.addon_name, {
             type = "launcher",
-            icon = "Interface\\AddOns\\SpellCodaForever\\media\\icon",
+            icon = "Interface\\AddOns\\SpellCodaForever\\Media\\icon",
             OnClick = function(self, button)
                 if button == "MiddleButton" then
                     __sc_frame_setting_general_libstub_minimap_icon:Click();
@@ -7546,7 +7548,7 @@ local function locale_warning_popup()
             local icon = frame:CreateTexture(nil, "ARTWORK");
             icon:SetSize(24, 24);
             icon:SetPoint("TOPLEFT", 0, 0);
-            icon:SetTexture("Interface\\AddOns\\SpellCodaForever\\media\\icon");
+            icon:SetTexture("Interface\\AddOns\\SpellCodaForever\\Media\\icon");
 
             local text = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight");
             text:SetPoint("TOPLEFT", 25, -30);

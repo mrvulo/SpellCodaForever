@@ -7,73 +7,73 @@
 ## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever.
 ## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
 ## Author: Vulo
-## Version: 0.55
+## Version: 0.56
 ## X-Curse-Project-ID: 1716723
-## IconTexture: Interface\AddOns\SpellCodaForever\media\icon
+## IconTexture: Interface\AddOns\SpellCodaForever\Media\icon
 ## SavedVariablesPerCharacter: SpellCodaForeverCharDB
 ## SavedVariables: SpellCodaForeverDB
 ## OptionalDeps: LibStub, CallbackHandler-1.0, LibUIDropDownMenu
 
-lib/LibStub/LibStub.lua
-lib/CallbackHandler-1.0/CallbackHandler-1.0.xml
-lib/LibDataBroker-1.1/LibDataBroker-1.1.lua
-lib/LibDBIcon-1.0/LibDBIcon-1.0.lua
-lib/LibUIDropDownMenu/LibUIDropDownMenu.xml
-lib/LibUIDropDownMenu/LibUIDropDownMenu.lua
+Libs/LibStub/LibStub.lua
+Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml
+Libs/LibDataBroker-1.1/LibDataBroker-1.1.lua
+Libs/LibDBIcon-1.0/LibDBIcon-1.0.lua
+Libs/LibUIDropDownMenu/LibUIDropDownMenu.xml
+Libs/LibUIDropDownMenu/LibUIDropDownMenu.lua
 
-api.lua
+Core/api.lua
 
-generated/Camelot/defs.lua
-generated/Camelot/localized_defs.lua
-generated/Camelot/all.lua
+Data/defs.lua
+Data/localized_defs.lua
+Data/all.lua
 
-generated/Camelot/druid.lua
-generated/Camelot/hunter.lua
-generated/Camelot/mage.lua
-generated/Camelot/paladin.lua
-generated/Camelot/priest.lua
-generated/Camelot/rogue.lua
-generated/Camelot/shaman.lua
-generated/Camelot/warlock.lua
-generated/Camelot/warrior.lua
+Data/druid.lua
+Data/hunter.lua
+Data/mage.lua
+Data/paladin.lua
+Data/priest.lua
+Data/rogue.lua
+Data/shaman.lua
+Data/warlock.lua
+Data/warrior.lua
 
-generated/locale_strings.lua
+Locales/locale_strings.lua
 
-locale/ptBR.lua
-locale/zhCN.lua
-locale/zhTW.lua
-locale/frFR.lua
-locale/deDE.lua
-locale/itIT.lua
-locale/esMX.lua
-locale/ptPT.lua
-locale/koKR.lua
-locale/ruRU.lua
-locale/esES.lua
+Locales/ptBR.lua
+Locales/zhCN.lua
+Locales/zhTW.lua
+Locales/frFR.lua
+Locales/deDE.lua
+Locales/itIT.lua
+Locales/esMX.lua
+Locales/ptPT.lua
+Locales/koKR.lua
+Locales/ruRU.lua
+Locales/esES.lua
 
-localization.lua
+Core/localization.lua
 
-utils.lua
+Core/utils.lua
 
-override.lua
+Core/override.lua
 
-Camelot/override.lua
-Camelot/scaling.lua
+Calc/Forever/override.lua
+Calc/Forever/scaling.lua
 
-config.lua
-loadouts.lua
-equipment.lua
-buffs.lua
-talents.lua
-calc_defs.lua
-Camelot/mechanics.lua
-calc.lua
-overlay.lua
-tooltip.lua
-ui.lua
-spellbook.lua
-spells_feed.lua
-verify.lua
-core.lua
-public.lua
+Core/config.lua
+Calc/loadouts.lua
+Calc/equipment.lua
+Calc/buffs.lua
+Calc/talents.lua
+Calc/calc_defs.lua
+Calc/Forever/mechanics.lua
+Calc/calc.lua
+UI/overlay.lua
+UI/tooltip.lua
+UI/ui.lua
+UI/spellbook.lua
+UI/spells_feed.lua
+UI/verify.lua
+Core/core.lua
+Core/public.lua
 

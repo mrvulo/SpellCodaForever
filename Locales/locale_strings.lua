@@ -562,6 +562,19 @@ for _, v in ipairs({
   "Nothing left to learn",
   "Spell",
   "The original SpellCoda is enabled as well. Both use the same windows and commands, please disable one of them.",
+  "Missing requirement",
+  "Ignored",
+  "Base price",
+  "Needs rank %d",
+  "Right click: ignore",
+  "Stop ignoring",
+  "Ignore spell",
+  "Ignore all ranks",
+  "Reputation discount",
+  "Discount from Honored with the trainer's town",
+  "Show ignored spells (%d)",
+  "Stop ignoring all",
+  "Right click: stop ignoring",
 }) do
   L[v] = v;
 end

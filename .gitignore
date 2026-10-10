@@ -7,3 +7,5 @@ __pycache__/
 # Editor
 .vscode/
 tools/node_modules/
+tools/.upstream/
+tools/.upstream_tmp/

@@ -1,0 +1,48 @@
+{
+  "_comment": "Where each upstream SpellCoda file lives in this repo. Used by tools/upstream_merge.py. Keys: upstream path (repo root or generated submodule as generated/...), values: our path.",
+  "code": {
+    "utils.lua": "Core/utils.lua",
+    "config.lua": "Core/config.lua",
+    "core.lua": "Core/core.lua",
+    "public.lua": "Core/public.lua",
+    "localization.lua": "Core/localization.lua",
+    "override.lua": "Core/override.lua",
+    "calc.lua": "Calc/calc.lua",
+    "calc_defs.lua": "Calc/calc_defs.lua",
+    "buffs.lua": "Calc/buffs.lua",
+    "talents.lua": "Calc/talents.lua",
+    "equipment.lua": "Calc/equipment.lua",
+    "loadouts.lua": "Calc/loadouts.lua",
+    "Camelot/mechanics.lua": "Calc/Forever/mechanics.lua",
+    "Camelot/override.lua": "Calc/Forever/override.lua",
+    "Camelot/scaling.lua": "Calc/Forever/scaling.lua",
+    "ui.lua": "UI/ui.lua",
+    "tooltip.lua": "UI/tooltip.lua",
+    "overlay.lua": "UI/overlay.lua",
+    "spells_feed.lua": "UI/spells_feed.lua",
+    "locale/deDE.lua": "Locales/deDE.lua",
+    "locale/esES.lua": "Locales/esES.lua",
+    "locale/esMX.lua": "Locales/esMX.lua",
+    "locale/frFR.lua": "Locales/frFR.lua",
+    "locale/itIT.lua": "Locales/itIT.lua",
+    "locale/koKR.lua": "Locales/koKR.lua",
+    "locale/ptBR.lua": "Locales/ptBR.lua",
+    "locale/ptPT.lua": "Locales/ptPT.lua",
+    "locale/ruRU.lua": "Locales/ruRU.lua",
+    "locale/zhCN.lua": "Locales/zhCN.lua",
+    "locale/zhTW.lua": "Locales/zhTW.lua"
+  },
+  "data": {
+    "generated/Camelot/": "Data/",
+    "generated/locale_strings.lua": "Locales/locale_strings.lua"
+  },
+  "libs": {
+    "lib/": "Libs/"
+  },
+  "ours": [
+    "Core/api.lua",
+    "UI/spellbook.lua",
+    "UI/verify.lua",
+    "Media/icon.tga"
+  ]
+}

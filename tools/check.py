@@ -19,7 +19,7 @@ TOC = os.path.join(ROOT, 'SpellCodaForever.toc')
 
 # Lua files that exist on purpose without a TOC line
 NOT_LOADED = {
-    'generated/Camelot/fake.lua',   # generator output for test runs only
+    'Data/fake.lua',   # generator output for test runs only
 }
 # addon names that must never appear in shippable files (reference addons the
 # features were modelled on); see CLAUDE.md "Naming"
@@ -63,7 +63,7 @@ def check_toc():
             fail('toc', f'listed but missing: {f}')
     listed_set = set(listed)
     for f in addon_lua_files():
-        if f.startswith('lib/'):
+        if f.startswith('Libs/'):
             continue
         if f not in listed_set and f not in NOT_LOADED:
             fail('toc', f'not loaded by the TOC: {f}')
@@ -72,7 +72,7 @@ def check_toc():
     sv = (meta.get('SavedVariables', ''), meta.get('SavedVariablesPerCharacter', ''))
     if sv != SAVED_VARS:
         fail('toc', f'saved variables changed: {sv}, expected {SAVED_VARS} (renaming loses every setting)')
-    core = open(os.path.join(ROOT, 'core.lua'), encoding='utf-8').read()
+    core = open(os.path.join(ROOT, 'Core', 'core.lua'), encoding='utf-8').read()
     major = re.search(r'^local version_major\s*=\s*(\d+);', core, re.M).group(1)
     minor = re.search(r'^local version_minor\s*=\s*(\d+);', core, re.M).group(1)
     if meta.get('Version') != f'{major}.{minor}':
@@ -92,24 +92,24 @@ def check_names():
 
 
 def check_locales():
-    keys_file = open(os.path.join(ROOT, 'generated', 'locale_strings.lua'), encoding='utf-8').read()
+    keys_file = open(os.path.join(ROOT, 'Locales', 'locale_strings.lua'), encoding='utf-8').read()
     known = set(re.findall(r'^  "((?:[^"\\]|\\.)*)",\s*$', keys_file, re.M))
-    for f in sorted(os.listdir(os.path.join(ROOT, 'locale'))):
+    for f in sorted(x for x in os.listdir(os.path.join(ROOT, 'Locales')) if x != 'locale_strings.lua'):
         seen = {}
-        for n, line in enumerate(open(os.path.join(ROOT, 'locale', f), encoding='utf-8'), 1):
+        for n, line in enumerate(open(os.path.join(ROOT, 'Locales', f), encoding='utf-8'), 1):
             m = re.match(r'^L\["((?:[^"\\]|\\.)*)"\]\s*=', line)
             if m:
                 if m.group(1) in seen:
                     fail('locale', f'{f}:{n} duplicate key (line {seen[m.group(1)]} is silently overwritten): {m.group(1)}')
                 if m.group(1) not in known:
-                    fail('locale', f'{f}:{n} obsolete key, not in generated/locale_strings.lua: {m.group(1)}')
+                    fail('locale', f'{f}:{n} obsolete key, not in Locales/locale_strings.lua: {m.group(1)}')
                 seen[m.group(1)] = n
     # keys our own modules use must be localizable
-    for f in ('spellbook.lua', 'api.lua', 'verify.lua'):
+    for f in ('UI/spellbook.lua', 'Core/api.lua', 'UI/verify.lua'):
         text = open(os.path.join(ROOT, f), encoding='utf-8').read()
         for key in re.findall(r'\bL\["((?:[^"\\]|\\.)*)"\]', text):
             if key not in known:
-                fail('locale', f'{f}: L["{key}"] missing from generated/locale_strings.lua')
+                fail('locale', f'{f}: L["{key}"] missing from Locales/locale_strings.lua')
 
 
 def run(check, cmd):
@@ -130,7 +130,7 @@ def check_lua():
                        env=env, encoding='utf-8', errors='replace')
     if r.returncode != 0:
         fail('syntax', (r.stdout + r.stderr).strip())
-    own = [os.path.join(ROOT, f) for f in files if not f.startswith('lib/') and not f.startswith('generated/')]
+    own = [os.path.join(ROOT, f) for f in files if not f.startswith('Libs/') and not f.startswith('Data/')]
     r = subprocess.run(['node', os.path.join(HERE, 'apilint.cjs')] + own,
                        cwd=HERE, capture_output=True, text=True, env=env, encoding='utf-8', errors='replace')
     if r.returncode != 0:

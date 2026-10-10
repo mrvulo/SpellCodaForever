@@ -309,9 +309,78 @@ local function apply_pct_stats(effects, pcts, points, undo, rounding)
     end
 end
 
+-- Items the generated data lacks because the client's own item tables lack them
+-- (some random-suffix greens, e.g. "Bandit Cloak of the Bear"): their stats are
+-- read from the item link and mapped onto the stat effects the data uses.
+local link_stat_ids = {
+    ITEM_MOD_AGILITY_SHORT = 3,
+    ITEM_MOD_STRENGTH_SHORT = 4,
+    ITEM_MOD_INTELLECT_SHORT = 5,
+    ITEM_MOD_SPIRIT_SHORT = 6,
+    ITEM_MOD_STAMINA_SHORT = 7,
+    ITEM_MOD_DEFENSE_SKILL_RATING_SHORT = 12,
+    ITEM_MOD_DODGE_RATING_SHORT = 13,
+    ITEM_MOD_PARRY_RATING_SHORT = 14,
+    ITEM_MOD_BLOCK_RATING_SHORT = 15,
+    ITEM_MOD_HIT_RATING_SHORT = 31,
+    ITEM_MOD_CRIT_RATING_SHORT = 32,
+    ITEM_MOD_HASTE_RATING_SHORT = 36,
+    ITEM_MOD_EXPERTISE_RATING_SHORT = 37,
+    ITEM_MOD_ATTACK_POWER_SHORT = 38,
+    ITEM_MOD_RANGED_ATTACK_POWER_SHORT = 39,
+    ITEM_MOD_SPELL_HEALING_DONE_SHORT = 41,
+    ITEM_MOD_SPELL_DAMAGE_DONE_SHORT = 42,
+    ITEM_MOD_MANA_REGENERATION_SHORT = 43,
+    ITEM_MOD_POWER_REGEN0_SHORT = 43,       -- mana per 5, as some clients name it
+    ITEM_MOD_SPELL_POWER_SHORT = 45,
+    ITEM_MOD_SPELL_PENETRATION_SHORT = 47,
+    ITEM_MOD_HOLY_DAMAGE_DONE_SHORT = 84,
+    ITEM_MOD_FIRE_DAMAGE_DONE_SHORT = 85,
+    ITEM_MOD_NATURE_DAMAGE_DONE_SHORT = 86,
+    ITEM_MOD_FROST_DAMAGE_DONE_SHORT = 87,
+    ITEM_MOD_SHADOW_DAMAGE_DONE_SHORT = 88,
+    ITEM_MOD_ARCANE_DAMAGE_DONE_SHORT = 89,
+    ITEM_MOD_TWOHANDED_AXES_SHORT = 90,
+    ITEM_MOD_TWOHANDED_MACES_SHORT = 91,
+    ITEM_MOD_TWOHANDED_SWORDS_SHORT = 92,
+    ITEM_MOD_DAGGERS_SHORT = 96,
+    ITEM_MOD_FIST_WEAPONS_SHORT = 98,
+    ITEM_MOD_SWORDS_SHORT = 103,
+};
+
+local function link_stats(link)
+    local item_stats = link and GetItemStats(link);
+    if not item_stats then
+        return nil;
+    end
+    local found = nil;
+    for k, v in pairs(item_stats) do
+        local id = link_stat_ids[k];
+        if id and sc.item_stat_effects and sc.item_stat_effects[id] and type(v) == "number" then
+            found = found or {};
+            found[id] = v;
+        end
+    end
+    return found;
+end
+
+local function apply_link_stats(effects, link, undo)
+    local stats = link_stats(link);
+    if not stats then
+        return;
+    end
+    for id, v in pairs(stats) do
+        apply_flat_scaled(effects, sc.item_stat_effects[id], undo and -v or v);
+    end
+end
+
 local apply_item_stats;
 if sc.item_stat_pcts then
     apply_item_stats = function(effects, item_info, _, undo)
+        if not sc.item_stat_pcts[item_info.id] then
+            apply_link_stats(effects, item_info.link, undo);
+            return;
+        end
         if not item_info.ilvl then
             return;
         end
@@ -338,8 +407,17 @@ end
 -- false for items released after the generated data was made
 local item_in_data;
 if sc.item_stat_pcts then
-    item_in_data = function(item_id)
-        return sc.item_stat_pcts[item_id] ~= nil;
+    -- an item the data lacks still counts when its link carries readable stats,
+    -- except weapons: their damage only comes from the data
+    item_in_data = function(item_id, link)
+        if sc.item_stat_pcts[item_id] ~= nil then
+            return true;
+        end
+        if not link or not link_stats(link) then
+            return false;
+        end
+        local _, _, _, _, _, class_id = C_Item.GetItemInfoInstant(link);
+        return class_id ~= 2;
     end;
 else
     item_in_data = function()

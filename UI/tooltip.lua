@@ -2234,7 +2234,7 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
         end
     end
 
-    if not item_in_data(tt.new_item.id) then
+    if not item_in_data(tt.new_item.id, tt.new_item.link) then
         tooltip:AddLine(L["Item missing from SpellCoda dataset. An update may be needed"], 1, 0.2, 0.2);
         tooltip:Show();
         return;

@@ -17,7 +17,7 @@ local highest_learned_rank                      = sc.utils.highest_learned_rank;
 
 -------------------------------------------------------------------------------
 local skin = {
-    icon        = "Interface\\AddOns\\SpellCodaForever\\media\\icon",
+    icon        = "Interface\\AddOns\\SpellCodaForever\\Media\\icon",
     tab         = "spellbook-Tab-Frame-C60",
     tab_active  = "spellbook-Tab-Frame-Glow-C60",
     tab_glow    = "spellbook-Tab-Frame-glow-gradient-C60",
@@ -45,24 +45,85 @@ local colors = {
     -- band tint, then text color
     sections = {
         available = {0.12, 0.24, 0.08, 0.65, 1, 0.40},
+        missing   = {0.32, 0.15, 0.03, 1, 0.82, 0.30},
         soon      = {0.08, 0.18, 0.29, 0.55, 0.84, 1},
         later     = {0.30, 0.07, 0.04, 1, 0.55, 0.45},
+        ignored   = {0.20, 0.17, 0.12, 0.75, 0.75, 0.75},
     },
+    level_missing = {0.55, 0.30, 0.02},
     level_soon  = {0.08, 0.22, 0.50},
     level_later = {0.45, 0.09, 0.04},
+    dim         = {0.40, 0.40, 0.40},
 };
 
-local section_order = { "available", "soon", "later" };
+local section_order = { "available", "missing", "soon", "later", "ignored" };
 local section_names = {
     available = "Now available",
+    missing = "Missing requirement",
     soon = "Coming soon",
     later = "Not yet available",
+    ignored = "Ignored",
 };
 
-local book, root, launcher, attic, return_tab, pages;
+local book, root, launcher, attic, return_tab, pages, search, settings;
 local covers = {};
 local active, shown_tab, queued = false, nil, false;
 local items, offset = {}, 1;
+local show_ignored = false;
+
+-------------------------------------------------------------------------------
+-- trainer prices
+
+-- The data carries base prices. Class trainers take 10% off from Honored with
+-- the faction of their town (Forever 1.60.1; Revered and Exalted not checked).
+-- Factions of the towns that train each class, per side.
+local trainer_factions = {
+    DRUID   = { Alliance = {69, 72, 609, 2740}, Horde = {81, 609, 2787} },
+    HUNTER  = { Alliance = {47, 69, 72}, Horde = {76, 81, 530} },
+    MAGE    = { Alliance = {47, 54, 69, 72, 2740}, Horde = {68, 76, 530} },
+    PALADIN = { Alliance = {47, 72}, Horde = {68} },
+    PRIEST  = { Alliance = {47, 54, 69, 72}, Horde = {68, 76, 530} },
+    ROGUE   = { Alliance = {21, 47, 54, 69, 72, 349}, Horde = {21, 68, 76, 81, 349, 530} },
+    SHAMAN  = { Alliance = {47}, Horde = {76, 81, 2787} },
+    WARLOCK = { Alliance = {47, 54, 72}, Horde = {68, 76} },
+    WARRIOR = { Alliance = {47, 54, 69, 72}, Horde = {68, 76, 81} },
+};
+local HONORED, DISCOUNT_PCT = 6, 10;
+
+-- {name, standing label, pct} per trainer town, best discount first
+local function discount_options()
+    local _, class = UnitClass("player");
+    local by_side = trainer_factions[class];
+    local keys = by_side and by_side[UnitFactionGroup("player")] or {};
+    local options = {};
+    for _, key in ipairs(keys) do
+        local data = C_Reputation.GetFactionDataByID(key);
+        if data and data.name then
+            local standing = data.reaction or 4;
+            table.insert(options, {
+                name = data.name,
+                standing = _G["FACTION_STANDING_LABEL"..standing] or "",
+                pct = standing >= HONORED and DISCOUNT_PCT or 0,
+            });
+        end
+    end
+    table.sort(options, function(a, b)
+        if a.pct ~= b.pct then
+            return a.pct > b.pct;
+        end
+        return a.name < b.name;
+    end);
+    return options;
+end
+
+local function best_discount()
+    local best = discount_options()[1];
+    return best and best.pct or 0, best and best.name;
+end
+
+local function discounted(cost, pct)
+    return math.floor((cost * (100 - pct) + 50) / 100);
+end
 
 local function hide_tooltip(self)
     if GameTooltip:IsOwned(self) then
@@ -86,6 +147,7 @@ local function spell_known(id)
     return highest ~= nil and spells[highest] ~= nil and spells[highest].rank > spells[id].rank;
 end
 
+-- a spell this character could still learn from a trainer or a book
 local function learnable(id)
     local spell = spells[id];
     -- in the data but not on this client
@@ -98,26 +160,65 @@ local function learnable(id)
     if spell.race_flags and bit.band(spell.race_flags, bit.lshift(1, sc.race-1)) == 0 then
         return false;
     end
-    if sc.config.settings.spells_ignore_list[id] then
-        return false;
-    end
     return not spell_known(id);
 end
 
--- items: section headings followed by their spells, in level order
+local function ignored(id)
+    return sc.config.settings.spells_ignore_list[id] ~= nil;
+end
+
+-- the rank before id when that one is not learned yet (trainers ask for it)
+local function missing_rank(id)
+    local seq = sc.rank_seqs[spells[id].base_id];
+    if not seq then
+        return nil;
+    end
+    for i, rank_id in ipairs(seq) do
+        if rank_id == id then
+            local prev = seq[i - 1];
+            if prev and spells[prev] and not spell_known(prev) then
+                return prev;
+            end
+            return nil;
+        end
+    end
+    return nil;
+end
+
+local function matches_search(id)
+    local text = search and search:GetText() or "";
+    if text == "" then
+        return true;
+    end
+    local name = GetSpellInfo(id);
+    return name ~= nil and string.find(string.lower(name), string.lower(text), 1, true) ~= nil;
+end
+
+-- items: section headings followed by their spells, in level order.
+-- Returns the trainer prices of everything learnable now, search or not:
+-- trainers round each spell's discount on its own, so the total sums them.
 local function build_items()
     local lvl = UnitLevel("player");
     local next_lvl = lvl % 2 == 0 and lvl + 2 or lvl + 1;
-    local sections = { available = {}, soon = {}, later = {} };
-    local available_cost = 0;
+    local sections = { available = {}, missing = {}, soon = {}, later = {}, ignored = {} };
+    local available_costs = {};
 
     for _, id in ipairs(sc.spells_lvl_ordered) do
         if learnable(id) then
             local req = spells[id].lvl_req;
-            local key = (req <= lvl and "available") or (req <= next_lvl and "soon") or "later";
-            table.insert(sections[key], id);
+            local key;
+            if ignored(id) then
+                key = show_ignored and "ignored" or nil;
+            elseif req <= lvl then
+                key = missing_rank(id) and "missing" or "available";
+            else
+                key = req <= next_lvl and "soon" or "later";
+            end
             if key == "available" and spells[id].train > 0 then
-                available_cost = available_cost + spells[id].train;
+                table.insert(available_costs, spells[id].train);
+            end
+            if key and matches_search(id) then
+                table.insert(sections[key], id);
             end
         end
     end
@@ -131,7 +232,26 @@ local function build_items()
             end
         end
     end
-    return available_cost;
+    return available_costs;
+end
+
+local function total_price(costs, pct)
+    local sum = 0;
+    for _, cost in ipairs(costs) do
+        sum = sum + discounted(cost, pct);
+    end
+    return sum;
+end
+
+-- number of ignored spells that would otherwise be listed
+local function ignored_count()
+    local n = 0;
+    for id in pairs(sc.config.settings.spells_ignore_list) do
+        if spells[id] and learnable(id) then
+            n = n + 1;
+        end
+    end
+    return n;
 end
 
 -------------------------------------------------------------------------------
@@ -146,6 +266,8 @@ local function label(parent, font, x, y)
     return fs;
 end
 
+local refresh;
+
 local function row_on_enter(self)
     local item = self.item;
     if not item or not item.spell_id then
@@ -155,8 +277,12 @@ local function row_on_enter(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
     GameTooltip:SetSpellByID(item.spell_id);
     if spell.train > 0 then
+        local pct = best_discount();
         GameTooltip:AddLine(" ");
-        GameTooltip:AddDoubleLine(L["Training cost"], GetCoinTextureString(spell.train), 1, 0.82, 0, 1, 1, 1);
+        GameTooltip:AddDoubleLine(L["Training cost"], GetCoinTextureString(discounted(spell.train, pct)), 1, 0.82, 0, 1, 1, 1);
+        if pct > 0 then
+            GameTooltip:AddDoubleLine(L["Base price"], GetCoinTextureString(spell.train), 0.6, 0.6, 0.6, 0.6, 0.6, 0.6);
+        end
     elseif spell.train < -1 then
         local item_name = C_Item.GetItemNameByID(-spell.train);
         if item_name then
@@ -164,12 +290,59 @@ local function row_on_enter(self)
             GameTooltip:AddDoubleLine(L["Learned from"], item_name, 1, 0.82, 0, 1, 1, 1);
         end
     end
+    local prev = item.section == "missing" and missing_rank(item.spell_id);
+    if prev then
+        GameTooltip:AddLine(string.format(L["Needs rank %d"], spells[prev].rank), 1, 0.5, 0.25);
+    end
+    GameTooltip:AddLine(item.section == "ignored" and L["Right click: stop ignoring"] or L["Right click: ignore"], 0.5, 0.5, 0.5);
     GameTooltip:Show();
 end
 
-local function row_on_click(self)
+-- the Spells tab reads the same ignore list
+local function ignore_list_changed()
+    refresh();
+    if __sc_frame and __sc_frame:IsShown() then
+        sc.ui.update_spells_frame(nil, nil, nil, true);
+    end
+end
+
+local function set_ignored(ids, on)
+    for _, id in ipairs(ids) do
+        sc.config.settings.spells_ignore_list[id] = on and 1 or nil;
+    end
+    ignore_list_changed();
+end
+
+local function open_ignore_menu(row, id)
+    MenuUtil.CreateContextMenu(row, function(_, description)
+        description:CreateTitle(GetSpellInfo(id) or "");
+        if ignored(id) then
+            description:CreateButton(L["Stop ignoring"], function() set_ignored({id}, false); end);
+        else
+            description:CreateButton(L["Ignore spell"], function() set_ignored({id}, true); end);
+            local ranks = {};
+            for _, rank_id in ipairs(sc.rank_seqs[spells[id].base_id] or {}) do
+                if spells[rank_id] and learnable(rank_id) then
+                    table.insert(ranks, rank_id);
+                end
+            end
+            if #ranks > 1 then
+                description:CreateButton(L["Ignore all ranks"], function() set_ignored(ranks, true); end);
+            end
+        end
+    end);
+end
+
+local function row_on_click(self, button)
     local item = self.item;
-    if item and item.spell_id and IsModifiedClick("CHATLINK") then
+    if not item or not item.spell_id then
+        return;
+    end
+    if button == "RightButton" then
+        open_ignore_menu(self, item.spell_id);
+        return;
+    end
+    if IsModifiedClick("CHATLINK") then
         local link = C_Spell.GetSpellLink(item.spell_id);
         if link then
             ChatFrameUtil.InsertLink(link);
@@ -219,6 +392,7 @@ local function create_row(page)
     highlight:SetColorTexture(unpack(colors.highlight));
     row:SetHighlightTexture(highlight);
 
+    row:RegisterForClicks("LeftButtonUp", "RightButtonUp");
     row:SetScript("OnEnter", row_on_enter);
     row:SetScript("OnLeave", hide_tooltip);
     row:SetScript("OnHide", hide_tooltip);
@@ -256,9 +430,19 @@ local function show_spell(row, item)
         -- rank text stands in
         row.rank:SetText(subtext or "");
     end
+    local text_color = item.section == "ignored" and colors.dim or colors.body;
+    row.name:SetTextColor(unpack(text_color));
+    row.rank:SetTextColor(unpack(text_color));
     if item.section == "available" then
         row.level:SetText("—");
         row.level:SetTextColor(unpack(colors.body));
+    elseif item.section == "missing" then
+        local prev = missing_rank(id);
+        row.level:SetText(prev and string.format(L["Needs rank %d"], spells[prev].rank) or "—");
+        row.level:SetTextColor(unpack(colors.level_missing));
+    elseif item.section == "ignored" then
+        row.level:SetText(L["Level"].." "..spell.lvl_req);
+        row.level:SetTextColor(unpack(colors.dim));
     else
         row.level:SetText(L["Level"].." "..spell.lvl_req);
         row.level:SetTextColor(unpack(item.section == "soon" and colors.level_soon or colors.level_later));
@@ -319,11 +503,33 @@ local function layout()
     end
 end
 
-local function refresh()
-    local cost = build_items();
-    pages[1].total:SetText(cost > 0 and string.format(L["Available total: %s"], GetCoinTextureString(cost)) or "");
+refresh = function()
+    local costs = build_items();
+    local total = total_price(costs, best_discount());
+    pages[1].total:SetText(total > 0 and string.format(L["Available total: %s"], GetCoinTextureString(total)) or "");
+    pages[1].total_area.costs = costs;
     pages[1].empty:SetShown(#items == 0);
     layout();
+end
+
+-- the total's tooltip: the trainer towns, the standing there and what it saves
+local function total_on_enter(self)
+    local costs = self.costs;
+    local base = costs and total_price(costs, 0) or 0;
+    if base <= 0 then
+        return;
+    end
+    GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
+    GameTooltip:SetText(L["Reputation discount"]);
+    for _, option in ipairs(discount_options()) do
+        local right = option.pct > 0 and GetCoinTextureString(total_price(costs, option.pct)).."  (-"..option.pct.."%)"
+            or GetCoinTextureString(base);
+        GameTooltip:AddDoubleLine(option.name.." |cFF808080("..option.standing..")|r", right, 1, 1, 1, 1, 1, 1);
+    end
+    GameTooltip:AddLine(" ");
+    GameTooltip:AddDoubleLine(L["Base price"], GetCoinTextureString(base), 0.6, 0.6, 0.6, 0.6, 0.6, 0.6);
+    GameTooltip:AddLine(L["Discount from Honored with the trainer's town"], 0.5, 0.5, 0.5, true);
+    GameTooltip:Show();
 end
 
 local function wheel(_, delta)
@@ -440,6 +646,8 @@ local function sync()
     end
     launcher:SetFrameLevel(level + 5);
     return_tab:SetFrameLevel(level + 5);
+    search:SetFrameLevel(level + 5);
+    settings:SetFrameLevel(level + 5);
     for _, page in ipairs(pages) do
         page:SetFrameLevel(level + 2);
     end
@@ -485,6 +693,11 @@ local function sync()
 
     local opening = not root:IsShown();
     root:Show();
+    -- the search box takes the room between the tabs and the settings button
+    local room_left, room_right = (launcher.bookmark and tabs or launcher):GetRight(), search:GetRight();
+    if room_left and room_right then
+        search:SetWidth(math.max(1, math.min(300, room_right - room_left - 10)));
+    end
     if opening then
         offset = 1;
         refresh();
@@ -562,8 +775,50 @@ local function create()
     -- level with the title, above the header's rule
     left.total:SetPoint("TOPRIGHT", left, "TOPRIGHT", -28, -12);
     left.total:SetJustifyH("RIGHT");
+    left.total_area = CreateFrame("Frame", nil, left.columns);
+    left.total_area:SetAllPoints(left.total);
+    left.total_area:EnableMouse(true);
+    left.total_area:SetScript("OnEnter", total_on_enter);
+    left.total_area:SetScript("OnLeave", hide_tooltip);
     left.empty = label(left.list, "SystemFont_Med3", 8, -8);
     left.empty:SetText(L["Nothing left to learn"]);
+
+    -- settings and search where the book's own sit (those are under the attic)
+    settings = CreateFrame("DropdownButton", nil, root, "SpellBookSettingsDropdownTemplate");
+    settings:ClearAllPoints();
+    settings:SetPoint("TOPRIGHT", root, "TOPRIGHT", -30, -27);
+    settings:SetupMenu(function(_, description)
+        description:CreateCheckbox(string.format(L["Show ignored spells (%d)"], ignored_count()),
+            function() return show_ignored; end,
+            function()
+                show_ignored = not show_ignored;
+                offset = 1;
+                refresh();
+            end);
+        description:CreateButton(L["Stop ignoring all"], function()
+            local ids = {};
+            for id in pairs(sc.config.settings.spells_ignore_list) do
+                if spells[id] and learnable(id) then
+                    table.insert(ids, id);
+                end
+            end
+            set_ignored(ids, false);
+        end);
+    end);
+
+    search = CreateFrame("EditBox", nil, root, "SearchBoxTemplate");
+    search:SetSize(300, 30);
+    search:SetAutoFocus(false);
+    search:SetPoint("RIGHT", settings, "LEFT", -5, 4);
+    search:HookScript("OnTextChanged", function()
+        offset = 1;
+        if root:IsShown() then
+            refresh();
+        end
+    end);
+    search:HookScript("OnHide", function(self)
+        self:ClearFocus();
+    end);
 
     local right = create_page(11, L["Spells"]);
     right:SetPoint("TOPRIGHT", root, "TOPRIGHT", -45, PAGE_TOP);
@@ -612,6 +867,12 @@ end
 
 sc.spellbook_page = {
     attach = attach,
+    -- the Spells tab changed the shared ignore list
+    refresh = function()
+        if root and root:IsShown() then
+            refresh();
+        end
+    end,
     -- the settings checkbox shows or hides the tab
     sync = function()
         if root then
