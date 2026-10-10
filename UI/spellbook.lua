@@ -49,27 +49,32 @@ local colors = {
         soon      = {0.08, 0.18, 0.29, 0.55, 0.84, 1},
         later     = {0.30, 0.07, 0.04, 1, 0.55, 0.45},
         ignored   = {0.20, 0.17, 0.12, 0.75, 0.75, 0.75},
+        known     = {0.20, 0.17, 0.12, 0.75, 0.75, 0.75},
     },
+    towns       = {0.35, 0.28, 0.18},
     level_missing = {0.55, 0.30, 0.02},
     level_soon  = {0.08, 0.22, 0.50},
     level_later = {0.45, 0.09, 0.04},
     dim         = {0.40, 0.40, 0.40},
 };
 
-local section_order = { "available", "missing", "soon", "later", "ignored" };
+local section_order = { "available", "missing", "soon", "later", "known", "ignored" };
 local section_names = {
     available = "Now available",
     missing = "Missing requirement",
     soon = "Coming soon",
     later = "Not yet available",
+    known = "Known",
     ignored = "Ignored",
 };
 
-local book, root, launcher, attic, return_tab, pages, search, settings;
+local book, root, launcher, attic, return_tab, pages, search, settings, view_toggle;
 local covers = {};
 local active, shown_tab, queued = false, nil, false;
 local items, offset = {}, 1;
-local show_ignored = false;
+local show_ignored, show_known_weapons = false, false;
+-- "spells" or "weapons"
+local view = "spells";
 
 -------------------------------------------------------------------------------
 -- trainer prices
@@ -123,6 +128,24 @@ end
 
 local function discounted(cost, pct)
     return math.floor((cost * (100 - pct) + 50) / 100);
+end
+
+-- the discount one town's faction gives this character (weapon masters)
+local function faction_pct(faction_id)
+    local data = C_Reputation.GetFactionDataByID(faction_id);
+    return data and (data.reaction or 4) >= HONORED and DISCOUNT_PCT or 0;
+end
+
+-- a weapon skill's cheapest master on this side and the price there
+local function weapon_price(entry)
+    local best, best_master;
+    for _, master in ipairs(entry.masters) do
+        local price = discounted(entry.cost, faction_pct(master.data.faction));
+        if not best or price < best then
+            best, best_master = price, master;
+        end
+    end
+    return best or entry.cost, best_master;
 end
 
 local function hide_tooltip(self)
@@ -197,10 +220,10 @@ end
 -- items: section headings followed by their spells, in level order.
 -- Returns the trainer prices of everything learnable now, search or not:
 -- trainers round each spell's discount on its own, so the total sums them.
-local function build_items()
+local function build_spell_items()
     local lvl = UnitLevel("player");
     local next_lvl = lvl % 2 == 0 and lvl + 2 or lvl + 1;
-    local sections = { available = {}, missing = {}, soon = {}, later = {}, ignored = {} };
+    local sections = { available = {}, missing = {}, soon = {}, later = {}, known = {}, ignored = {} };
     local available_costs = {};
 
     for _, id in ipairs(sc.spells_lvl_ordered) do
@@ -243,15 +266,71 @@ local function total_price(costs, pct)
     return sum;
 end
 
--- number of ignored spells that would otherwise be listed
-local function ignored_count()
-    local n = 0;
-    for id in pairs(sc.config.settings.spells_ignore_list) do
-        if spells[id] and learnable(id) then
-            n = n + 1;
+-- the weapon skill view: same sections, each skill priced at its cheapest
+-- master. Returns the price of everything learnable now, search or not.
+local function build_weapon_items()
+    local lvl = UnitLevel("player");
+    local next_lvl = lvl % 2 == 0 and lvl + 2 or lvl + 1;
+    local sections = { available = {}, soon = {}, later = {}, known = {}, ignored = {} };
+    local total = 0;
+
+    for _, entry in ipairs(sc.weapon_skills.list()) do
+        if GetSpellInfo(entry.id) and #entry.masters > 0 then
+            local key;
+            if IsSpellKnownOrOverridesKnown(entry.id) then
+                key = show_known_weapons and "known" or nil;
+            elseif ignored(entry.id) then
+                key = show_ignored and "ignored" or nil;
+            elseif entry.level <= lvl then
+                key = "available";
+                total = total + weapon_price(entry);
+            else
+                key = entry.level <= next_lvl and "soon" or "later";
+            end
+            if key and matches_search(entry.id) then
+                table.insert(sections[key], entry);
+            end
         end
     end
-    return n;
+
+    items = {};
+    for _, key in ipairs(section_order) do
+        local list = sections[key];
+        if list and #list > 0 then
+            table.insert(items, { heading = key, count = #list });
+            for _, entry in ipairs(list) do
+                table.insert(items, { spell_id = entry.id, weapon = entry, section = key });
+            end
+        end
+    end
+    return total;
+end
+
+-- the current view's list; returns the total price and, for spells, the
+-- single prices the reputation tooltip works from
+local function build_items()
+    if view == "weapons" then
+        return build_weapon_items(), nil;
+    end
+    local costs = build_spell_items();
+    return total_price(costs, best_discount()), costs;
+end
+
+-- number of ignored spells that would otherwise be listed
+-- ignored ids that would otherwise be listed: learnable spells and weapon
+-- skills not trained yet
+local function ignored_ids()
+    local weapon = {};
+    for _, entry in ipairs(sc.weapon_skills.list()) do
+        weapon[entry.id] = not IsSpellKnownOrOverridesKnown(entry.id);
+    end
+    local ids = {};
+    for id in pairs(sc.config.settings.spells_ignore_list) do
+        if weapon[id] or (spells[id] and learnable(id)) then
+            table.insert(ids, id);
+        end
+    end
+    return ids;
 end
 
 -------------------------------------------------------------------------------
@@ -268,9 +347,39 @@ end
 
 local refresh;
 
+-- weapon skill: who teaches it where, at what price; a click sets a waypoint
+local function weapon_on_enter(self, item)
+    local entry = item.weapon;
+    local _, cheapest = weapon_price(entry);
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+    GameTooltip:SetSpellByID(entry.id);
+    GameTooltip:AddLine(" ");
+    GameTooltip:AddLine(L["Trained by"], 1, 0.82, 0);
+    for _, master in ipairs(entry.masters) do
+        local price = discounted(entry.cost, faction_pct(master.data.faction));
+        local where = string.format("%s, %s (%.1f, %.1f)", sc.weapon_skills.npc_name(master.npc),
+            sc.weapon_skills.town_name(master.data), master.data.x, master.data.y);
+        local color = master == cheapest and 1 or 0.8;
+        GameTooltip:AddDoubleLine(where, GetCoinTextureString(price), color, color, color, 1, 1, 1);
+    end
+    if entry.level > 1 then
+        GameTooltip:AddLine(L["Level"].." "..entry.level, 0.8, 0.8, 0.8);
+    end
+    GameTooltip:AddLine(" ");
+    GameTooltip:AddLine(L["Left click: set waypoint"], 0.5, 0.5, 0.5);
+    if item.section ~= "known" then
+        GameTooltip:AddLine(item.section == "ignored" and L["Right click: stop ignoring"] or L["Right click: ignore"], 0.5, 0.5, 0.5);
+    end
+    GameTooltip:Show();
+end
+
 local function row_on_enter(self)
     local item = self.item;
     if not item or not item.spell_id then
+        return;
+    end
+    if item.weapon then
+        weapon_on_enter(self, item);
         return;
     end
     local spell = spells[item.spell_id];
@@ -319,9 +428,12 @@ local function open_ignore_menu(row, id)
         if ignored(id) then
             description:CreateButton(L["Stop ignoring"], function() set_ignored({id}, false); end);
         else
-            description:CreateButton(L["Ignore spell"], function() set_ignored({id}, true); end);
+            description:CreateButton(spells[id] and L["Ignore spell"] or L["Ignore weapon skill"],
+                function() set_ignored({id}, true); end);
             local ranks = {};
-            for _, rank_id in ipairs(sc.rank_seqs[spells[id].base_id] or {}) do
+            -- weapon skills have no ranks
+            local seq = spells[id] and sc.rank_seqs[spells[id].base_id] or {};
+            for _, rank_id in ipairs(seq) do
                 if spells[rank_id] and learnable(rank_id) then
                     table.insert(ranks, rank_id);
                 end
@@ -339,13 +451,25 @@ local function row_on_click(self, button)
         return;
     end
     if button == "RightButton" then
-        open_ignore_menu(self, item.spell_id);
+        -- a trained weapon skill is never listed as learnable, nothing to ignore
+        if item.section ~= "known" then
+            open_ignore_menu(self, item.spell_id);
+        end
         return;
     end
     if IsModifiedClick("CHATLINK") then
         local link = C_Spell.GetSpellLink(item.spell_id);
         if link then
             ChatFrameUtil.InsertLink(link);
+        end
+        return;
+    end
+    if item.weapon then
+        local _, master = weapon_price(item.weapon);
+        if master then
+            local where = sc.weapon_skills.npc_name(master.npc)..", "..sc.weapon_skills.town_name(master.data);
+            local text = sc.weapon_skills.set_waypoint(master) and L["Waypoint set: %s"] or L["Waypoint could not be set: %s"];
+            print("|cFF9B6CFFSpellCodaForever:|r "..string.format(text, where));
         end
     end
 end
@@ -414,7 +538,47 @@ local function show_heading(row, item)
     row:GetHighlightTexture():SetAlpha(0);
 end
 
+-- weapon skill row: the towns of its masters after the name, the price in the
+-- middle column
+local function show_weapon(row, item)
+    local entry = item.weapon;
+    row:SetHeight(ROW_HEIGHT);
+    row.band:Hide();
+    row.heading:Hide();
+    row.icon:SetTexture(GetSpellTexture(entry.id));
+    local towns, seen = {}, {};
+    for _, master in ipairs(entry.masters) do
+        local town = sc.weapon_skills.town_name(master.data);
+        if not seen[town] then
+            seen[town] = true;
+            table.insert(towns, town);
+        end
+    end
+    local dim = item.section == "ignored" or item.section == "known";
+    local c = colors.towns;
+    row.name:SetText((GetSpellInfo(entry.id) or "")..string.format("  |cFF%02x%02x%02x%s|r",
+        math.floor(c[1] * 255), math.floor(c[2] * 255), math.floor(c[3] * 255), table.concat(towns, ", ")));
+    row.name:SetTextColor(unpack(dim and colors.dim or colors.body));
+    row.rank:SetText(item.section == "known" and "" or GetCoinTextureString((weapon_price(entry))));
+    row.rank:SetTextColor(unpack(colors.body));
+    if item.section == "available" or item.section == "known" then
+        row.level:SetText("—");
+        row.level:SetTextColor(unpack(dim and colors.dim or colors.body));
+    else
+        row.level:SetText(L["Level"].." "..entry.level);
+        row.level:SetTextColor(unpack((dim and colors.dim) or (item.section == "soon" and colors.level_soon) or colors.level_later));
+    end
+    for _, region in ipairs({row.icon, row.icon_border, row.name, row.rank, row.level, row.separator}) do
+        region:Show();
+    end
+    row:GetHighlightTexture():SetAlpha(1);
+end
+
 local function show_spell(row, item)
+    if item.weapon then
+        show_weapon(row, item);
+        return;
+    end
     local id = item.spell_id;
     local spell = spells[id];
     row:SetHeight(ROW_HEIGHT);
@@ -504,10 +668,19 @@ local function layout()
 end
 
 refresh = function()
-    local costs = build_items();
-    local total = total_price(costs, best_discount());
+    -- column headings and the toggle's icon follow the view
+    local weapons = view == "weapons";
+    for _, page in ipairs(pages) do
+        page.spell_col:SetText(weapons and L["Weapon skill"] or L["Spell"]);
+        page.rank_col:SetText(weapons and L["Cost"] or L["Rank"]);
+    end
+    pages[2].header.Text:SetText(weapons and L["Weapon skills"] or L["Spells"]);
+    view_toggle.icon:SetTexture(weapons and "Interface\\Icons\\INV_Misc_Book_09" or "Interface\\Icons\\INV_Sword_04");
+
+    local total, costs = build_items();
     pages[1].total:SetText(total > 0 and string.format(L["Available total: %s"], GetCoinTextureString(total)) or "");
     pages[1].total_area.costs = costs;
+    pages[1].empty:SetText(weapons and L["No weapon skills left to learn"] or L["Nothing left to learn"]);
     pages[1].empty:SetShown(#items == 0);
     layout();
 end
@@ -609,12 +782,10 @@ local function create_page(header_x, title)
     -- on a child frame, so the labels draw above the cover's parchment
     page.columns = CreateFrame("Frame", nil, page);
     page.columns:SetAllPoints();
-    local spell_col = label(page.columns, "SystemFont_Med3", 38, -62);
-    spell_col:SetText(L["Spell"]);
-    local rank_col = label(page.columns, "SystemFont_Med3", page.rank_x, -62);
-    rank_col:SetText(L["Rank"]);
-    local level_col = label(page.columns, "SystemFont_Med3", page.level_x, -62);
-    level_col:SetText(L["Required level"]);
+    page.spell_col = label(page.columns, "SystemFont_Med3", 38, -62);
+    page.rank_col = label(page.columns, "SystemFont_Med3", page.rank_x, -62);
+    page.level_col = label(page.columns, "SystemFont_Med3", page.level_x, -62);
+    page.level_col:SetText(L["Required level"]);
 
     page.list = CreateFrame("Frame", nil, page);
     page.list:SetPoint("TOPLEFT", page, "TOPLEFT", 0, LIST_TOP);
@@ -647,6 +818,7 @@ local function sync()
     launcher:SetFrameLevel(level + 5);
     return_tab:SetFrameLevel(level + 5);
     search:SetFrameLevel(level + 5);
+    view_toggle:SetFrameLevel(level + 5);
     settings:SetFrameLevel(level + 5);
     for _, page in ipairs(pages) do
         page:SetFrameLevel(level + 2);
@@ -788,28 +960,55 @@ local function create()
     settings:ClearAllPoints();
     settings:SetPoint("TOPRIGHT", root, "TOPRIGHT", -30, -27);
     settings:SetupMenu(function(_, description)
-        description:CreateCheckbox(string.format(L["Show ignored spells (%d)"], ignored_count()),
+        description:CreateCheckbox(string.format(L["Show ignored spells (%d)"], #ignored_ids()),
             function() return show_ignored; end,
             function()
                 show_ignored = not show_ignored;
                 offset = 1;
                 refresh();
             end);
+        description:CreateCheckbox(L["Show known weapon skills"],
+            function() return show_known_weapons; end,
+            function()
+                show_known_weapons = not show_known_weapons;
+                offset = 1;
+                refresh();
+            end);
         description:CreateButton(L["Stop ignoring all"], function()
-            local ids = {};
-            for id in pairs(sc.config.settings.spells_ignore_list) do
-                if spells[id] and learnable(id) then
-                    table.insert(ids, id);
-                end
-            end
-            set_ignored(ids, false);
+            set_ignored(ignored_ids(), false);
         end);
     end);
+
+    -- switches between spells and weapon skills
+    view_toggle = CreateFrame("Button", nil, root);
+    view_toggle:SetSize(24, 24);
+    view_toggle:SetPoint("RIGHT", settings, "LEFT", -4, 0);
+    view_toggle.icon = view_toggle:CreateTexture(nil, "ARTWORK");
+    view_toggle.icon:SetAllPoints();
+    view_toggle.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92);
+    local toggle_border = view_toggle:CreateTexture(nil, "OVERLAY");
+    toggle_border:SetTexture(skin.icon_border);
+    toggle_border:SetPoint("CENTER");
+    toggle_border:SetSize(40, 40);
+    view_toggle:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square", "ADD");
+    view_toggle:SetScript("OnClick", function(self)
+        view = view == "spells" and "weapons" or "spells";
+        offset = 1;
+        PlaySound(SOUNDKIT.IG_SPELLBOOK_OPEN);
+        refresh();
+        self:GetScript("OnEnter")(self);
+    end);
+    view_toggle:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+        GameTooltip:SetText(view == "spells" and L["Show weapon skills"] or L["Show spells"]);
+        GameTooltip:Show();
+    end);
+    view_toggle:SetScript("OnLeave", hide_tooltip);
 
     search = CreateFrame("EditBox", nil, root, "SearchBoxTemplate");
     search:SetSize(300, 30);
     search:SetAutoFocus(false);
-    search:SetPoint("RIGHT", settings, "LEFT", -5, 4);
+    search:SetPoint("RIGHT", view_toggle, "LEFT", -6, 4);
     search:HookScript("OnTextChanged", function()
         offset = 1;
         if root:IsShown() then
@@ -830,6 +1029,8 @@ local function create()
     -- PLAYER_LEVEL_UP fires while UnitLevel still returns the old level
     root:RegisterEvent("SPELLS_CHANGED");
     root:RegisterEvent("PLAYER_LEVEL_CHANGED");
+    -- reputation changes the trainer prices
+    root:RegisterEvent("UPDATE_FACTION");
     root:SetScript("OnEvent", function()
         if root:IsShown() then
             refresh();

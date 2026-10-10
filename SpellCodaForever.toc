@@ -7,7 +7,7 @@
 ## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever.
 ## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
 ## Author: Vulo
-## Version: 0.56
+## Version: 0.57
 ## X-Curse-Project-ID: 1716723
 ## IconTexture: Interface\AddOns\SpellCodaForever\Media\icon
 ## SavedVariablesPerCharacter: SpellCodaForeverCharDB
@@ -71,6 +71,7 @@ Calc/calc.lua
 UI/overlay.lua
 UI/tooltip.lua
 UI/ui.lua
+UI/weapon_skills.lua
 UI/spellbook.lua
 UI/spells_feed.lua
 UI/verify.lua

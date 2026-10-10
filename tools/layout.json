@@ -42,6 +42,7 @@
   "ours": [
     "Core/api.lua",
     "UI/spellbook.lua",
+    "UI/weapon_skills.lua",
     "UI/verify.lua",
     "Media/icon.tga"
   ]

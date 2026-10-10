@@ -70,6 +70,10 @@ Ours only:
   soon / Not yet available / Ignored, own search box and settings menu over the book's, right
   click ignores. The ignore list is `config.settings.spells_ignore_list`, shared with the
   Spells tab; both sides refresh each other.
+- Spellbook page weapons view (sword button left of the settings menu): weapon skills of the
+  class, their masters per side with town, coordinates and town faction, kept by hand in
+  `UI/weapon_skills.lua` (trainer lists are server side; Forever extras and Woo Ping's harbor
+  coordinates are noted there). Left click sets a map waypoint to the cheapest master.
 - Items missing from `Data/` (the client's tables lack them too) use their link's stats
   (`link_stat_ids` in `Calc/equipment.lua`); weapons still show the missing-data hint.
 - Spells the client does not have (`GetSpellInfo` nil) are skipped in the Spells tab and the

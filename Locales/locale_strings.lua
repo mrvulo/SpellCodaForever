@@ -575,6 +575,18 @@ for _, v in ipairs({
   "Show ignored spells (%d)",
   "Stop ignoring all",
   "Right click: stop ignoring",
+  "Weapon skill",
+  "Weapon skills",
+  "Known",
+  "Trained by",
+  "Left click: set waypoint",
+  "Waypoint set: %s",
+  "Show known weapon skills",
+  "Show weapon skills",
+  "Show spells",
+  "Waypoint could not be set: %s",
+  "Ignore weapon skill",
+  "No weapon skills left to learn",
 }) do
   L[v] = v;
 end
