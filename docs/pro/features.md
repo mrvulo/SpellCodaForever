@@ -32,7 +32,7 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F026 | Spellbook page: "show known spells" toggle (weapons have it) | idea | — | — |
 | F027 | ruRU: weapons with a damage school (wands) parse from the tooltip | idea | — | Calc/equipment.lua |
 | F028 | Our strings in itIT, koKR, ptBR, ptPT, zhCN, zhTW | idea | — | Locales/ |
-| F029 | CurseForge description updated to the current features | idea | — | branding/ (text) |
+| F029 | CurseForge description updated to the current features | review (user pastes it on CurseForge) | 0.58 | branding/curseforge.md |
 
 ## Open questions, only answerable in game
 

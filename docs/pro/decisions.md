@@ -28,3 +28,4 @@ Format: date · decision · source · feature
 - 2026-10-10 · Weapon skills and weapon master locations · user · F019
 - 2026-10-11 · Weapons missing from the data read from the item tooltip · user: "ja bau das" · F020
 - 2026-10-11 · Project memory in `docs/pro/` · user: "ja leg docs/pro an" · —
+- 2026-10-11 · CurseForge description rewritten for 0.58, kept in `branding/curseforge.md` · user: "mach die CurseForge-Beschreibung aktuell" · F029
