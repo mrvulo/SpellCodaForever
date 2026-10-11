@@ -212,6 +212,145 @@ end
 -- Item values come either per item from the client data (old clients) or from formulas of ilvl and quality
 -- (Forever, whose item data has no damage or armor columns). The generated tables decide which.
 
+-- Weapons the generated data lacks (the client's item tables lack about half of
+-- Classic's gear): damage, speed and school read from the item's own tooltip.
+-- The line patterns come from the client's global strings, so every language
+-- reads its own wording ("11 - 21 Damage", "9 - 17 Fire Damage", "11 - 21 Schaden").
+local damage_patterns;
+local school_by_name;
+
+-- a Lua pattern from a global string template, each %s (or %1$s) replaced by
+-- the next capture
+-- Positional placeholders put the values in another order ("Dégâts (%3$s) :
+-- %1$s - %2$s"): `order` lists, per capture, which value it is.
+local function template_pattern(template, captures)
+    local pattern, n, pos, order = "^", 0, 1, {};
+    while true do
+        local s, e, index = string.find(template, "%%(%d*)%$?s", pos);
+        if not s then
+            break;
+        end
+        pattern = pattern..(string.gsub(string.sub(template, pos, s - 1), "[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0"));
+        n = n + 1;
+        local value = tonumber(index) or n;
+        pattern = pattern..(captures[value] or "(.-)");
+        order[n] = value;
+        pos = e + 1;
+    end
+    return pattern..(string.gsub(string.sub(template, pos), "[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0")).."$", order;
+end
+
+local function build_damage_patterns()
+    damage_patterns = {};
+    -- most specific first: with a school, then the plain range, then a single value
+    local templates = {
+        { _G.DAMAGE_TEMPLATE_WITH_SCHOOL, { "(%d+)", "(%d+)", "(.-)" }, "range_school" },
+        { _G.DAMAGE_TEMPLATE, { "(%d+)", "(%d+)" }, "range" },
+        { _G.SINGLE_DAMAGE_TEMPLATE_WITH_SCHOOL, { "(%d+)", "(.-)" }, "single_school" },
+        { _G.SINGLE_DAMAGE_TEMPLATE, { "(%d+)" }, "single" },
+    };
+    for _, t in ipairs(templates) do
+        -- "|3-6(...)" is a grammar escape the client expands when it renders
+        -- (ruRU); such a template never matches the rendered text
+        if type(t[1]) == "string" and not string.find(t[1], "|3", 1, true) then
+            local pattern, order = template_pattern(t[1], t[2]);
+            table.insert(damage_patterns, { pattern = pattern, order = order, kind = t[3] });
+        end
+    end
+    -- DAMAGE_SCHOOLn is the plain school name in every locale (STRING_SCHOOL_*
+    -- is decorated in some, e.g. frFR "(Feu)")
+    school_by_name = {};
+    for id, key in pairs({ [2] = "HOLY", [3] = "FIRE", [4] = "NATURE", [5] = "FROST", [6] = "SHADOW", [7] = "ARCANE" }) do
+        -- either string may be missing; ipairs would stop at a nil first one
+        for _, global in ipairs({ "DAMAGE_SCHOOL"..id, "STRING_SCHOOL_"..key }) do
+            local name = _G[global];
+            if type(name) == "string" then
+                school_by_name[name] = id;
+                school_by_name[string.lower(name)] = id;
+            end
+        end
+    end
+end
+
+local function school_id(name)
+    if not name then
+        return 1;
+    end
+    return school_by_name[name] or school_by_name[string.lower(name)] or 1;
+end
+
+local tooltip_weapon_cache = {};
+-- min, max, delay, school or nil
+local function tooltip_weapon_stats(link)
+    if not link or not sc.api.readable(link) then
+        return nil;
+    end
+    local cached = tooltip_weapon_cache[link];
+    if cached then
+        return cached[1], cached[2], cached[3], cached[4];
+    end
+    local data = C_TooltipInfo and C_TooltipInfo.GetHyperlink(link);
+    if not data or not data.lines then
+        return nil;
+    end
+    if not damage_patterns then
+        build_damage_patterns();
+    end
+    for _, line in ipairs(data.lines) do
+        local left, right = line.leftText, line.rightText;
+        if sc.api.readable(left) and type(left) == "string" and sc.api.readable(right) and type(right) == "string" then
+            for _, p in ipairs(damage_patterns) do
+                local matched = { string.match(left, p.pattern) };
+                -- values in their logical order (min, max, school)
+                local values = {};
+                for k, v in ipairs(matched) do
+                    values[p.order[k] or k] = v;
+                end
+                local a, b, c = values[1], values[2], values[3];
+                if a then
+                    local min, max, school_name;
+                    if p.kind == "range_school" then
+                        min, max, school_name = a, b, c;
+                    elseif p.kind == "range" then
+                        min, max = a, b;
+                    elseif p.kind == "single_school" then
+                        min, max, school_name = a, a, b;
+                    else
+                        min, max = a, a;
+                    end
+                    -- the speed stands on the same line, right side ("Speed 2.80", "Tempo 2,80")
+                    local speed = string.match(right, "(%d+[%.,]%d+)");
+                    speed = speed and tonumber((string.gsub(speed, ",", ".")));
+                    if speed then
+                        local school = school_id(school_name);
+                        tooltip_weapon_cache[link] = { tonumber(min), tonumber(max), speed, school };
+                        return tonumber(min), tonumber(max), speed, school;
+                    end
+                end
+            end
+        end
+    end
+    -- not cached: the item may not be loaded yet, the next tooltip tries again
+    return nil;
+end
+
+-- An equipped weapon the data lacks whose tooltip cannot be read yet. The
+-- equipment scan then reports nothing found so it runs again; a few tries per
+-- link, in case a locale's tooltip never parses.
+local rescan_tries = {};
+local function weapon_needs_rescan(info)
+    local link = info.link;
+    if not link or not info.id or (sc.scaled_weapons and sc.scaled_weapons[info.id]) or info.class_id ~= 2 then
+        return false;
+    end
+    if tooltip_weapon_stats(link) then
+        return false;
+    end
+    local tries = (rescan_tries[link] or 0) + 1;
+    rescan_tries[link] = tries;
+    return tries <= 5;
+end
+
 -- min, max, delay, school or nil
 local weapon_stats;
 if sc.weapons then
@@ -224,7 +363,10 @@ if sc.weapons then
 else
     weapon_stats = function(item_info)
         local wpn = sc.scaled_weapons[item_info.id];
-        if not wpn or not item_info.ilvl then
+        if not wpn then
+            return tooltip_weapon_stats(item_info.link);
+        end
+        if not item_info.ilvl then
             return;
         end
         local ilvl_to_quality_dps;
@@ -407,17 +549,20 @@ end
 -- false for items released after the generated data was made
 local item_in_data;
 if sc.item_stat_pcts then
-    -- an item the data lacks still counts when its link carries readable stats,
-    -- except weapons: their damage only comes from the data
+    -- an item the data lacks is still evaluated from its link: stats from the
+    -- link, armor from the formulas; weapons need their damage line readable
     item_in_data = function(item_id, link)
         if sc.item_stat_pcts[item_id] ~= nil then
             return true;
         end
-        if not link or not link_stats(link) then
+        if not link then
             return false;
         end
         local _, _, _, _, _, class_id = C_Item.GetItemInfoInstant(link);
-        return class_id ~= 2;
+        if class_id == 2 and not (sc.scaled_weapons and sc.scaled_weapons[item_id]) then
+            return tooltip_weapon_stats(link) ~= nil;
+        end
+        return true;
     end;
 else
     item_in_data = function()
@@ -857,11 +1002,19 @@ local function apply_equipment(loadout, effects)
         if wpn_strs[item] then
             write_item_info_from_link(equipped_wpn_info, item_link);
             equipped_wpn_info.id = id;
+            -- the info table is shared by the weapon slots; an empty slot must
+            -- not keep the previous slot's link
+            equipped_wpn_info.link = item_link;
             if item_link and not equipped_wpn_info.subclass_id then
                 found_anything = false;
             end
 
             apply_weapon(effects, equipped_wpn_info, item, false);
+            -- a weapon read from its tooltip whose tooltip is not readable yet:
+            -- scan again, or a later comparison would undo damage never added
+            if weapon_needs_rescan(equipped_wpn_info) then
+                found_anything = false;
+            end
         end
     end
     if write_item_info_from_link(equipped_ammo_info, loadout.item_links[slots.AmmoSlot]) then

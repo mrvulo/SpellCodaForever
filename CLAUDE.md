@@ -74,8 +74,12 @@ Ours only:
   class, their masters per side with town, coordinates and town faction, kept by hand in
   `UI/weapon_skills.lua` (trainer lists are server side; Forever extras and Woo Ping's harbor
   coordinates are noted there). Left click sets a map waypoint to the cheapest master.
-- Items missing from `Data/` (the client's tables lack them too) use their link's stats
-  (`link_stat_ids` in `Calc/equipment.lua`); weapons still show the missing-data hint.
+- Items missing from `Data/`: the Forever client ships only about half of Classic's gear in its
+  item tables (the rest comes from the server), so upstream's generator cannot see them. Their
+  stats come from the link (`link_stat_ids` in `Calc/equipment.lua`); weapon damage, speed and
+  school from the item tooltip (`tooltip_weapon_stats`, patterns built from the client's global
+  strings incl. positional `%1$s`; ruRU school templates with `|3` grammar escapes are skipped).
+  Tested under a Lua VM for enUS/deDE/frFR/ruRU (fengari, see the session scratchpad).
 - Spells the client does not have (`GetSpellInfo` nil) are skipped in the Spells tab and the
   spellbook page. Spells with rank 0 show the client's rank text.
 - Combat: auras are secret in combat; `Calc/buffs.lua` keeps the last readable snapshot per unit
