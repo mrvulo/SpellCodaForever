@@ -82,8 +82,15 @@ def check_toc():
         fail('toc', f'IconTexture file missing: {icon}')
 
 
+def doc_files():
+    out = [f for f in ('CLAUDE.md', 'README.md') if os.path.isfile(os.path.join(ROOT, f))]
+    for d, dirs, files in os.walk(os.path.join(ROOT, 'docs')):
+        out += [rel(os.path.join(d, f)) for f in files if f.endswith('.md')]
+    return out
+
+
 def check_names():
-    for f in addon_lua_files() + ['SpellCodaForever.toc', 'CHANGELOG-release.md']:
+    for f in addon_lua_files() + ['SpellCodaForever.toc', 'CHANGELOG-release.md'] + doc_files():
         text = open(os.path.join(ROOT, f), encoding='utf-8').read()
         if FORBIDDEN_NAMES.search(text):
             fail('names', f'reference addon named in {f}')

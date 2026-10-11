@@ -51,48 +51,25 @@ Ours only:
 - `Media/icon.tga` — addon icon (TOC, minimap, spellbook tab, options). Genuine 32-bit TGA.
 - `tools/`, `branding/`, `.github/`, `.pkgmeta`, `CHANGELOG-release.md`, docs — never packaged.
 
-## Things that must not break (each was decided by the user)
+## Project memory (`docs/pro/`)
 
-- Saved variables `SpellCodaForeverDB` / `SpellCodaForeverCharDB`. Upstream code uses
-  `__sc_p_acc` / `__sc_p_char`: rename on every merge. Renaming ours loses all settings.
-- `core.addon_name = "SpellCodaForever"`; slash commands `/sc /spellcoda /scf /spellcodaforever`.
-- Window look: Blizzard metal frame (`ButtonFrameTemplateNoPortrait` NineSlice) over rock, gold
-  title in the top band, red panel-button tabs (`create_blizz_tab`), scale grip bottom right.
-  Upstream has its own tab art (`create_tab_button`, `select_tab`, `layout_tabs`): never bring
-  those back into ui.lua, our tabs use LockHighlight/UnlockHighlight.
-- Spellbook: our tab sits right of the category tabs (`UI/spellbook.lua`), attached on
-  `ADDON_LOADED Blizzard_PlayerSpells` (`Core/core.lua`) and in `post_login_load` (`UI/ui.lua`). The old
-  right-edge side tab is gone. Overlays on spellbook buttons come from upstream's
-  `overlay.hook_spell_book`.
-- Spellbook page features: trainer prices with 10% reputation discount from Honored with a
-  trainer town of the class (`trainer_factions` in `UI/spellbook.lua`, prices rounded per
-  spell), sections Now available / Missing requirement (previous rank not learned) / Coming
-  soon / Not yet available / Ignored, own search box and settings menu over the book's, right
-  click ignores. The ignore list is `config.settings.spells_ignore_list`, shared with the
-  Spells tab; both sides refresh each other.
-- Spellbook page weapons view (sword button left of the settings menu): weapon skills of the
-  class, their masters per side with town, coordinates and town faction, kept by hand in
-  `UI/weapon_skills.lua` (trainer lists are server side; Forever extras and Woo Ping's harbor
-  coordinates are noted there). Left click sets a map waypoint to the cheapest master.
-- Items missing from `Data/`: the Forever client ships only about half of Classic's gear in its
-  item tables (the rest comes from the server), so upstream's generator cannot see them. Their
-  stats come from the link (`link_stat_ids` in `Calc/equipment.lua`); weapon damage, speed and
-  school from the item tooltip (`tooltip_weapon_stats`, patterns built from the client's global
-  strings incl. positional `%1$s`; ruRU school templates with `|3` grammar escapes are skipped).
-  Tested under a Lua VM for enUS/deDE/frFR/ruRU (fengari, see the session scratchpad).
-- Spells the client does not have (`GetSpellInfo` nil) are skipped in the Spells tab and the
-  spellbook page. Spells with rank 0 show the client's rank text.
-- Combat: auras are secret in combat; `Calc/buffs.lua` keeps the last readable snapshot per unit
-  (ours, on top of upstream's scan). Tooltip widths/sizes go through `num`/`secret_or`.
-- Locales: German, French, Spanish (esES + esMX) and Russian carry our strings. New `L["..."]`
-  keys: add to `Locales/locale_strings.lua` and those locale files. No raw `"` in values.
-- Item bonuses against one creature type ("+X spell damage against Undead") are read from the
-  item stats in `Calc/equipment.lua` (`apply_creature_stats`); upstream's data has no fields for them.
-- `Libs/LibUIDropDownMenu` stays at rev 133: rev 135 takes Forever (16001) for Classic Era and
-  calls a color picker API the client lacks, and through LibStub it would replace other
-  addons' copies.
-- TOC: title `SpellCoda |cff9b6cffForever|r`, `X-Curse-Project-ID: 1716723`, icon
-  `Interface\AddOns\SpellCodaForever\Media\icon`.
+Read before every change, update in the same commit as the code:
+
+- [invariants.md](docs/pro/invariants.md) — everything that must not break, with why and guard
+- [regressions.md](docs/pro/regressions.md) — fixed bugs per area; read the entries for the area you touch
+- [features.md](docs/pro/features.md) — feature index, idea backlog, open in-game questions
+- [decisions.md](docs/pro/decisions.md) — append-only log of the user's choices
+
+"Was ist noch offen?" is answered from `features.md`, not from memory. Code done but not tested
+in game is `test-in-game`, never `done`.
+
+The hardest rules (details and the rest in invariants.md):
+- Saved variables `SpellCodaForeverDB` / `SpellCodaForeverCharDB` (I-01).
+- Our window look and tabs stay; upstream's tab code never returns to `UI/ui.lua` (I-10, I-11).
+- Calculation and `Data/` come from upstream via the merge script, never 1:1 (I-20, I-21).
+- Secret values only through `sc.api` / `sc.utils.secret_or` (I-26).
+- `Libs/LibUIDropDownMenu` stays at rev 133 (I-27).
+- New locale keys go into de/fr/es(+MX)/ru and `locale_strings.lua` (I-30).
 
 ## Naming
 

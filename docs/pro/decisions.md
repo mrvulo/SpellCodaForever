@@ -1,0 +1,30 @@
+# Decisions
+
+Append only. Newest at the bottom. `assumed` = Claude chose a default, the user can overrule.
+Format: date · decision · source · feature
+
+- 2026-09-28 · Rename to SpellCodaForever, Forever only, keep improving · user: "SpellCodaForever nennen und für WoW Forever kompatibel machen" · F001
+- 2026-09-28 · Remove the original's Discord/GitHub/CurseForge references from the addon · user: "ja nimm den discord hinweis auch raus" · F001
+- 2026-09-28 · Spell data from the Forever client, verified by a `/sc verify` command first · user: "ja leg los, fang mit dem prüfbefehl an" · F001 (pipeline replaced 2026-10-09)
+- 2026-09-28 · Also patch talent/buff values, item values and creature-type bonuses · user · F001, F011
+- 2026-09-28 · Version numbering continues at 0.44 · user · —
+- 2026-09-28 · CurseForge project 1716723, public GitHub repo, automatic packager on tags · user: "ja mach öffentlich" · F002
+- 2026-09-28 · Own saved variable names · user · F003
+- 2026-09-28 · Blizzard-style window · user · F004
+- 2026-10-02 · Junction from the Forever AddOns folder to the repo · user · —
+- 2026-10-03 · SpellCoda tab where the other addon's "?" tab was, page like its trainer list; total above the rule, title "SpellCoda Forever" · user · F005
+- 2026-10-04 · Add Forever trainer spells as list entries first (A), calculation later (B) · user: "ja mach A" · F007
+- 2026-10-05 · Own icon everywhere (TOC, minimap, tab, options) · user · F008
+- 2026-10-06 · Translate into the four biggest WoW languages: de, fr, es, ru · user · F009
+- 2026-10-09 · Take upstream SpellCoda 0.12 data and calculation, merged, "not 1:1" · user: "übernimm seine daten", "aber nicht 1:1" · F010
+- 2026-10-09 · Own data pipeline (`tools/forever_data.py`, era source) removed; spell data comes from upstream's generated Camelot data · follows from the line above · F010
+- 2026-10-09 · Restructure and keep a memory so changes stop breaking things · user · F013, F014
+- 2026-10-09 · Rebuild the creature-type bonus on upstream's item code · user · F011
+- 2026-10-09 · LibUIDropDownMenu stays at rev 133 (upstream's 135 harmful on Forever) · assumed after review · I-27
+- 2026-10-09 · Warn when the original SpellCoda is enabled at the same time · assumed after review · F012
+- 2026-10-09 · Complete fr/es/ru translations · user · F009
+- 2026-10-10 · Full folder restructure with a merge script and layout map · user: "Komplett neu ordnen" · F014
+- 2026-10-10 · Build spellbook page items 1–3: reputation discount, missing requirement, search + ignore · user: "bau 1 bis 3" · F015–F017
+- 2026-10-10 · Weapon skills and weapon master locations · user · F019
+- 2026-10-11 · Weapons missing from the data read from the item tooltip · user: "ja bau das" · F020
+- 2026-10-11 · Project memory in `docs/pro/` · user: "ja leg docs/pro an" · —
