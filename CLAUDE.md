@@ -89,7 +89,7 @@ Release only after the user tested, or when they say so.
 ## Taking upstream changes
 
 Upstream: `https://github.com/jezzi23/spellcoda`, data in `jezzi23/spellcoda-generated`
-(`Camelot/` folder). Current merge base: **v0.12.2897** (generated 9a5eddf).
+(`Camelot/` folder). Current merge base: **v0.13.2907** (generated 6309d52).
 
 1. On a branch: `python tools/upstream_merge.py <merge base> <new tag>`. It merges every mapped
    file (`git merge-file`), replaces `Data/`, merges `Locales/locale_strings.lua` keeping our

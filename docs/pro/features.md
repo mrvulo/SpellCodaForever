@@ -33,6 +33,10 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F027 | ruRU: weapons with a damage school (wands) parse from the tooltip | idea | — | Calc/equipment.lua |
 | F028 | Our strings in itIT, koKR, ptBR, ptPT, zhCN, zhTW | idea | — | Locales/ |
 | F029 | CurseForge description updated to the current features | review (user pastes it on CurseForge) | 0.58 | branding/curseforge.md |
+| F030 | Item stats of every item read from the client (`GetItemStats`) instead of formulas; replaces our link fallback, data ~745→436 KB (upstream 0.13.2907) | test-in-game | 0.59 | Calc/equipment.lua, Data/ |
+| F031 | Damage of known weapons and ammo: exact DPS from the client instead of ilvl tables, tooltip as fallback (upstream 0.13.2907) | test-in-game | 0.59 | Calc/equipment.lua |
+| F032 | Item tooltip: hint only when weapon/ammo damage is unreadable (upstream 0.13.2907) | test-in-game | 0.59 | UI/tooltip.lua, Locales/ |
+| F033 | Item armor from the item (`RESISTANCE0_NAME` item stat in upstream 0.13 data; armor formula gone) | test-in-game | 0.59 | Calc/equipment.lua |
 
 ## Open questions, only answerable in game
 
@@ -40,3 +44,6 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 - F015: Revered / Exalted give more than 10%? (only Honored = 10% confirmed)
 - F019: Bixi Wobblebonk's discount faction: Ironforge (47, used) or Gnomeregan (54)?
 - F010: Fire Nova rank 1 — upstream data 48–56 coef 0.1 vs Forever DB2 408423 46–54 coef 0.214; compare with the in-game tooltip.
+- F030: item 272061 (equip mp5 10): comparison shows +10 mp5, not +20 (equip spell and item stat counted once)?
+- F030: enchanted item with "apply enchant" on: enchant stats counted once?
+- F031: ammo tooltip "Adds X damage per second" equals SpellCoda's ammo value; no red ammo line on normal arrows/bullets?

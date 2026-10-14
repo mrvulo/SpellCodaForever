@@ -42,7 +42,7 @@ sc.core                         = core;
 core.addon_name                 = "SpellCodaForever";
 
 local version_major             = 0;
-local version_minor             = 58;
+local version_minor             = 59;
 local version_build             = sc.addon_build_id;
 
 core.version_id                 = version_build + version_minor*100000 + version_major*100000000;
@@ -468,11 +468,6 @@ local event_dispatch = {
     ["PLAYER_REGEN_ENABLED"] = function()
         sc.loadouts.force_update = true;
     end,
-    --["LEARNED_SPELL_IN_TAB"] = function()
-    --    sc.spells_feed.external_feed_highest_ranks_update();
-    --    core.old_ranks_checks_needed = true;
-    --    sc.loadouts.force_update = true;
-    --end,
     ["SPELLS_CHANGED"] = function()
         sc.spells_feed.external_feed_highest_ranks_update();
         core.old_ranks_checks_needed = true;

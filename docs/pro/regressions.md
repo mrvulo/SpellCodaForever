@@ -18,3 +18,5 @@ Second entry with the same symptom → add a guard (checker or single code path)
 | R-11 | 2026-10-11 | Calc/equipment | Fire wand counted as physical in itIT/ptBR; frFR/koKR never parsed | Decorated `STRING_SCHOOL_*`, positional `%1$s`, `ipairs` stopping at nil | `DAMAGE_SCHOOLn`, order map; Lua VM test |
 | R-12 | 2026-10-11 | Calc/equipment | Comparison could undo weapon damage never added | Tooltip unreadable at scan time | `weapon_needs_rescan` |
 | R-13 | 2026-09-28 / 10-09 | tools (shell) | Lua/Python with `\` corrupted | Bash heredocs eat backslashes here | write with Write/Edit (CLAUDE.md) |
+| R-14 | 2026-10-14 | Calc/equipment | Rescan request of one slot could be cleared by a later slot (slots run in `pairs` order) | `found_anything` set per slot | `scan_again` flag returned at the end; also covers item stats not loaded after login |
+| R-15 | 2026-10-14 | UI/tooltip (merge) | Unreadable weapon compared as doing 0 damage under the red line | Upstream 0.13 no longer returns after the hint | return after the hint (kept 0.58 behaviour) |

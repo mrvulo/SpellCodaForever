@@ -36,9 +36,10 @@ local empty_effects                             = sc.loadouts.empty_effects;
 local stats_diff_format                         = sc.loadouts.stats_diff_format;
 
 local apply_items_cmp                           = sc.equipment.apply_items_cmp;
-local item_in_data                              = sc.equipment.item_in_data;
 local slots                                     = sc.equipment.slots;
 local wpn_skill_for_slot                        = sc.equipment.wpn_skill_for_slot;
+local weapon_stats                              = sc.equipment.weapon_stats;
+local ammo_dps                                  = sc.equipment.ammo_dps;
 local inv_type_to_slot_ids                      = sc.equipment.inv_type_to_slot_ids;
 
 local talent_pts                                = sc.talents.talent_pts;
@@ -2234,8 +2235,13 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
         end
     end
 
-    if not item_in_data(tt.new_item.id, tt.new_item.link) then
-        tooltip:AddLine(L["Item missing from SpellCoda dataset. An update may be needed"], 1, 0.2, 0.2);
+    -- without its damage the comparison would show the weapon as doing none
+    if tt.new_item.class_id == 2 and not weapon_stats(tt.new_item) then
+        tooltip:AddLine(L["SpellCoda failed to read the weapon's damage"], 1, 0.2, 0.2);
+        tooltip:Show();
+        return;
+    elseif tt.new_item.class_id == 6 and not ammo_dps(tt.new_item) then
+        tooltip:AddLine(L["SpellCoda failed to read the ammo's damage"], 1, 0.2, 0.2);
         tooltip:Show();
         return;
     end
