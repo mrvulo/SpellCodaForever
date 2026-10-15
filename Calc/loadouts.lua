@@ -2345,8 +2345,8 @@ local function update_loadout_and_effects(relaxed_update_dt)
     relaxed_update_dt = relaxed_update_dt or 0;
 
     if now_timestamp - effects_update_timestamp <= relaxed_update_dt then
-
-        effects_update_timestamp = now_timestamp;
+        -- the timestamp is that of the last real update: callers that come
+        -- more often than their dt must still get one every dt
         return loadout_front, buffed, final, effects_update_id;
     end
     effects_update_timestamp = now_timestamp;
@@ -2359,7 +2359,9 @@ local function update_loadout_and_effects(relaxed_update_dt)
     end
     dynamic_loadout(other);
 
-    if not sc.utils.spell_book_shown() and
+    -- the old spellbook needs a full update every tick while shown; the paged
+    -- one (PlayerSpellsFrame) forces one on every page change instead
+    if (PlayerSpellsFrame or not sc.utils.spell_book_shown()) and
         not loadouts.force_update and
         not sc.core.equipment_update_needed and
         not sc.core.talents_update_needed and

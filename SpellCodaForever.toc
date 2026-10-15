@@ -76,6 +76,7 @@ UI/weapon_skills.lua
 UI/spellbook.lua
 UI/spells_feed.lua
 UI/verify.lua
+UI/perf.lua
 Core/core.lua
 Core/public.lua
 

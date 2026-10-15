@@ -37,6 +37,8 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F031 | Damage of known weapons and ammo: exact DPS from the client instead of ilvl tables, tooltip as fallback (upstream 0.13.2907) | test-in-game | 0.59 | Calc/equipment.lua |
 | F032 | Item tooltip: hint only when weapon/ammo damage is unreadable (upstream 0.13.2907) | test-in-game | 0.59 | UI/tooltip.lua, Locales/ |
 | F033 | Item armor from the item (`RESISTANCE0_NAME` item stat in upstream 0.13 data; armor formula gone) | test-in-game | 0.59 | Calc/equipment.lua |
+| F034 | `/sc perf [seconds]`: CPU per frame, share of all addons, slow frames, memory and garbage rate from the client profiler | test-in-game | 0.59 | UI/perf.lua |
+| F035 | Less CPU: no full recompute every tick while the spellbook is open (page display / OnShow force one instead), item tooltip updates at the overlay rate, spellbook page rebuilds coalesced per frame with name-only lookups | test-in-game | 0.59 | Calc/loadouts.lua, UI/tooltip.lua, UI/overlay.lua, UI/spellbook.lua |
 
 ## Open questions, only answerable in game
 
@@ -47,3 +49,4 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 - F030: item 272061 (equip mp5 10): comparison shows +10 mp5, not +20 (equip spell and item stat counted once)?
 - F030: enchanted item with "apply enchant" on: enchant stats counted once?
 - F031: ammo tooltip "Adds X damage per second" equals SpellCoda's ammo value; no red ammo line on normal arrows/bullets?
+- F035: `/sc perf 30` with the spellbook open, before (0.58/main) and after: per-frame time lower? Spellbook numbers right after closing, changing gear, reopening on the same page?

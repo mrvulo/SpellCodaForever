@@ -2246,7 +2246,10 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
         return;
     end
 
-    local loadout, effects, effects_finalized, update_id = update_loadout_and_effects();
+    -- the client sets an item tooltip again several times a second while it
+    -- is hovered; the overlay's update rate is fresh enough for a comparison
+    local loadout, effects, effects_finalized, update_id =
+        update_loadout_and_effects(0.7 / config.settings.overlay_update_freq);
     local updated = update_id > tt.item_tooltip_effects_update_id;
     tt.item_tooltip_effects_update_id = update_id;
 

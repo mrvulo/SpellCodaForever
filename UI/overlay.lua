@@ -387,6 +387,11 @@ local function hook_spell_book()
         clear_overlays();
         sc.loadouts.force_update = true;
     end);
+    -- reopening the book on the same page refreshes the buttons without a page
+    -- display: the numbers may be from before it was closed
+    PlayerSpellsFrame.SpellBookFrame:HookScript("OnShow", function()
+        sc.loadouts.force_update = true;
+    end);
 end
 
 local function gather_spell_icons()

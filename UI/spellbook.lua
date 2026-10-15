@@ -10,6 +10,8 @@ local L                                         = sc.L;
 local spells                                    = sc.spells;
 local spell_flags                               = sc.spell_flags;
 local GetSpellInfo                              = sc.api.GetSpellInfo;
+-- name only: no info table and no subtext lookup, for the per-spell list loops
+local GetSpellName                              = sc.api.GetSpellName;
 local GetSpellTexture                           = sc.api.GetSpellTexture;
 local GetCoinTextureString                      = sc.api.GetCoinTextureString;
 local IsSpellKnownOrOverridesKnown              = sc.api.IsSpellKnownOrOverridesKnown;
@@ -174,7 +176,7 @@ end
 local function learnable(id)
     local spell = spells[id];
     -- in the data but not on this client
-    if not spell or spell.train == 0 or not GetSpellInfo(id) then
+    if not spell or spell.train == 0 or not GetSpellName(id) then
         return false;
     end
     if bit.band(spell.flags, bit.bor(spell_flags.talent, spell_flags.pet)) ~= 0 then
@@ -208,13 +210,19 @@ local function missing_rank(id)
     return nil;
 end
 
+-- the search text in lower case, set once per list build
+local needle = "";
+
+local function read_search()
+    needle = string.lower(search and search:GetText() or "");
+end
+
 local function matches_search(id)
-    local text = search and search:GetText() or "";
-    if text == "" then
+    if needle == "" then
         return true;
     end
-    local name = GetSpellInfo(id);
-    return name ~= nil and string.find(string.lower(name), string.lower(text), 1, true) ~= nil;
+    local name = GetSpellName(id);
+    return name ~= nil and string.find(string.lower(name), needle, 1, true) ~= nil;
 end
 
 -- items: section headings followed by their spells, in level order.
@@ -225,6 +233,7 @@ local function build_spell_items()
     local next_lvl = lvl % 2 == 0 and lvl + 2 or lvl + 1;
     local sections = { available = {}, missing = {}, soon = {}, later = {}, known = {}, ignored = {} };
     local available_costs = {};
+    read_search();
 
     for _, id in ipairs(sc.spells_lvl_ordered) do
         if learnable(id) then
@@ -273,9 +282,10 @@ local function build_weapon_items()
     local next_lvl = lvl % 2 == 0 and lvl + 2 or lvl + 1;
     local sections = { available = {}, soon = {}, later = {}, known = {}, ignored = {} };
     local total = 0;
+    read_search();
 
     for _, entry in ipairs(sc.weapon_skills.list()) do
-        if GetSpellInfo(entry.id) and #entry.masters > 0 then
+        if GetSpellName(entry.id) and #entry.masters > 0 then
             local key;
             if IsSpellKnownOrOverridesKnown(entry.id) then
                 key = show_known_weapons and "known" or nil;
@@ -878,6 +888,25 @@ local function sync()
     end
 end
 
+-- events come in bursts (a trainer visit fires SPELLS_CHANGED per spell, a
+-- quest turn-in several UPDATE_FACTION) and typing fires per key: rebuild the
+-- list once, on the next frame
+local refresh_queued = false;
+local function deferred_refresh()
+    refresh_queued = false;
+    if root and root:IsShown() then
+        refresh();
+    end
+end
+
+local function request_refresh()
+    if refresh_queued then
+        return;
+    end
+    refresh_queued = true;
+    RunNextFrame(deferred_refresh);
+end
+
 local function deferred_sync()
     queued = false;
     sync();
@@ -1011,9 +1040,7 @@ local function create()
     search:SetPoint("RIGHT", view_toggle, "LEFT", -6, 4);
     search:HookScript("OnTextChanged", function()
         offset = 1;
-        if root:IsShown() then
-            refresh();
-        end
+        request_refresh();
     end);
     search:HookScript("OnHide", function(self)
         self:ClearFocus();
@@ -1031,11 +1058,7 @@ local function create()
     root:RegisterEvent("PLAYER_LEVEL_CHANGED");
     -- reputation changes the trainer prices
     root:RegisterEvent("UPDATE_FACTION");
-    root:SetScript("OnEvent", function()
-        if root:IsShown() then
-            refresh();
-        end
-    end);
+    root:SetScript("OnEvent", request_refresh);
 end
 
 -- once the load-on-demand spellbook window exists (ADDON_LOADED in core)

@@ -598,6 +598,8 @@ local function command(arg)
         sw_activate_frame("settings_frame");
     elseif arg == "verify" or arg == "verify all" then
         sc.verify.run(arg == "verify all");
+    elseif arg == "perf" or string.find(arg, "^perf ") then
+        sc.perf.run(string.match(arg, "^perf%s+(.-)%s*$"));
     elseif arg == "reset" then
         core.use_char_defaults = 1;
         core.use_acc_defaults = 1;

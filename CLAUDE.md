@@ -28,7 +28,7 @@ SpellCodaForever.toc
 Core/      api (ours), utils, config, core, public, localization, override
 Calc/      calc, calc_defs, buffs, talents, equipment, loadouts
 Calc/Forever/  Forever mechanics, overrides, scaling (upstream's Camelot/)
-UI/        ui, tooltip, overlay, spells_feed, spellbook (ours), verify (ours)
+UI/        ui, tooltip, overlay, spells_feed, spellbook, weapon_skills, verify, perf (last four ours)
 Data/      spell/item data from upstream's generator (upstream's generated/Camelot/)
 Locales/   one file per language + locale_strings.lua (the localizable key list)
 Libs/      LibStub, CallbackHandler, LibDataBroker, LibDBIcon, LibUIDropDownMenu
@@ -48,6 +48,7 @@ Ours only:
 - `UI/spellbook.lua` — the SpellCoda tab in the spellbook tab row and the parchment page of
   learnable spells (Now available / Coming soon / Not yet available).
 - `UI/verify.lua` — `/sc verify`, compares the data with the client's spell descriptions.
+- `UI/perf.lua` — `/sc perf [seconds]`, CPU/memory/garbage figures from the client's addon profiler.
 - `Media/icon.tga` — addon icon (TOC, minimap, spellbook tab, options). Genuine 32-bit TGA.
 - `tools/`, `branding/`, `.github/`, `.pkgmeta`, `CHANGELOG-release.md`, docs — never packaged.
 
