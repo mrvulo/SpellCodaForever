@@ -31,3 +31,4 @@ Format: date · decision · source · feature
 - 2026-10-11 · CurseForge description rewritten for 0.58, kept in `branding/curseforge.md` · user: "mach die CurseForge-Beschreibung aktuell" · F029
 - 2026-10-14 · Take upstream 0.13.2907 (item stats and weapon DPS from the client) as 0.59; keep our locale-aware weapon tooltip parser and creature bonuses; no source named in changelog/commits · user: "ja" · F030–F033
 - 2026-10-15 · Performance pass: measure with `/sc perf`; only small upstream edits (one-line gates), larger ones (aura scan reuse, ACTIONBAR_SLOT_CHANGED) left out for merge cost · user: "ja mach die 3" · F034, F035
+- 2026-10-16 · Release 0.59 on the user's word, F030–F035 stay test-in-game until reported · user: "release" · F030–F035
