@@ -39,6 +39,15 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F033 | Item armor from the item (`RESISTANCE0_NAME` item stat in upstream 0.13 data; armor formula gone) | test-in-game | 0.59 | Calc/equipment.lua |
 | F034 | `/sc perf [seconds]`: CPU per frame, share of all addons, slow frames, memory and garbage rate from the client profiler | test-in-game | 0.59 | UI/perf.lua |
 | F035 | Less CPU: no full recompute every tick while the spellbook is open (page display / OnShow force one instead), item tooltip updates at the overlay rate, spellbook page rebuilds coalesced per frame with name-only lookups | test-in-game | 0.59 | Calc/loadouts.lua, UI/tooltip.lua, UI/overlay.lua, UI/spellbook.lua |
+| F036 | Combat (restricted values): buffs kept per unit GUID, form buff kept, sheet stats corrected for buffs gained/lost, last read right before restriction (ADDON_RESTRICTION_STATE_CHANGED); replaces our `aura_snapshot` (upstream 0.15.2935) | idea | — | Calc/buffs.lua, Calc/loadouts.lua, Core/core.lua |
+| F037 | Options "mute overlays in combat" and "ignore buffs in combat" (upstream 0.15.2935) | idea | — | Core/config.lua, UI/ui.lua, Locales/ |
+| F038 | Staged (not yet applied) talents previewed correctly; TRAIT_NODE_CHANGED (upstream 0.14) | idea | — | Calc/talents.lua, Calc/loadouts.lua, Core/core.lua |
+| F039 | GCD: cast haste lowers the GCD on Forever, GCD modifiers; periodic spells no longer crit (upstream 0.14 + data) | idea | — | Calc/calc.lua, Calc/Forever/mechanics.lua |
+| F040 | Healing crit modifier effects counted (upstream 0.15) | idea | — | Calc/calc.lua |
+| F041 | Calculator mode: spell tooltip shows before / difference / after side by side; item planner refreshes when item data arrives (upstream 0.14) | idea | — | UI/tooltip.lua, UI/ui.lua |
+| F042 | Data update to client 1.60.1.70450 (= installed beta build), threat values on (upstream 0.15.2935) | idea | — | Data/, Calc/Forever/override.lua |
+| F043 | Spellbook page: per-spell value columns (per second, per cost) and sorting like upstream's new spellbook catalogue | idea | — | UI/spellbook.lua |
+| F044 | Live Forever client ("wowf" 1.60.1.70532): upstream ships separate `Forever/` data and code; switch `Data/` + `Calc/Forever/` source in `tools/layout.json` when the live client replaces the beta | idea | — | tools/layout.json, Data/ |
 
 ## Open questions, only answerable in game
 
