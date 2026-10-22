@@ -42,7 +42,7 @@ sc.core                         = core;
 core.addon_name                 = "SpellCodaForever";
 
 local version_major             = 0;
-local version_minor             = 59;
+local version_minor             = 60;
 local version_build             = sc.addon_build_id;
 
 core.version_id                 = version_build + version_minor*100000 + version_major*100000000;
@@ -55,6 +55,7 @@ core.addon_running_time         = 0;
 core.active_spec                = 1;
 core.doing_raid                 = false;
 core.mute_overlay               = false;
+core.in_combat                  = false;
 
 core.talents_update_needed      = true;
 core.equipment_update_needed    = true;
@@ -141,7 +142,9 @@ function core.overlay_refresh_config(overlay_disable_changed)
 
     local in_instance, instance_type = IsInInstance();
     sc.core.doing_raid = in_instance and (instance_type == "pvp" or (IsInRaid() and instance_type == "raid"));
-    local should_mute_overlay = config.settings.overlay_disable_in_raid and sc.core.doing_raid;
+    local should_mute_overlay =
+        (config.settings.overlay_disable_in_raid and sc.core.doing_raid) or
+        (config.settings.overlay_disable_in_combat and core.in_combat);
     if not core.mute_overlay and should_mute_overlay then
         sc.overlay.clear_overlays();
         sc.core.old_ranks_checks_needed = true;
@@ -206,19 +209,16 @@ local function refresh_tooltip()
 
     local dt = tooltip_dt;
 
-    local spells_frame_open = false;
-    local calc_frame_open = false;
-    if __sc_frame:IsShown() then
-        spells_frame_open = __sc_frame.spells_frame:IsShown();
-        calc_frame_open = __sc_frame.calculator_frame:IsShown();
-    end
+    local catalogue_open = sc.ui.spell_catalogue_visible();
+    local calc_frame_open = __sc_frame:IsShown() and __sc_frame.calculator_frame:IsShown();
 
     if config.settings.overlay_disable or core.mute_overlay then
         -- overlay is off, trigger updates which may exit early if nothing changed
         if calc_frame_open then
             sc.ui.update_calc_list(false);
-        elseif spells_frame_open then
-            sc.ui.update_spells_frame();
+        end
+        if catalogue_open then
+            sc.ui.update_spell_catalogues();
         end
     elseif calc_frame_open and __sc_frame.calculator_frame.calculator_plan_changed then
         -- lower response time of calc updates when plan changed
@@ -266,15 +266,11 @@ end
 
 function core.deactivate_tooltip_refresh()
 
-    local spells_frame_open = false;
-    local calc_frame_open = false;
-    if __sc_frame:IsShown() then
-        spells_frame_open = __sc_frame.spells_frame:IsShown();
-        calc_frame_open = __sc_frame.calculator_frame:IsShown();
-    end
+    local catalogue_open = sc.ui.spell_catalogue_visible();
+    local calc_frame_open = __sc_frame:IsShown() and __sc_frame.calculator_frame:IsShown();
     if not GameTooltip:IsShown() and
         not ItemRefTooltip:IsShown() and
-        not (spells_frame_open and (config.settings.overlay_disable or core.mute_overlay)) and
+        not (catalogue_open and (config.settings.overlay_disable or core.mute_overlay)) and
         not calc_frame_open then
 
         refreshing_tooltip = false;
@@ -295,6 +291,7 @@ local event_dispatch = {
         end
     end,
     ["PLAYER_LOGOUT"] = function()
+        sc.ui.spellbook_tab_undock_sc_frame();
         save_config();
     end,
     ["PLAYER_LOGIN"] = function()
@@ -436,6 +433,27 @@ local event_dispatch = {
             update_talents_frame();
         end
     end,
+    -- talents are C_Traits configs on this client
+    ["TRAIT_NODE_CHANGED"] = function()
+        core.talents_update_needed = true;
+        sc.loadouts.force_update = true;
+    end,
+    ["TRAIT_CONFIG_UPDATED"] = function(_, config_id)
+        if config_id == C_ClassTalents.GetActiveConfigID() then
+            core.talents_update_needed = true;
+            sc.loadouts.force_update = true;
+            if core.sw_addon_loaded then
+                update_talents_frame();
+            end
+        end
+    end,
+    ["PLAYER_TALENT_UPDATE"] = function()
+        core.talents_update_needed = true;
+        sc.loadouts.force_update = true;
+        if core.sw_addon_loaded then
+            update_talents_frame();
+        end
+    end,
     ["PLAYER_EQUIPMENT_CHANGED"] = function(_, slot)
         core.equipment_update_needed = true;
         update_calculator_character_items(slot);
@@ -446,30 +464,13 @@ local event_dispatch = {
     end,
     ["LEARNED_SPELL_IN_SKILL_LINE"] = function()
         sc.spells_feed.external_feed_highest_ranks_update();
+        sc.ui.spells_known_changed();
         core.old_ranks_checks_needed = true;
-        sc.loadouts.force_update = true;
-    end,
-    -- talents are C_Traits configs on this client
-    ["TRAIT_CONFIG_UPDATED"] = function()
-        sc.loadouts.force_update = true;
-        core.talents_update_needed = true;
-        if core.sw_addon_loaded then
-            update_talents_frame();
-        end
-    end,
-    ["PLAYER_TALENT_UPDATE"] = function()
-        sc.loadouts.force_update = true;
-        core.talents_update_needed = true;
-        if core.sw_addon_loaded then
-            update_talents_frame();
-        end
-    end,
-    -- stats and auras were frozen while secret, read them again
-    ["PLAYER_REGEN_ENABLED"] = function()
         sc.loadouts.force_update = true;
     end,
     ["SPELLS_CHANGED"] = function()
         sc.spells_feed.external_feed_highest_ranks_update();
+        sc.ui.spells_known_changed();
         core.old_ranks_checks_needed = true;
         sc.loadouts.force_update = true;
     end,
@@ -481,16 +482,36 @@ local event_dispatch = {
         core.talents_update_needed = true;
     end,
     ["PLAYER_REGEN_DISABLED"] = function()
-        -- Hide addon UI when in combat
+        -- Hide addon UI when in combat in Hardcore mode
         if bit.band(sc.game_mode, sc.game_modes.hardcore) ~= 0 then
             __sc_frame:Hide();
         end
+        core.in_combat = true;
+        core.overlay_refresh_config();
+    end,
+    ["PLAYER_REGEN_ENABLED"] = function()
+        core.in_combat = false;
+        core.overlay_refresh_config();
+        -- stats and auras were frozen while secret, read them again
+        sc.loadouts.force_update = true;
     end,
     ["PLAYER_ENTERING_WORLD"] = function()
+        core.in_combat = UnitAffectingCombat("player") and true or false;
         core.overlay_refresh_config();
     end,
     ["GROUP_ROSTER_UPDATE"] = function()
         core.overlay_refresh_config();
+    end,
+    ["ITEM_DATA_LOAD_RESULT"] = function(_, item_id, success)
+        sc.utils.item_data_received(item_id, success);
+    end,
+    ["ADDON_RESTRICTION_STATE_CHANGED"] = function()
+        -- fires before a restriction activates while values are still readable, the last read before they go secret
+        sc.loadouts.force_update = true;
+        -- before login the loadout is not set up yet (login in combat)
+        if core.sw_addon_loaded then
+            sc.loadouts.update_loadout_and_effects();
+        end
     end,
 };
 
@@ -501,6 +522,11 @@ local event_client_filters = {
     ["GLYPH_ADDED"]            = client_flags.wotlk,
     ["GLYPH_REMOVED"]          = client_flags.wotlk,
     ["GLYPH_UPDATED"]          = client_flags.wotlk,
+
+    ["TRAIT_NODE_CHANGED"]     = client_flags.forever,
+    ["TRAIT_CONFIG_UPDATED"]   = client_flags.forever,
+    ["PLAYER_TALENT_UPDATE"]   = client_flags.forever,
+    ["ADDON_RESTRICTION_STATE_CHANGED"] = client_flags.forever,
 };
 
 core.event_dispatch = event_dispatch;

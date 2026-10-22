@@ -29,22 +29,11 @@ local function any_secret(...)
     return false;
 end
 
-local reported_secrets = {};
-
--- for values not expected to be secret: returns fallback instead, debug mode reports each site once
-local function secret_or(v, fallback, what)
-    if not is_secret(v) then
-        return v;
+local function secret_or(v, fallback)
+    if is_secret(v) then
+        return fallback;
     end
-    if __spellcoda_debug__ and not reported_secrets[what] then
-        reported_secrets[what] = true;
-        print(string.format("|cFFFF4040SpellCoda secret:|r %s, in combat: %s, at %s",
-            what,
-            tostring(InCombatLockdown()),
-            (debugstack(2, 1, 0) or ""):gsub("\n", "")
-        ));
-    end
-    return fallback;
+    return v;
 end
 
 local function spell_book_shown()
@@ -390,6 +379,34 @@ local function write_item_info_from_link(info, link)
     return true;
 end
 
+local item_data_callbacks = {};
+
+-- true when the item data is cached, otherwise requests it and calls callback(item_id, success) once it arrives
+local function request_item_data(item_id, callback)
+    if C_Item.IsItemDataCachedByID(item_id) then
+        return true;
+    end
+    local callbacks = item_data_callbacks[item_id];
+    if not callbacks then
+        callbacks = {};
+        item_data_callbacks[item_id] = callbacks;
+    end
+    callbacks[callback] = true;
+    C_Item.RequestLoadItemDataByID(item_id);
+    return false;
+end
+
+local function item_data_received(item_id, success)
+    local callbacks = item_data_callbacks[item_id];
+    if not callbacks then
+        return;
+    end
+    item_data_callbacks[item_id] = nil;
+    for callback in pairs(callbacks) do
+        callback(item_id, success);
+    end
+end
+
 -- combat rating defs not in vanilla client but needed for generality
 local combat_ratings = {
     CR_DEFENSE_SKILL                  = CR_DEFENSE_SKILL                    or 2,
@@ -451,6 +468,8 @@ utils.curve_value                   = curve_value;
 utils.dummy_value                   = dummy_value;
 utils.assign_color_tag              = assign_color_tag;
 utils.write_item_info_from_link     = write_item_info_from_link;
+utils.request_item_data             = request_item_data;
+utils.item_data_received            = item_data_received;
 utils.table_from_schema             = table_from_schema;
 utils.combat_ratings                = combat_ratings;
 

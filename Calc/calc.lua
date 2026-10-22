@@ -56,6 +56,7 @@ local talent_idx                                    = sc.talent_idx;
 
 local gcd_max                                       = sc.mechanics.gcd;
 local gcd_min                                       = sc.mechanics.gcd_min;
+local cast_haste_reduces_gcd                        = sc.mechanics.cast_haste_reduces_gcd;
 local client_class_stats_spell                      = sc.mechanics.client_class_stats_spell;
 local client_special_abilities                      = sc.mechanics.client_special_abilities;
 local client_class_cast_time                       = sc.mechanics.client_class_cast_time;
@@ -396,6 +397,8 @@ local function stats_crit_mod(attack_subclass, bid, comp, spell, loadout, effect
                 end
             end
         end
+    elseif bit.band(spell.flags, spell_flags.heal) ~= 0 then
+        crit_mod_extra = crit_mod_extra + effects.raw.heal_crit_mod;
     end
 
     base_crit_mod = (1.0 + base_crit_mod) * (1.0 + crit_mod_extra) - 1.0;
@@ -847,7 +850,10 @@ end
 -- Execution time of spell
 local function stats_cast_time(stats, bid, comp, spell, loadout, effects, eval_flags)
 
-    local gcd = math.min(spell.gcd, gcd_max) + (effects.ability.gcd_flat[bid] or 0.0);
+    local gcd =
+        (math.min(spell.gcd, gcd_max) + (effects.ability.gcd_flat[bid] or 0.0))
+        *
+        (1.0 + (effects.ability.gcd[bid] or 0.0));
 
     local cast_time;
     if bit.band(spell.flags, spell_flags.uses_attack_speed) ~= 0 then
@@ -899,7 +905,11 @@ local function stats_cast_time(stats, bid, comp, spell, loadout, effects, eval_f
 
     if comp.school1 ~= schools.physical or bit.band(comp.flags, comp_flags.no_attack) ~= 0 then
         -- spell haste rating may reduce gcd of spells that don't involve physical attack
-        gcd = math.max(gcd_min, gcd/spell_haste_mul_from_rating);
+        local gcd_haste_mul = spell_haste_mul_from_rating;
+        if cast_haste_reduces_gcd then
+            gcd_haste_mul = gcd_haste_mul * effects.mul.raw.cast_haste * (effects.mul.ability.cast_haste[bid] or 1);
+        end
+        gcd = math.max(gcd_min, gcd/gcd_haste_mul);
     end
 
     if bit.band(spell.flags, spell_flags.instant) ~= 0 then
@@ -2775,6 +2785,7 @@ local function effective_hp_info(info, loadout, effects, eval_flags)
     info.player_vuln_phys = effects.mul.raw.player_vuln_phys;
 
     local avg_dmg_taken_multiplier = avg_multiplier * (1.0 - info.player_armor_dr) * info.player_vuln_phys;
+    info.player_dr_total = 1.0 - avg_dmg_taken_multiplier;
 
     if bit.band(eval_flags, evaluation_flags.at_max_hp) ~= 0 then
         info.player_hp = loadout.player_hp_max;
@@ -3071,7 +3082,8 @@ end
 
 local function spell_diff(out, fight_type, spell, spell_id, loadout, effects_finalized, effects_d, eval_flags)
 
-    out.name = C_Spell.GetSpellName(spell_id);
+    -- in the data but not on this client
+    out.name = C_Spell.GetSpellName(spell_id) or tostring(spell_id);
 
     if bit.band(spell.flags, bit.bor(spell_flags.finishing_move_dmg, spell_flags.finishing_move_dur)) ~= 0 then
 

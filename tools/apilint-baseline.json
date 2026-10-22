@@ -12,14 +12,34 @@
       "name": "GetSpellTabInfo"
     },
     {
+      "file": "Calc/talents.lua",
+      "kind": "global",
+      "name": "GetTalentInfo"
+    },
+    {
       "file": "UI/overlay.lua",
       "kind": "global",
       "name": "SpellBook_GetCurrentPage"
     },
     {
-      "file": "Calc/talents.lua",
+      "file": "UI/tooltip.lua",
       "kind": "global",
-      "name": "GetTalentInfo"
+      "name": "sc_stat_calc_tooltip"
+    },
+    {
+      "file": "UI/tooltip.lua",
+      "kind": "global",
+      "name": "sc_calc_diff_tooltip"
+    },
+    {
+      "file": "UI/ui.lua",
+      "kind": "global",
+      "name": "PickupSpell"
+    },
+    {
+      "file": "UI/ui.lua",
+      "kind": "global",
+      "name": "GetMouseFocus"
     },
     {
       "file": "UI/ui.lua",
@@ -45,6 +65,11 @@
       "file": "UI/ui.lua",
       "kind": "global",
       "name": "__sc__localization_notifiedButton"
+    },
+    {
+      "file": "UI/ui.lua",
+      "kind": "constant",
+      "name": "SPELLBOOK_FONT_COLOR"
     }
   ]
 }

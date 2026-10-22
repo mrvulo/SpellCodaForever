@@ -98,6 +98,7 @@ local default_settings     = {
     overlay_display_effect_until_oom                            = false,
     overlay_display_time_until_oom                              = false,
 
+    overlay_disable_in_combat                                   = false,
     overlay_disable_in_raid                                     = false,
     overlay_disable                                             = false,
     overlay_old_rank                                            = false,
@@ -268,6 +269,7 @@ local default_settings     = {
     -- general settings
     general_libstub_minimap_icon                                = true,
     general_spellbook_button                                    = true,
+    spellbook_catalogue_compact                                 = true,
     general_version_mismatch_notify                             = true,
 
     -- general spell settings
@@ -352,13 +354,16 @@ local default_settings     = {
     loadout_target_facing                                       = false,
     loadout_unbounded_aoe_targets                               = 1,
     loadout_always_max_resource                                 = false,
+    loadout_combat_ignore_buffs                                 = false,
     loadout_behind_target                                       = false,
 
     libstub_icon_conf                                           = { hide = false },
 };
 
+-- the spellbook catalogue (forever) keeps its own filters
 for k, v in pairs(spell_filter_options) do
     default_settings[k] = v;
+    default_settings[(string.gsub(k, "^spells_filter_", "spellbook_catalogue_filter_"))] = v;
 end
 
 local function load_persistent_data(persistent_data, template_data)

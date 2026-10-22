@@ -98,6 +98,16 @@ def check_names():
             fail('names', f'upstream saved variable name in {f}; this addon uses {SAVED_VARS}')
 
 
+def check_spellbook_tab():
+    # docs/pro/invariants.md I-12: our spellbook page is the only spellbook tab;
+    # upstream's catalogue tab stays in UI/ui.lua but must never be started
+    for f in addon_lua_files():
+        for n, line in enumerate(open(os.path.join(ROOT, f), encoding='utf-8'), 1):
+            code = line.split('--', 1)[0]
+            if re.search(r'init_spellbook_tab\s*\(', code) and 'function' not in code:
+                fail('spellbook', f'{f}:{n} starts upstream\'s spellbook tab (I-12)')
+
+
 def check_locales():
     keys_file = open(os.path.join(ROOT, 'Locales', 'locale_strings.lua'), encoding='utf-8').read()
     known = set(re.findall(r'^  "((?:[^"\\]|\\.)*)",\s*$', keys_file, re.M))
@@ -149,6 +159,7 @@ def main():
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     check_toc()
     check_names()
+    check_spellbook_tab()
     check_locales()
     check_lua()
     run('exports', [sys.executable, os.path.join(HERE, 'check_exports.py')])
