@@ -33,3 +33,4 @@ Format: date · decision · source · feature
 - 2026-10-15 · Performance pass: measure with `/sc perf`; only small upstream edits (one-line gates), larger ones (aura scan reuse, ACTIONBAR_SLOT_CHANGED) left out for merge cost · user: "ja mach die 3" · F034, F035
 - 2026-10-16 · Release 0.59 on the user's word, F030–F035 stay test-in-game until reported · user: "release" · F030–F035
 - 2026-10-22 · Take upstream 0.15.2935 as 0.60; keep our spellbook page, upstream's spellbook catalogue tab stays in the code but is never started (init_spellbook_tab not called) to keep future merges small; upstream's combat aura handling replaces our `aura_snapshot`; our secret guards in `dynamic_loadout` kept · user: "ja mach als 0.60" · F036–F042
+- 2026-10-22 · Release 0.60 on the user's word, F036–F042 stay test-in-game until reported · user: "release" · F036–F042
