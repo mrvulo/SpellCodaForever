@@ -260,4 +260,70 @@ function verify.run(all)
     end);
 end
 
+-- /sc state
+-- What the calculation runs on right now: restriction state, the sheet values
+-- and buffs it uses, and the result for the spells on action buttons 1-6. Run it
+-- out of combat and in combat to see which input goes wrong.
+local function val(v)
+    if sc.utils.is_secret(v) then
+        return "SECRET";
+    end
+    if type(v) == "number" then
+        return string.format("%.4g", v);
+    end
+    return tostring(v);
+end
+
+function verify.state()
+    local out = {};
+    local function line(...)
+        table.insert(out, table.concat({...}, " "));
+    end
+    local secrets = C_Secrets or {};
+    line("in combat:", val(InCombatLockdown()),
+        " stats secret:", val(secrets.ShouldUnitStatsBeSecret and secrets.ShouldUnitStatsBeSecret()),
+        " auras secret:", val(secrets.ShouldAurasBeSecret and secrets.ShouldAurasBeSecret()));
+
+    sc.loadouts.force_update = true;
+    local loadout, effects, final = sc.loadouts.update_loadout_and_effects();
+    line("lvl", val(loadout.lvl), "shapeshift", val(loadout.shapeshift), "hp max", val(loadout.player_hp_max));
+    line("stats", val(loadout.stats[1]), val(loadout.stats[2]), val(loadout.stats[3]),
+        val(loadout.stats[4]), val(loadout.stats[5]));
+    line("ap", val(loadout.ap), "rap", val(loadout.rap), "melee crit", val(loadout.melee_crit),
+        "spell power", val(loadout.spell_dmg_by_school[2]), "healing", val(loadout.healing_power));
+    line("mh", val(loadout.attack_min_mh), "-", val(loadout.attack_max_mh), "delay", val(loadout.attack_delay_mh),
+        "oh delay", val(loadout.attack_delay_oh), "armor", val(loadout.armor));
+    local res = {};
+    for pwr, v in pairs(loadout.resources) do
+        table.insert(res, pwr.."="..val(v).."/"..val(loadout.resources_max[pwr]));
+    end
+    line("resources", table.concat(res, " "));
+    line("target lvl", val(loadout.target_lvl), "creature mask", val(loadout.target_creature_mask),
+        "hostile", val(loadout.hostile_towards), "enemy hp", val(loadout.enemy_hp_perc));
+    local n = 0;
+    for _ in pairs(loadout.dynamic_buffs["player"] or {}) do
+        n = n + 1;
+    end
+    line("player buffs", n, "talents staged", val(loadout.talents.code ~= loadout.talents.committed_code));
+
+    local flags = 0;
+    if not sc.config.settings.general_prio_multiplied_effect then
+        flags = bit.bor(flags, sc.calc.evaluation_flags.assume_single_effect);
+    end
+    for slot = 1, 6 do
+        local kind, id = GetActionInfo(slot);
+        if kind == "spell" and id and sc.spells[id] then
+            local ok, info, stats = pcall(sc.calc.calc_spell_eval, sc.spells[id], loadout, final, flags, id);
+            if ok then
+                line(string.format("slot %d %s: expected %s, per sec %s, time %s, hit %s, crit %s",
+                    slot, C_Spell.GetSpellName(id) or id, val(info.expected), val(info.effect_per_sec),
+                    val(stats.cast_time), val(stats.hit), val(stats.crit)));
+            else
+                line("slot", slot, id, "error:", tostring(info));
+            end
+        end
+    end
+    sc.ui.dump_text("SpellCoda state", table.concat(out, "\n"), 700, 400);
+end
+
 sc.verify = verify;
