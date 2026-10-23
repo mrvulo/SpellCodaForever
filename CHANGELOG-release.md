@@ -1,4 +1,5 @@
-# SpellCoda Forever 0.61
+# SpellCoda Forever 0.62
 
-- Spell and item data updated to the current Forever client build (1.60.1.70532): new trainer prices for mages, shamans and warlocks, and several of their spells now show up as trainable on the spellbook page.
-- New `/sc state`: shows what SpellCoda is calculating with right now (stats, weapon, buffs, target) and what your first six action buttons display. Handy for reporting wrong numbers, in or out of combat.
+- Fixed: in zones that scale your character to another level, the action bar numbers dropped to almost zero in combat. Damage, hit chance and resistances are now calculated at the level the game makes you fight at.
+- Training stays at your own level there: the Spells tab, the spellbook page, the "old rank" warning and the rank hints in tooltips are not affected by scaling.
+- `/sc state` now shows both levels.
