@@ -63,3 +63,4 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 - F036: in combat (druid form, a buff gained mid-fight, switching targets) the overlay numbers stay sensible; no Lua errors?
 - F038: place talent points without applying: tooltips show the staged values; after applying they stay right?
 - F041: calculator mode spell tooltip shows three tooltips (before / difference / after) without overlapping at screen edges?
+- F036: action buttons showed 1 / 0 / 0 per second in combat once (paladin, 2026-10-23, client had just updated to 70532 while the data was 70450); after the data update and /reload `/sc state` shows correct buttons in combat (8 / 4 / 5). If it comes back: run `/sc state` at that moment.
