@@ -3405,7 +3405,7 @@ sc.spells = {
 		lvl_outdated = 60,
 		base_id = 408490,
 		gcd = 1.5000001,
-		train = 0,
+		train = 35789,
 		flags = bit.bor(0, spell_flags.cd, spell_flags.eval, spell_flags.talent),
 	},
 	[10472] = {
@@ -4251,7 +4251,7 @@ sc.spells = {
 		lvl_outdated = 60,
 		base_id = 16190,
 		gcd = 1,
-		train = 0,
+		train = 2105,
 		flags = bit.bor(0, spell_flags.cd, spell_flags.instant, spell_flags.resource_regen, spell_flags.talent),
 	},
 	[10600] = {

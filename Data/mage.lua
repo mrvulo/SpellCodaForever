@@ -851,7 +851,7 @@ sc.spells = {
 		lvl_outdated = 60,
 		base_id = 1326079,
 		gcd = 1.5000001,
-		train = 0,
+		train = 32631,
 		flags = bit.bor(0, spell_flags.cd, spell_flags.eval, spell_flags.talent),
 	},
 	[10138] = {
@@ -1347,7 +1347,7 @@ sc.spells = {
 		lvl_outdated = 60,
 		base_id = 1326053,
 		gcd = 1.5000001,
-		train = 0,
+		train = 23157,
 		flags = bit.bor(0, spell_flags.binary, spell_flags.eval),
 	},
 	[1326080] = {
@@ -1371,7 +1371,7 @@ sc.spells = {
 		lvl_outdated = 47,
 		base_id = 1326079,
 		gcd = 1.5000001,
-		train = 0,
+		train = 11578,
 		flags = bit.bor(0, spell_flags.cd, spell_flags.eval, spell_flags.talent),
 	},
 	[428861] = {
@@ -1885,7 +1885,7 @@ sc.spells = {
 		lvl_outdated = 47,
 		base_id = 1326053,
 		gcd = 1.5000001,
-		train = 0,
+		train = 11578,
 		flags = bit.bor(0, spell_flags.binary, spell_flags.eval),
 	},
 	[10177] = {
@@ -3700,7 +3700,7 @@ sc.spells = {
 		lvl_outdated = 35,
 		base_id = 1326053,
 		gcd = 1.5000001,
-		train = 0,
+		train = 4526,
 		flags = bit.bor(0, spell_flags.binary, spell_flags.eval),
 	},
 	[3561] = {
@@ -3993,7 +3993,7 @@ sc.spells = {
 		lvl_outdated = 59,
 		base_id = 1326079,
 		gcd = 1.5000001,
-		train = 0,
+		train = 23157,
 		flags = bit.bor(0, spell_flags.cd, spell_flags.eval, spell_flags.talent),
 	},
 	[10150] = {
