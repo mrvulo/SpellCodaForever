@@ -312,7 +312,8 @@ function verify.state()
     end
     for slot = 1, 6 do
         local kind, id = GetActionInfo(slot);
-        if kind == "spell" and id and sc.spells[id] then
+        -- only spells the overlay evaluates (an aura like a seal has no components)
+        if kind == "spell" and id and sc.spells[id] and bit.band(sc.spells[id].flags, sc.spell_flags.eval) ~= 0 then
             local ok, info, stats = pcall(sc.calc.calc_spell_eval, sc.spells[id], loadout, final, flags, id);
             if ok then
                 line(string.format("slot %d %s: expected %s, per sec %s, time %s, hit %s, crit %s",
