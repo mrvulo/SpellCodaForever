@@ -36,3 +36,4 @@ Format: date · decision · source · feature
 - 2026-10-22 · Release 0.60 on the user's word, F036–F042 stay test-in-game until reported · user: "release" · F036–F042
 - 2026-10-23 · Take upstream data 0.15.2940 (client 70532, the installed beta build since today), nothing named · user: "können wir was vom update gebrauchen aber nichts erwähnen" · F045
 - 2026-10-23 · Release 0.61 (data 70532, `/sc state`) on the user's word · user: "release" · F045, F046
+- 2026-10-23 · Combat math at the effective level, training views at the character level · assumed after `/sc state` showed the cause · F047

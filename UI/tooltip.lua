@@ -1597,7 +1597,7 @@ local function append_tooltip_spell_eval(tooltip, spell, spell_id, loadout, effe
         end
     end
     if config.settings.tooltip_display_spell_rank then
-        append_tooltip_spell_rank(tooltip, spell, loadout.lvl);
+        append_tooltip_spell_rank(tooltip, spell, loadout.char_lvl);
     end
     if config.settings.tooltip_display_spell_id then
         add_line(
@@ -1976,7 +1976,7 @@ local function write_tooltip_spell_info(tooltip, spell, spell_id, loadout, effec
         end
 
         if config.settings.tooltip_display_spell_rank then
-            append_tooltip_spell_rank(tooltip, spell, loadout.lvl);
+            append_tooltip_spell_rank(tooltip, spell, loadout.char_lvl);
         end
         if config.settings.tooltip_display_spell_id then
             add_line(

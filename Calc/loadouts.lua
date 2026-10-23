@@ -62,6 +62,8 @@ local loadout_numbers = {
     "enemy_hp_perc",
     "flags",
     "lvl",
+    -- the character's own level; lvl is the level the game fights at (scaling)
+    "char_lvl",
     "target_lvl",
     --"phys_hit",
     "spell_dmg",
@@ -2044,9 +2046,18 @@ end
 -- prev is the current front loadout, the sheet stats are kept from it while they are secret
 local function dynamic_loadout(loadout, prev)
     if not config.settings.loadout_use_custom_lvl then
-        loadout.lvl = keep_if_secret(UnitLevel("player"), loadout.lvl);
+        loadout.char_lvl = keep_if_secret(UnitLevel("player"), loadout.char_lvl);
+        -- zones that scale the player fight at another level (stats, hit
+        -- against the target); training and rank hints keep char_lvl
+        local effective = UnitEffectiveLevel and keep_if_secret(UnitEffectiveLevel("player"), nil);
+        if type(effective) == "number" and effective > 0 then
+            loadout.lvl = effective;
+        else
+            loadout.lvl = loadout.char_lvl;
+        end
     else
         loadout.lvl = config.settings.loadout_lvl;
+        loadout.char_lvl = config.settings.loadout_lvl;
     end
 
     -- a single stat can still come back secret while the client's gate says

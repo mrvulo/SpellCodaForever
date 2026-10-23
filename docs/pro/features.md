@@ -50,6 +50,7 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F044 | Live Forever client ("wowf" 1.60.1.70532): upstream ships separate `Forever/` data and code; switch `Data/` + `Calc/Forever/` source in `tools/layout.json` when the live client replaces the beta | idea | — | tools/layout.json, Data/ |
 | F045 | Data for beta client 1.60.1.70532: trainer prices for mage, shaman, warlock, some spells newly trainable (upstream 0.15.2940) | test-in-game | 0.61 | Data/ |
 | F046 | `/sc state`: inputs of the calculation, results and the texts on action buttons 1-6, for bug reports in and out of combat | done | 0.61 | UI/verify.lua |
+| F047 | Level scaling: calculation at the effective level (stats, hit, resistances against the target), training views at the character level | test-in-game | 0.62 | Calc/loadouts.lua, UI/ui.lua, UI/overlay.lua, UI/tooltip.lua |
 
 ## Open questions, only answerable in game
 
@@ -65,3 +66,4 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 - F038: place talent points without applying: tooltips show the staged values; after applying they stay right?
 - F041: calculator mode spell tooltip shows three tooltips (before / difference / after) without overlapping at screen edges?
 - F036: action buttons showed 1 / 0 / 0 per second in combat once (paladin, 2026-10-23, client had just updated to 70532 while the data was 70450); after the data update and /reload `/sc state` shows correct buttons in combat (8 / 4 / 5). If it comes back: run `/sc state` at that moment.
+- F047: in the scaled zone (where the buttons showed 1 / 0 / 0): `/sc state` shows lvl 30 and own lvl 10, buttons show normal numbers; no "OLD RANK" on your spells; Spells tab still lists by level 10?

@@ -543,7 +543,7 @@ local function reassign_overlay_icon_spell(action_id, spell_id)
             end
             active_overlays[action_id] = nil;
         else
-            check_old_rank(action_id_frames[action_id], spell_id, active_loadout().lvl);
+            check_old_rank(action_id_frames[action_id], spell_id, active_loadout().char_lvl);
             active_overlays[action_id] = spell_id;
         end
     end
@@ -1889,7 +1889,7 @@ local function update_spell_icons(loadout, effects, eval_flags)
 
     if sc.core.old_ranks_checks_needed then
 
-        old_rank_warning_traversal(loadout.lvl);
+        old_rank_warning_traversal(loadout.char_lvl);
         sc.core.old_ranks_checks_needed = false;
     end
 

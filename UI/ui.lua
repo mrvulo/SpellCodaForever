@@ -653,7 +653,7 @@ local function filtered_spell_view(cat, spell_ids)
         filters[id] = settings[cat.filter_prefix..id];
     end
 
-    local lvl = active_loadout().lvl;
+    local lvl = active_loadout().char_lvl;
     local next_lvl = lvl + 1;
     if lvl % 2 == 0 then
         next_lvl = lvl + 2;
@@ -756,7 +756,7 @@ local function populate_scrollable_spell_view(cat, starting_idx)
     local n = #__sc_frame.spells_frame.scroll_view;
     local list_len = #view;
     local i = starting_idx;
-    local lvl = active_loadout().lvl;
+    local lvl = active_loadout().char_lvl;
 
     -- clear previous
     for _, v in pairs(__sc_frame.spells_frame.scroll_view) do
@@ -898,7 +898,7 @@ local function render_spells_frame(cat)
     );
     if spell_browser_scroll_to_lvl then
         local suitable_idx = 1;
-        local lvl = active_loadout().lvl;
+        local lvl = active_loadout().char_lvl;
         for k, v in pairs(view) do
             if v.spell_id and lvl <= spells[v.spell_id].lvl_req then
                 suitable_idx = k;

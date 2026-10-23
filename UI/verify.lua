@@ -289,7 +289,7 @@ function verify.state()
 
     sc.loadouts.force_update = true;
     local loadout, effects, final = sc.loadouts.update_loadout_and_effects();
-    line("lvl", val(loadout.lvl), "shapeshift", val(loadout.shapeshift), "hp max", val(loadout.player_hp_max));
+    line("lvl", val(loadout.lvl), "own lvl", val(loadout.char_lvl), "shapeshift", val(loadout.shapeshift), "hp max", val(loadout.player_hp_max));
     line("stats", val(loadout.stats[1]), val(loadout.stats[2]), val(loadout.stats[3]),
         val(loadout.stats[4]), val(loadout.stats[5]));
     line("ap", val(loadout.ap), "rap", val(loadout.rap), "melee crit", val(loadout.melee_crit),

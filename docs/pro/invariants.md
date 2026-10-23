@@ -43,6 +43,7 @@ Source: `user` (quote) · `code` · commit · `R-xx` (learned from a regression)
 | I-26 | Secret values are never used in arithmetic/comparison; go through `sc.api.num/str/flag/readable` or `sc.utils.secret_or/is_secret` | Forever errors on secrets | 2026-10-02 · R-01 | check (apilint partial) |
 | I-27 | `Libs/LibUIDropDownMenu` stays at rev 133 | rev 135 treats Forever (16001) as Classic Era, calls a missing color picker API and via LibStub replaces other addons' copies | 2026-10-09 · R-06 | manual |
 | I-28 | Player settings that store paths (overlay font in `Media/`) get a migration in `Core/config.lua` when the file moves | Overlay text would vanish | 2026-10-10 · code | manual |
+| I-29 | `loadout.lvl` is the level the game fights at (`UnitEffectiveLevel`, scaled zones); everything about training (Spells tab availability, old rank warning, rank hints in tooltips) uses `loadout.char_lvl` (`UnitLevel`) | Scaled up, the old rank warning and the Spells tab would treat level-30 spells as trainable; scaled, hit against the target used the wrong level | 2026-10-23 · R-17 | manual |
 
 ## Locales
 
