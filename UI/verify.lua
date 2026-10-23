@@ -324,6 +324,30 @@ function verify.state()
             end
         end
     end
+    -- what the action buttons actually show: label texts top / center / bottom
+    local labels = {};
+    for k, v in pairs(sc.config.settings) do
+        if v == true and type(k) == "string" and string.find(k, "^overlay_display_") then
+            table.insert(labels, (string.gsub(k, "^overlay_display_", "")));
+        end
+    end
+    table.sort(labels);
+    line("labels on:", table.concat(labels, ", "),
+        " muted:", val(sc.core.mute_overlay), " disabled:", val(sc.config.settings.overlay_disable),
+        " off in combat:", val(sc.config.settings.overlay_disable_in_combat));
+    for slot = 1, 6 do
+        local f = sc.overlay.action_id_frames[slot];
+        if f and f.overlay_frames then
+            local texts = {};
+            for i = 1, 3 do
+                local fs = f.overlay_frames[i];
+                local text = fs and fs:IsShown() and fs:GetText() or "-";
+                table.insert(texts, val(text));
+            end
+            line("button", slot, "spell", val(f.spell_id), "shows", table.concat(texts, " | "),
+                "frame", f.frame and f.frame:GetName() or "?");
+        end
+    end
     sc.ui.dump_text("SpellCoda state", table.concat(out, "\n"), 700, 400);
 end
 
