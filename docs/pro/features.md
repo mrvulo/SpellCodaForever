@@ -49,6 +49,7 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F043 | Spellbook page: per-spell value columns (per second, per cost) and sorting like upstream's new spellbook catalogue | idea | — | UI/spellbook.lua |
 | F044 | Live Forever client ("wowf" 1.60.1.70532): upstream ships separate `Forever/` data and code; switch `Data/` + `Calc/Forever/` source in `tools/layout.json` when the live client replaces the beta | idea | — | tools/layout.json, Data/ |
 | F045 | Data for beta client 1.60.1.70532: trainer prices for mage, shaman, warlock, some spells newly trainable (upstream 0.15.2940) | test-in-game | 0.61 | Data/ |
+| F046 | `/sc state`: inputs of the calculation, results and the texts on action buttons 1-6, for bug reports in and out of combat | done | 0.61 | UI/verify.lua |
 
 ## Open questions, only answerable in game
 

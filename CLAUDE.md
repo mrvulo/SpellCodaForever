@@ -47,7 +47,8 @@ Ours only:
   `str`, `flag`, `readable`). Never add global shims.
 - `UI/spellbook.lua` — the SpellCoda tab in the spellbook tab row and the parchment page of
   learnable spells (Now available / Coming soon / Not yet available).
-- `UI/verify.lua` — `/sc verify`, compares the data with the client's spell descriptions.
+- `UI/verify.lua` — `/sc verify`, compares the data with the client's spell descriptions;
+  `/sc state`, the calculation's inputs and the action button texts (bug reports).
 - `UI/perf.lua` — `/sc perf [seconds]`, CPU/memory/garbage figures from the client's addon profiler.
 - `Media/icon.tga` — addon icon (TOC, minimap, spellbook tab, options). Genuine 32-bit TGA.
 - `tools/`, `branding/`, `.github/`, `.pkgmeta`, `CHANGELOG-release.md`, docs — never packaged.
