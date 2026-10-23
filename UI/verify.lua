@@ -269,6 +269,9 @@ local function val(v)
         return "SECRET";
     end
     if type(v) == "number" then
+        if v == math.floor(v) and math.abs(v) < 1e9 then
+            return string.format("%d", v);
+        end
         return string.format("%.4g", v);
     end
     return tostring(v);
