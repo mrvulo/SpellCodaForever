@@ -561,7 +561,6 @@ for _, v in ipairs({
   "Use highest learned rank",
   "Use skill as clvl*5 for weapon comparisons when not at maximum level",
   "Use target's equipment",
-  "Weapon missing from SpellCoda data, parsing tooltip instead",
   "weighing",
   "While this tab is open, ability overlay & tooltips reflect the change below",
   "Now available",

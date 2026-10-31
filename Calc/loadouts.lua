@@ -1963,6 +1963,24 @@ local function keep_sheet_stats(loadout, prev)
     end
 end
 
+-- values read_sheet_stats stores without arithmetic (UnitStat, UnitDamage, UnitArmor,
+-- spell power) pass the pcall even when secret
+local function sheet_stats_secret(loadout)
+    for _, k in ipairs(sheet_stats_values) do
+        if is_secret(loadout[k]) then
+            return true;
+        end
+    end
+    for _, k in ipairs(sheet_stats_tables) do
+        for _, v in pairs(loadout[k]) do
+            if is_secret(v) then
+                return true;
+            end
+        end
+    end
+    return false;
+end
+
 local function read_sheet_stats(loadout)
     for i = 1, 5 do
         local _, s, _, _ = UnitStat("player", i);
@@ -2063,7 +2081,7 @@ local function dynamic_loadout(loadout, prev)
     -- a single stat can still come back secret while the client's gate says
     -- readable; the sums in read_sheet_stats would then error every tick
     if (should_unit_stats_be_secret and should_unit_stats_be_secret()) or
-        not pcall(read_sheet_stats, loadout) then
+        not pcall(read_sheet_stats, loadout) or sheet_stats_secret(loadout) then
         keep_sheet_stats(loadout, prev);
     end
 

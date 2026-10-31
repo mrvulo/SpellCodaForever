@@ -2,11 +2,7 @@ local utils = {};
 
 local _, sc = ...;
 
-local GetSpellInfo                  = sc.api.GetSpellInfo;
-local GetSpellPowerCost             = sc.api.GetSpellPowerCost;
 local IsSpellKnownOrOverridesKnown  = sc.api.IsSpellKnownOrOverridesKnown;
-local GetItemInfo                   = sc.api.GetItemInfo;
-local GetItemInfoInstant            = sc.api.GetItemInfoInstant;
 
 local spells                        = sc.spells;
 local spell_flags                   = sc.spell_flags;

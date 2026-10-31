@@ -2,8 +2,6 @@ local _, sc = ...;
 
 local L                                             = sc.L;
 
-local GetSpellInfo                                  = sc.api.GetSpellInfo;
-local GetSpellTexture                               = sc.api.GetSpellTexture;
 
 local attr                                          = sc.attr;
 local spells                                        = sc.spells;

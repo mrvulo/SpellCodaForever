@@ -2,7 +2,6 @@
 -- Most are client specific, under e.g ./Vanilla/override.lua
 local _, sc = ...;
 
-local GetSpellInfo                  = sc.api.GetSpellInfo;
 
 local spells                        = sc.spells;
 local lookups                       = sc.lookups;

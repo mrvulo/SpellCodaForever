@@ -39,3 +39,4 @@ Format: date · decision · source · feature
 - 2026-10-23 · Combat math at the effective level, training views at the character level · assumed after `/sc state` showed the cause · F047
 - 2026-10-23 · Release 0.62 (level scaling fix) on the user's word, F047 stays test-in-game · user: "release" · F047
 - 2026-10-31 · Take upstream data 0.15.2968 (live client 70707), keep our names, name nothing; the live client `_forever_` gets the AddOns junction · user: "aber nicht gleichen name oder so nehmen", "kannst du den ordner _forever_ machen" · F048, F044
+- 2026-10-31 · Audit cleanup removes only our dead code (unused locals, `sc.api` wrappers, a locale key nothing used); dead code that is also dead upstream stays so merges stay clean · assumed, user: "das ganze addon nochmal auf bugs unnötigen code oder toten code checken und aufräumen" · R-18–R-22

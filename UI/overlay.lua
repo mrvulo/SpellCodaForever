@@ -31,10 +31,8 @@ local calc_spell_dummy_cast_until_oom               = sc.calc.calc_spell_dummy_c
 local config                                        = sc.config;
 
 local GetSpellInfo                                  = sc.api.GetSpellInfo;
-local GetSpellTexture                               = sc.api.GetSpellTexture;
 local IsCurrentSpell                                = sc.api.IsCurrentSpell;
 local IsAddOnLoaded                                 = sc.api.IsAddOnLoaded;
-local spellbook_frame                               = sc.api.spellbook_frame;
 --------------------------------------------------------------------------------
 local overlay = {};
 

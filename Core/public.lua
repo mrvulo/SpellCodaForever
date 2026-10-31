@@ -1,6 +1,5 @@
 local _, sc = ...;
 
-local GetSpellInfo = sc.api.GetSpellInfo;
 
 ---------------------------------------------------------------------------------------------------
 -- Public interface for other addons to tap into SpellCoda calculations

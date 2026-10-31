@@ -3,13 +3,8 @@ local _, sc = ...;
 local L                                         = sc.L;
 
 local GetSpellInfo                              = sc.api.GetSpellInfo;
-local GetSpellTexture                           = sc.api.GetSpellTexture;
 local IsSpellKnownOrOverridesKnown              = sc.api.IsSpellKnownOrOverridesKnown;
-local GetItemInfo                               = sc.api.GetItemInfo;
-local GetItemInfoInstant                        = sc.api.GetItemInfoInstant;
-local GetItemIcon                               = sc.api.GetItemIcon;
 local GetInventorySlotInfo                      = sc.api.GetInventorySlotInfo;
-local GetCoinTextureString                      = sc.api.GetCoinTextureString;
 local getglobal                                 = sc.api.getglobal;
 
 local spells                                    = sc.spells;

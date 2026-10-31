@@ -7,7 +7,6 @@ local special_item_properties          = sc.special_item_properties;
 local apply_effect                     = sc.loadouts.apply_effect;
 
 local GetInventorySlotInfo             = sc.api.GetInventorySlotInfo;
-local GetItemInfoInstant               = sc.api.GetItemInfoInstant;
 local GetWeaponEnchantInfo             = sc.api.GetWeaponEnchantInfo;
 local apply_flat_scaled                = sc.loadouts.apply_flat_scaled;
 local write_item_info_from_link        = sc.utils.write_item_info_from_link;
@@ -356,14 +355,32 @@ else
     end;
 end
 
+-- The tries below run out within about a second after login; an item whose data
+-- arrives later scans the equipment again once it is there.
+local function rescan_equipment(_, success)
+    -- a failed load would request again on every scan
+    if not success then
+        return;
+    end
+    sc.core.equipment_update_needed = true;
+    sc.loadouts.force_update = true;
+end
+
+local function rescan_when_loaded(id)
+    if id then
+        sc.utils.request_item_data(id, rescan_equipment);
+    end
+end
+
 -- An equipped item whose stats are not loaded yet (shortly after login): the
 -- equipment scan reports nothing found so it runs again, a few tries per link.
 -- Otherwise a later comparison would undo stats that were never added.
 local stats_tries = {};
-local function stats_need_rescan(link)
+local function stats_need_rescan(link, id)
     if GetItemStats(link) then
         return false;
     end
+    rescan_when_loaded(id);
     local tries = (stats_tries[link] or 0) + 1;
     stats_tries[link] = tries;
     return tries <= 5;
@@ -381,6 +398,7 @@ local function weapon_needs_rescan(info)
     if weapon_stats(info) then
         return false;
     end
+    rescan_when_loaded(info.id);
     local tries = (rescan_tries[link] or 0) + 1;
     rescan_tries[link] = tries;
     return tries <= 5;
@@ -817,7 +835,7 @@ local function apply_equipment(loadout, effects)
             apply_item_stats(effects, item_link, false, false);
             apply_creature_stats(effects, item_link, false);
             found_anything = true;
-            if stats_need_rescan(item_link) then
+            if stats_need_rescan(item_link, id) then
                 scan_again = true;
             end
             local _, enchant_id, gem1, gem2, gem3, gem4, suffix_id =

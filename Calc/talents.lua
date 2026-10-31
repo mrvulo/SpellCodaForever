@@ -6,7 +6,6 @@ local apply_effect          = sc.loadouts.apply_effect;
 
 local GetNumSkillLines      = sc.api.GetNumSkillLines;
 local GetSkillLineInfo      = sc.api.GetSkillLineInfo;
-local GetSpellName          = sc.api.GetSpellName;
 ---------------------------------------------------------------------------------------------------
 local talents_export        = {};
 

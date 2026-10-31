@@ -47,14 +47,6 @@ api.num = num;
 api.str = str;
 api.flag = flag;
 
-function api.stats_restricted()
-    return C_Secrets and C_Secrets.ShouldUnitStatsBeSecret and C_Secrets.ShouldUnitStatsBeSecret() or false;
-end
-
-function api.auras_restricted()
-    return C_Secrets and C_Secrets.ShouldAurasBeSecret and C_Secrets.ShouldAurasBeSecret() or false;
-end
-
 ---------------------------------------------------------------------------------------------------
 -- spells
 
@@ -79,10 +71,6 @@ function api.GetSpellTexture(spell)
     return C_Spell.GetSpellTexture(spell);
 end
 
-function api.GetSpellPowerCost(spell)
-    return C_Spell.GetSpellPowerCost(spell);
-end
-
 function api.IsCurrentSpell(spell)
     return C_Spell.IsCurrentSpell(spell);
 end
@@ -100,27 +88,6 @@ end
 
 ---------------------------------------------------------------------------------------------------
 -- items
-
-function api.GetItemInfo(item)
-    if item == nil then
-        return nil;
-    end
-    return C_Item.GetItemInfo(item);
-end
-
-function api.GetItemInfoInstant(item)
-    if item == nil then
-        return nil;
-    end
-    return C_Item.GetItemInfoInstant(item);
-end
-
-function api.GetItemIcon(item_id)
-    if item_id == nil then
-        return nil;
-    end
-    return C_Item.GetItemIconByID(item_id);
-end
 
 -- throws on slot names the client does not have
 function api.GetInventorySlotInfo(slot_name)
@@ -182,17 +149,6 @@ end
 
 function api.GetActiveTalentGroup()
     return C_SpecializationInfo.GetActiveSpecGroup() or 1;
-end
-
--- the spellbook lives in a load-on-demand window on this client
-function api.spellbook_frame()
-    local frame = _G.PlayerSpellsFrame;
-    return frame and frame.SpellBookFrame or nil;
-end
-
-function api.spellbook_shown()
-    local book = api.spellbook_frame();
-    return book and book:IsVisible() or false;
 end
 
 function api.getglobal(name)

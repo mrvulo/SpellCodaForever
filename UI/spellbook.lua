@@ -201,7 +201,8 @@ local function missing_rank(id)
     for i, rank_id in ipairs(seq) do
         if rank_id == id then
             local prev = seq[i - 1];
-            if prev and spells[prev] and not spell_known(prev) then
+            -- a rank this client lacks cannot be learned, so it blocks nothing
+            if prev and spells[prev] and GetSpellName(prev) and not spell_known(prev) then
                 return prev;
             end
             return nil;
@@ -210,11 +211,32 @@ local function missing_rank(id)
     return nil;
 end
 
+-- string.lower only knows ASCII; this also lowers Latin-1 (Ä, É, Ñ) and Cyrillic capitals
+local function lower(s)
+    s = string.lower(s);
+    s = s:gsub("\195([\128-\158])", function(c)
+        local b = c:byte();
+        if b ~= 0x97 then -- U+00D7 multiplication sign has no lower case
+            return "\195"..string.char(b + 32);
+        end
+    end);
+    s = s:gsub("\208([\128-\175])", function(c)
+        local b = c:byte();
+        if b < 0x90 then -- U+0400-040F -> U+0450-045F
+            return "\209"..string.char(b + 16);
+        elseif b < 0xA0 then -- U+0410-041F -> U+0430-043F
+            return "\208"..string.char(b + 32);
+        end
+        return "\209"..string.char(b - 32); -- U+0420-042F -> U+0440-044F
+    end);
+    return s;
+end
+
 -- the search text in lower case, set once per list build
 local needle = "";
 
 local function read_search()
-    needle = string.lower(search and search:GetText() or "");
+    needle = lower(search and search:GetText() or "");
 end
 
 local function matches_search(id)
@@ -222,7 +244,7 @@ local function matches_search(id)
         return true;
     end
     local name = GetSpellName(id);
-    return name ~= nil and string.find(string.lower(name), needle, 1, true) ~= nil;
+    return name ~= nil and string.find(lower(name), needle, 1, true) ~= nil;
 end
 
 -- items: section headings followed by their spells, in level order.
@@ -383,6 +405,48 @@ local function weapon_on_enter(self, item)
     GameTooltip:Show();
 end
 
+-- spell rows; the tooltip post call adds our lines only under these
+local spell_rows = {};
+
+local function add_row_lines(tooltip, item)
+    local spell = spells[item.spell_id];
+    if spell.train > 0 then
+        local pct = best_discount();
+        tooltip:AddLine(" ");
+        tooltip:AddDoubleLine(L["Training cost"], GetCoinTextureString(discounted(spell.train, pct)), 1, 0.82, 0, 1, 1, 1);
+        if pct > 0 then
+            tooltip:AddDoubleLine(L["Base price"], GetCoinTextureString(spell.train), 0.6, 0.6, 0.6, 0.6, 0.6, 0.6);
+        end
+    elseif spell.train < -1 then
+        local item_name = C_Item.GetItemNameByID(-spell.train);
+        if item_name then
+            tooltip:AddLine(" ");
+            tooltip:AddDoubleLine(L["Learned from"], item_name, 1, 0.82, 0, 1, 1, 1);
+        end
+    end
+    local prev = item.section == "missing" and missing_rank(item.spell_id);
+    if prev then
+        tooltip:AddLine(string.format(L["Needs rank %d"], spells[prev].rank), 1, 0.5, 0.25);
+    end
+    tooltip:AddLine(item.section == "ignored" and L["Right click: stop ignoring"] or L["Right click: ignore"], 0.5, 0.5, 0.5);
+end
+
+-- The tooltip refresh rebuilds a spell tooltip with SetSpellByID every time the
+-- calculation changes or a modifier key is pressed, which drops lines added once.
+-- Registered on the first row, after the calculation's own post call, so our
+-- lines stay below its lines.
+local function spell_post_call(tooltip)
+    if tooltip ~= GameTooltip then
+        return;
+    end
+    local row = tooltip:GetOwner();
+    local item = row and spell_rows[row] and row.item;
+    if item and item.spell_id and not item.weapon and spells[item.spell_id] then
+        add_row_lines(tooltip, item);
+        tooltip:Show();
+    end
+end
+
 local function row_on_enter(self)
     local item = self.item;
     if not item or not item.spell_id then
@@ -392,28 +456,9 @@ local function row_on_enter(self)
         weapon_on_enter(self, item);
         return;
     end
-    local spell = spells[item.spell_id];
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+    -- our lines come from spell_post_call, also when the tooltip refresh sets the spell again
     GameTooltip:SetSpellByID(item.spell_id);
-    if spell.train > 0 then
-        local pct = best_discount();
-        GameTooltip:AddLine(" ");
-        GameTooltip:AddDoubleLine(L["Training cost"], GetCoinTextureString(discounted(spell.train, pct)), 1, 0.82, 0, 1, 1, 1);
-        if pct > 0 then
-            GameTooltip:AddDoubleLine(L["Base price"], GetCoinTextureString(spell.train), 0.6, 0.6, 0.6, 0.6, 0.6, 0.6);
-        end
-    elseif spell.train < -1 then
-        local item_name = C_Item.GetItemNameByID(-spell.train);
-        if item_name then
-            GameTooltip:AddLine(" ");
-            GameTooltip:AddDoubleLine(L["Learned from"], item_name, 1, 0.82, 0, 1, 1, 1);
-        end
-    end
-    local prev = item.section == "missing" and missing_rank(item.spell_id);
-    if prev then
-        GameTooltip:AddLine(string.format(L["Needs rank %d"], spells[prev].rank), 1, 0.5, 0.25);
-    end
-    GameTooltip:AddLine(item.section == "ignored" and L["Right click: stop ignoring"] or L["Right click: ignore"], 0.5, 0.5, 0.5);
     GameTooltip:Show();
 end
 
@@ -525,6 +570,11 @@ local function create_row(page)
     highlight:SetAllPoints();
     highlight:SetColorTexture(unpack(colors.highlight));
     row:SetHighlightTexture(highlight);
+
+    if next(spell_rows) == nil then
+        TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, spell_post_call);
+    end
+    spell_rows[row] = true;
 
     row:RegisterForClicks("LeftButtonUp", "RightButtonUp");
     row:SetScript("OnEnter", row_on_enter);

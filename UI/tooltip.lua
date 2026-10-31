@@ -2,13 +2,9 @@ local _, sc                                     = ...;
 
 local L                                         = sc.L;
 
-local GetSpellInfo                              = sc.api.GetSpellInfo;
-local GetItemInfo                               = sc.api.GetItemInfo;
-local GetItemInfoInstant                        = sc.api.GetItemInfoInstant;
 local getglobal                                 = sc.api.getglobal;
 local MouseIsOver                               = sc.api.MouseIsOver;
 local readable                                  = sc.api.readable;
-local num                                       = sc.api.num;
 
 local spell_flags                               = sc.spell_flags;
 local spells                                    = sc.spells;
