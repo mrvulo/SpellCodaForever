@@ -18,8 +18,8 @@ reference-addon names. First time: `cd tools && npm install`.
 
 A green check is not a test. After nontrivial changes run an adversarial review (subagent with a
 numbered attack list), then the user tests in game (`/reload`; new texture files need a full
-client restart). The AddOns folder `_classic_beta_\Interface\AddOns\SpellCodaForever` is a
-junction to this repo.
+client restart). The AddOns folders `_forever_\Interface\AddOns\SpellCodaForever` (live client,
+since 2026-10-31) and `_classic_beta_\Interface\AddOns\SpellCodaForever` are junctions to this repo.
 
 ## Layout
 
@@ -91,7 +91,7 @@ Release only after the user tested, or when they say so.
 ## Taking upstream changes
 
 Upstream: `https://github.com/jezzi23/spellcoda`, data in `jezzi23/spellcoda-generated`
-(`Camelot/` folder). Current merge base: **v0.15.2940** (generated 390bd7e). Upstream's `Forever/` folders (code and data, live client "wowf") are unmapped until the live client replaces the beta (features.md F044).
+(`Camelot/` folder). Current merge base: **v0.15.2968** (generated 178a0bc). Since 2968 upstream's `Camelot/` data is generated from the live client ("wowf" 1.60.1.70707), so `Data/` follows the live client; upstream's `Forever/` folders stay unmapped (features.md F044).
 
 1. In a separate worktree, never in this folder: the game loads this folder through the
    junction, and a /reload mid-merge runs files with conflict markers (R-16):

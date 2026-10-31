@@ -38,3 +38,4 @@ Format: date · decision · source · feature
 - 2026-10-23 · Release 0.61 (data 70532, `/sc state`) on the user's word · user: "release" · F045, F046
 - 2026-10-23 · Combat math at the effective level, training views at the character level · assumed after `/sc state` showed the cause · F047
 - 2026-10-23 · Release 0.62 (level scaling fix) on the user's word, F047 stays test-in-game · user: "release" · F047
+- 2026-10-31 · Take upstream data 0.15.2968 (live client 70707), keep our names, name nothing; the live client `_forever_` gets the AddOns junction · user: "aber nicht gleichen name oder so nehmen", "kannst du den ordner _forever_ machen" · F048, F044
