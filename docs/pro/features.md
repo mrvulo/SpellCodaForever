@@ -51,7 +51,7 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F045 | Data for beta client 1.60.1.70532: trainer prices for mage, shaman, warlock, some spells newly trainable (upstream 0.15.2940) | test-in-game | 0.61 | Data/ |
 | F046 | `/sc state`: inputs of the calculation, results and the texts on action buttons 1-6, for bug reports in and out of combat | done | 0.61 | UI/verify.lua |
 | F047 | Level scaling: calculation at the effective level (stats, hit, resistances against the target), training views at the character level | test-in-game | 0.62 | Calc/loadouts.lua, UI/ui.lua, UI/overlay.lua, UI/tooltip.lua |
-| F048 | Data for live client 1.60.1.70707 (upstream 0.15.2968): set bonuses 2138–2146, rogue/druid abilities ignore armor, mage Frost Blast gone and talent tree reshuffled, new warlock/hunter/paladin/priest/warrior talent effects, ranged AP buff values | test-in-game | — | Data/ |
+| F048 | Data for live client 1.60.1.70707 (upstream 0.15.2968): set bonuses 2138–2146, rogue/druid abilities ignore armor, mage Frost Blast gone and talent tree reshuffled, new warlock/hunter/paladin/priest/warrior talent effects, ranged AP buff values | test-in-game | 0.63 | Data/ |
 
 ## Open questions, only answerable in game
 
