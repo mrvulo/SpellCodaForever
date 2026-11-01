@@ -41,3 +41,6 @@ Format: date · decision · source · feature
 - 2026-10-31 · Take upstream data 0.15.2968 (live client 70707), keep our names, name nothing; the live client `_forever_` gets the AddOns junction · user: "aber nicht gleichen name oder so nehmen", "kannst du den ordner _forever_ machen" · F048, F044
 - 2026-10-31 · Audit cleanup removes only our dead code (unused locals, `sc.api` wrappers, a locale key nothing used); dead code that is also dead upstream stays so merges stay clean · assumed, user: "das ganze addon nochmal auf bugs unnötigen code oder toten code checken und aufräumen" · R-18–R-22
 - 2026-10-31 · Release 0.63 (live data 70707, audit fixes R-18–R-22) on the user's word, F048 stays test-in-game · user: "release" · F048
+- 2026-10-31 · Take the view options (grouping per view, heading totals) and a profession list from the newest version of a reference addon, in our page and style, nothing named · user: "beides" · F049, F050
+- 2026-10-31 · Profession data: recipe list from the client tables via our generator, trainer skill/price recorded in game on trainer visits; the reference's hand-kept recipe data is not taken · user: "Beim Lehrer lernen (Empfohlen)" · F050
+- 2026-10-31 · The profession list is a third view of our spellbook page, not a tab in the professions window · assumed (one page, one search, no covering of the professions window) · F050

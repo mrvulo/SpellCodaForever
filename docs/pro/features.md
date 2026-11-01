@@ -52,8 +52,16 @@ Status: idea · planned · building · review · test-in-game · done · dropped
 | F046 | `/sc state`: inputs of the calculation, results and the texts on action buttons 1-6, for bug reports in and out of combat | done | 0.61 | UI/verify.lua |
 | F047 | Level scaling: calculation at the effective level (stats, hit, resistances against the target), training views at the character level | test-in-game | 0.62 | Calc/loadouts.lua, UI/ui.lua, UI/overlay.lua, UI/tooltip.lua |
 | F048 | Data for live client 1.60.1.70707 (upstream 0.15.2968): set bonuses 2138–2146, rogue/druid abilities ignore armor, mage Frost Blast gone and talent tree reshuffled, new warlock/hunter/paladin/priest/warrior talent effects, ranged AP buff values | test-in-game | 0.63 | Data/ |
+| F049 | Spellbook page view options: spells by section or by level, weapon skills by section or by town (price at that town's master), total cost in each heading's tooltip | test-in-game | 0.64 | UI/spellbook.lua |
+| F050 | Spellbook page profession view: unlearned recipes of the character's professions from the client tables (skill from recipe items), trainer skill/price/level recorded on trainer visits; sections incl. "Trainer not visited yet" / "Not taught by the trainers visited"; grouped by profession or section; own ignore list | test-in-game | 0.64 | UI/professions.lua, Professions/recipes.lua, tools/gen_recipes.py |
 
 ## Open questions, only answerable in game
+
+- F050: does `C_TooltipInfo.GetTrainerService(i).id` give the recipe spell id at a profession trainer, and is a learned recipe reported by `C_SpellBook.IsSpellKnown` (else learned recipes stay listed)? After a trainer visit: skill and price shown, profession ranks (Journeyman …) listed with their level?
+- F050: only the character's professions listed (not all twelve)? `C_SkillInfo.GetSkillLineInfoByID` for an unlearned profession must give nil or maxRank 0.
+- F050: gathering trainers (Mining, Herbalism, Skinning, Fishing) teach only ranks, which are not in the data, so nothing is recorded there; specialization spells a trainer lists (Weaponsmith …) may show as learnable.
+- F050: a profession trainer that teaches only up to one rank: higher recipes land in "Not taught by the trainers visited" until the next trainer; acceptable?
+- F049: weapon skills by town: a skill taught by two masters of one town shows once, at the first master.
 
 - F020: does a missing-data weapon's tooltip damage already include a weapon enchant ("+3 Weapon Damage")? Then `apply_damage_enchant` counts it twice.
 - F015: Revered / Exalted give more than 10%? (only Honored = 10% confirmed)

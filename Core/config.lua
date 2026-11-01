@@ -270,6 +270,12 @@ local default_settings     = {
     general_libstub_minimap_icon                                = true,
     general_spellbook_button                                    = true,
     spellbook_catalogue_compact                                 = true,
+    -- the spellbook page's grouping: "section"/"level", "section"/"town", "section"/"profession"
+    spellbook_spell_grouping                                    = "section",
+    spellbook_weapon_grouping                                   = "section",
+    spellbook_profession_grouping                               = "profession",
+    -- recipe spell ids hidden on the spellbook page's profession view
+    recipes_ignore_list                                         = {},
     general_version_mismatch_notify                             = true,
 
     -- general spell settings
@@ -407,6 +413,9 @@ local function default_p_acc()
         -- set once the Forever default (translation on) was applied to this account
         localization_default_forever = false,
         window_scale = sc.utils.client_matches(sc.client_flags.forever) and 1.25 or 1.0,
+        -- what profession trainers asked: spells = { [spell] = {skill, cost, level, line} },
+        -- lines = { [skill line] = true } for professions a trainer was seen of
+        profession_trainer = { spells = {}, lines = {} },
     };
 end
 

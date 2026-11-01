@@ -38,6 +38,8 @@ Data/shaman.lua
 Data/warlock.lua
 Data/warrior.lua
 
+Professions/recipes.lua
+
 Locales/locale_strings.lua
 
 Locales/ptBR.lua
@@ -73,6 +75,7 @@ UI/overlay.lua
 UI/tooltip.lua
 UI/ui.lua
 UI/weapon_skills.lua
+UI/professions.lua
 UI/spellbook.lua
 UI/spells_feed.lua
 UI/verify.lua
