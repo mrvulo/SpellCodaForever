@@ -1,4 +1,9 @@
-# SpellCoda Forever
+# SpellEfficiency Forever
+
+> **Unofficial fork** of [SpellCoda](https://github.com/jezzi23/spellcoda) by jezzi23. The calculator,
+> its spell and item data and most of the code are jezzi23's work. The official SpellCoda supports
+> World of Warcraft: Forever as well. This fork adds its own spellbook page (learnable spells,
+> weapon masters, profession recipes) and translations.
 
 Spell calculator for **World of Warcraft: Forever** — damage, healing, DPS/HPS, efficiency and
 stat weights in your tooltips, on your action bars and in a full calculator window.
@@ -11,7 +16,7 @@ stat weights in your tooltips, on your action bars and in a full calculator wind
 - Spell metrics in tooltips and as overlays on action bar and spellbook icons
 - Calculator window: item planner, stat changes, talents and buffs, with before/after comparison
 - Item evaluation in tooltips and an item upgrade planner
-- SpellCoda tab in the spellbook: every spell you can still learn, grouped into
+- Tab in the spellbook: every spell you can still learn, grouped into
   *Now available*, *Coming soon* and *Not yet available*, with rank, level and training cost
 - Blizzard-style window, translated into German, French, Spanish and Russian
 
@@ -20,7 +25,8 @@ Commands: `/sc` (open), `/sc verify` (compare the addon's spell data with the ga
 ## Credits
 
 Based on [SpellCoda](https://github.com/jezzi23/spellcoda) by jezzi23, released under the MIT
-License, including its spell and item data. This project adapts it for World of Warcraft: Forever.
+License (copyright notice kept in `LICENSE`), including its spell and item data. This is not the
+official SpellCoda; it adapts it for World of Warcraft: Forever.
 
 ## Development
 

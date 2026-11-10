@@ -245,7 +245,7 @@ function verify.run(all)
 
         local _, class = UnitClass("player");
         local header = {
-            string.format("SpellCoda Forever verify - data %s, client %s, level %d %s, %s",
+            string.format("SpellEfficiency Forever verify - data %s, client %s, level %d %s, %s",
                 sc.client_version_src, sc.client_version_loaded, lvl, class or "?",
                 all and "all class spells" or "known spells"),
             string.format("checked %d: ok %d, mismatch %d, skipped %d (no absolute values or no description)",
@@ -253,7 +253,7 @@ function verify.run(all)
             "",
         };
         local text = table.concat(header, "\n").."\n"..table.concat(report.lines, "\n");
-        sc.ui.dump_text("SpellCoda verify", text, 700, 500);
+        sc.ui.dump_text("SpellEfficiency verify", text, 700, 500);
 
         print(string.format("%s: verify done - ok %d, mismatch %d, skipped %d",
             sc.core.addon_name, report.ok, report.mismatch, report.skipped));
@@ -351,7 +351,7 @@ function verify.state()
                 "frame", f.frame and f.frame:GetName() or "?");
         end
     end
-    sc.ui.dump_text("SpellCoda state", table.concat(out, "\n"), 700, 400);
+    sc.ui.dump_text("SpellEfficiency state", table.concat(out, "\n"), 700, 400);
 end
 
 sc.verify = verify;

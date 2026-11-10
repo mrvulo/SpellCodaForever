@@ -1,6 +1,8 @@
 # SpellCodaForever
 
-SpellCoda (spell calculator by jezzi23, MIT) for **WoW: Forever only** — Interface 16001, the
+**SpellEfficiency Forever** (display name since 2026-11-10; folder, TOC file, saved variables and
+`core.addon_name` stay `SpellCodaForever` so settings survive) — an unofficial fork of SpellCoda
+(spell calculator by jezzi23, MIT; his copyright line stays first in `LICENSE`) for **WoW: Forever only** — Interface 16001, the
 Mainline 12.x client with secret values. Public repo `mrvulo/SpellCodaForever`, CurseForge
 project 1716723. The user plays in German; answer in German, short.
 

@@ -1,12 +1,12 @@
 ## Interface: 16001
-## Title: SpellCoda |cff9b6cffForever|r
-## Notes: All things Spells! Spell calculator for World of Warcraft: Forever.
-## Notes-frFR: Tout sur les sorts ! Calculateur de sorts pour World of Warcraft: Forever.
-## Notes-esES: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever.
-## Notes-esMX: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever.
-## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever.
-## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever.
-## Author: Vulo
+## Title: SpellEfficiency |cff9b6cffForever|r
+## Notes: Spell calculator for World of Warcraft: Forever. Unofficial fork of SpellCoda by jezzi23.
+## Notes-frFR: Tout sur les sorts ! Calculateur de sorts pour World of Warcraft: Forever. Fork non officiel de SpellCoda par jezzi23.
+## Notes-esES: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever. Fork no oficial de SpellCoda de jezzi23.
+## Notes-esMX: ¡Todo sobre los hechizos! Calculadora de hechizos para World of Warcraft: Forever. Fork no oficial de SpellCoda de jezzi23.
+## Notes-ruRU: Всё о заклинаниях! Калькулятор заклинаний для World of Warcraft: Forever. Неофициальный форк SpellCoda от jezzi23.
+## Notes-deDE: Alles über Zauber! Zauberrechner für World of Warcraft: Forever. Inoffizieller Fork von SpellCoda von jezzi23.
+## Author: Vulo, based on SpellCoda by jezzi23
 ## Version: 0.63
 ## X-Curse-Project-ID: 1716723
 ## IconTexture: Interface\AddOns\SpellCodaForever\Media\icon

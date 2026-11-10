@@ -481,7 +481,7 @@ local function load_config()
         SpellCodaForeverDB = {};
     end
     load_persistent_data(SpellCodaForeverDB, default_p_acc());
-    -- translation is on by default in SpellCoda Forever; switch it on once for accounts
+    -- translation is on by default in SpellEfficiency Forever; switch it on once for accounts
     -- that still carry the old default
     if not SpellCodaForeverDB.localization_default_forever then
         SpellCodaForeverDB.localization_use = true;

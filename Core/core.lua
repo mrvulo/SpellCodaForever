@@ -39,7 +39,9 @@ local on_hide_tooltip                       = sc.tooltip.on_hide_tooltip;
 local core                      = {};
 sc.core                         = core;
 
+-- the folder name: addon events, profiler, minimap button key; players see addon_title
 core.addon_name                 = "SpellCodaForever";
+core.addon_title                = "SpellEfficiency Forever";
 
 local version_major             = 0;
 local version_minor             = 63;
@@ -347,13 +349,13 @@ local event_dispatch = {
         -- the original addon runs on Forever too; both own the same frame and
         -- slash command names, so the one loaded last takes over the other
         if C_AddOns.IsAddOnLoaded("SpellCoda") then
-            print("|cFF9B6CFFSpellCodaForever:|r "..L["The original SpellCoda is enabled as well. Both use the same windows and commands, please disable one of them."]);
+            print("|cFF9B6CFFSpellEfficiency Forever:|r "..L["The original SpellCoda is enabled as well. Both use the same windows and commands, please disable one of them."]);
         end
 
         if config.settings.general_version_mismatch_notify and
             generated_data_is_outdated(sc.client_version_loaded, sc.client_version_src) and
             client_age_days() > version_warning_build_threshold_days then
-            print(core.addon_name..": "..L["detected client and addon data mismatch for over 2 weeks. Consider checking for an update."]);
+            print(core.addon_title..": "..L["detected client and addon data mismatch for over 2 weeks. Consider checking for an update."]);
         end
 
         -- the notice explains how to turn translation on; not needed while it is on
@@ -641,6 +643,7 @@ SLASH_SPELL_CODA1 = "/sc"
 SLASH_SPELL_CODA2 = "/spellcoda"
 SLASH_SPELL_CODA3 = "/scf"
 SLASH_SPELL_CODA4 = "/spellcodaforever"
+SLASH_SPELL_CODA5 = "/spellefficiency"
 SlashCmdList["SPELL_CODA"] = command
 
 sc.ext.version_id = core.version_id;

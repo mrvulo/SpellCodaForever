@@ -176,7 +176,7 @@ local function append_tooltip_addon_name(tooltip)
             loadout_extra_info = string.format(" (%s %d)", L["clvl"], config.settings.loadout_lvl);
         end
         add_line(tooltip,
-            sc.core.addon_name .. " v" .. sc.core.version .. " | " .. config.active_profile_name .. loadout_extra_info,
+            sc.core.addon_title .. " v" .. sc.core.version .. " | " .. config.active_profile_name .. loadout_extra_info,
             "", 1, 1, 1);
     end
 end
@@ -2501,11 +2501,11 @@ local function write_item_tooltip(tooltip, mod, mod_change, item_link)
 
     -- without its damage the comparison would show the weapon as doing none
     if tt.new_item.class_id == 2 and not weapon_stats(tt.new_item) then
-        tooltip:AddLine(L["SpellCoda failed to read the weapon's damage"], 1, 0.2, 0.2);
+        tooltip:AddLine(L["Failed to read the weapon's damage"], 1, 0.2, 0.2);
         tooltip:Show();
         return;
     elseif tt.new_item.class_id == 6 and not ammo_dps(tt.new_item) then
-        tooltip:AddLine(L["SpellCoda failed to read the ammo's damage"], 1, 0.2, 0.2);
+        tooltip:AddLine(L["Failed to read the ammo's damage"], 1, 0.2, 0.2);
         tooltip:Show();
         return;
     end

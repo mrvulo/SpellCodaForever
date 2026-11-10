@@ -7583,7 +7583,7 @@ local function create_sw_base_ui()
 
     __sc_frame.title = __sc_frame.top:CreateFontString(nil, "OVERLAY");
     __sc_frame.title:SetFontObject(GameFontNormal);
-    __sc_frame.title:SetText(sc.core.addon_name.." v"..sc.core.version);
+    __sc_frame.title:SetText(sc.core.addon_title.." v"..sc.core.version);
     __sc_frame.title:SetPoint("CENTER", __sc_frame.top, "CENTER", 0, 0);
 
     __sc_frame:Hide();
@@ -7703,7 +7703,7 @@ local function load_sw_ui()
 
     if libstub_data_broker then
         local tooltip_show_fn = function(tooltip)
-            tooltip:AddLine("SpellCoda |cFF9B6CFFForever|r |cFF808080v"..sc.core.version.."|r");
+            tooltip:AddLine("SpellEfficiency |cFF9B6CFFForever|r |cFF808080v"..sc.core.version.."|r");
             tooltip:AddLine("|cFF9CD6DE"..L["Left click"]..":|r "..L["Interact with addon"]);
             tooltip:AddLine("|cFF9CD6DE"..L["Middle click"]..":|r "..L["Hide this button"]);
             if config.settings.overlay_old_rank then
@@ -7774,11 +7774,11 @@ end
 local function add_to_options()
 
     local frame = CreateFrame("Frame");
-    frame.name = sc.core.addon_name;
+    frame.name = sc.core.addon_title;
 
     local header = frame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
     header:SetPoint("TOPLEFT", 32, -16);
-    header:SetText(sc.core.addon_name);
+    header:SetText(sc.core.addon_title);
 
     -- Add a description (optional)
     local txt1 = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlight");
@@ -7811,7 +7811,7 @@ local function add_to_options()
         sw_activate_frame("settings_frame");
     end);
 
-    local category = Settings.RegisterCanvasLayoutCategory(frame, sc.core.addon_name);
+    local category = Settings.RegisterCanvasLayoutCategory(frame, sc.core.addon_title);
     Settings.RegisterAddOnCategory(category)
 end
 
@@ -7830,7 +7830,7 @@ local function locale_warning_popup()
             text:SetPoint("RIGHT", -10, 0);
             text:SetJustifyH("LEFT");
             text:SetJustifyV("TOP");
-            text:SetText("SpellCoda Forever has localization support but is turned off by default.\n\nStrings have been translated using an AI LLM model and may be terribly wrong.\n\nTurn on localization in settings:\n\n            |cFF00FF00/spellcoda config|r");
+            text:SetText("SpellEfficiency Forever has localization support but is turned off by default.\n\nStrings have been translated using an AI LLM model and may be terribly wrong.\n\nTurn on localization in settings:\n\n            |cFF00FF00/spellcoda config|r");
 
             __sc__localization_notifiedButton:SetSize(180, 24);
             __sc__localization_notifiedButton:SetPoint("BOTTOM", 0, 20);

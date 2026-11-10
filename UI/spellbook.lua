@@ -1,6 +1,6 @@
 local _, sc = ...;
 
--- SpellCoda's page in the spellbook: a tab in the row of the book's category
+-- Our page in the spellbook: a tab in the row of the book's category
 -- tabs that lays a parchment page over the book, listing every spell the
 -- character can still learn, grouped by when it can be learned. Nothing
 -- Blizzard owns is written to; tab, pages and covers are frames of our own
@@ -752,7 +752,7 @@ local function row_on_click(self, button)
         if master then
             local where = sc.weapon_skills.npc_name(master.npc)..", "..sc.weapon_skills.town_name(master.data);
             local text = sc.weapon_skills.set_waypoint(master) and L["Waypoint set: %s"] or L["Waypoint could not be set: %s"];
-            print("|cFF9B6CFFSpellCodaForever:|r "..string.format(text, where));
+            print("|cFF9B6CFFSpellEfficiency Forever:|r "..string.format(text, where));
         end
     end
 end
@@ -1277,9 +1277,9 @@ local function create()
     end);
     launcher:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-        GameTooltip:SetText("SpellCoda |cFF9B6CFFForever|r");
+        GameTooltip:SetText("SpellEfficiency |cFF9B6CFFForever|r");
         GameTooltip:AddLine("|cFF9CD6DE"..L["Left click"]..":|r "..L["Spells to learn"], 1, 1, 1);
-        GameTooltip:AddLine("|cFF9CD6DE"..L["Right click"]..":|r "..L["Open SpellCoda"], 1, 1, 1);
+        GameTooltip:AddLine("|cFF9CD6DE"..L["Right click"]..":|r "..L["Open SpellEfficiency"], 1, 1, 1);
         GameTooltip:Show();
     end);
     launcher:SetScript("OnLeave", hide_tooltip);
@@ -1299,7 +1299,7 @@ local function create()
         sync();
     end);
 
-    local left = create_page(20, "SpellCoda |cFF9B6CFFForever|r");
+    local left = create_page(20, "SpellEfficiency |cFF9B6CFFForever|r");
     left:SetPoint("TOPLEFT", root, "TOPLEFT", 65, PAGE_TOP);
     left:SetPoint("BOTTOMLEFT", root, "BOTTOMLEFT", 65, PAGE_BOTTOM);
     left.total = label(left.columns, "SystemFont_Med3", 0, 0);
