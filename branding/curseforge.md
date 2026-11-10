@@ -12,7 +12,7 @@ Unofficial fork of SpellCoda by jezzi23 for World of Warcraft: Forever – damag
 
 ## Description
 
-> **Unofficial fork** of [SpellCoda](https://www.curseforge.com/wow/addons/spellcoda) by **jezzi23**. The calculator, its spell and item data and most of the code are his work. The **official SpellCoda supports World of Warcraft: Forever** as well – if you only want the calculator, use the original. This fork adds its own spellbook page and translations.
+> **Unofficial fork** of [SpellCoda](https://github.com/jezzi23/spellcoda) by **jezzi23**. The calculator, its spell and item data and most of the code are his work. The **official SpellCoda supports World of Warcraft: Forever** as well – if you only want the calculator, use the original. This fork adds its own spellbook page and translations.
 
 **SpellEfficiency Forever** is based on the spell calculator SpellCoda, adapted for **World of Warcraft: Forever**. It shows what your spells really do with your current gear, talents and buffs – in tooltips, as overlays on your action buttons and spellbook icons, and in a full calculator window. On top of that it adds a page to your spellbook that tells you what to learn next, what it costs and where to train it – spells, weapon skills and profession recipes.
 
