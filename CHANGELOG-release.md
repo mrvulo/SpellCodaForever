@@ -1,8 +1,10 @@
-# SpellCoda Forever 0.63
+# SpellEfficiency Forever 0.64
 
-- Game data updated for the live client 1.60.1.70707: new set bonuses, rogue and druid abilities that ignore armor, the reworked mage talent tree, and new talent effects for warlock, hunter, paladin, priest and warrior.
-- Fixed: on the spellbook page, the training cost, the needed rank and the right-click hint disappeared from a spell's tooltip after a mana tick or a modifier key press.
-- Fixed: the spellbook page search now ignores case for names with umlauts, accents and Cyrillic letters.
-- Fixed: a spell rank could stay under "Needs rank" for good when the client lacks the rank before it.
-- Fixed: equipment that loads late after login now gets its stats and weapon damage counted without changing gear.
-- Fewer errors when single character stats are locked in combat.
+This addon is now called **SpellEfficiency Forever**. It is an unofficial fork of [SpellCoda](https://github.com/jezzi23/spellcoda) by jezzi23, who wrote the calculator and its data. The official SpellCoda supports World of Warcraft: Forever as well. Your settings stay as they are.
+
+- New: the spellbook page has a third view, **Professions**. It lists the recipes your professions can still learn, grouped by profession or by section. Opening a profession trainer once records the skill, price and level it asks for each recipe, for all your characters. Recipes taught by an item show the skill they need right away. Right-click a recipe to ignore it.
+- New: spells can be grouped by level, and weapon skills by town, each with the price at that town's weapon master (settings button on the spellbook page).
+- New: hovering a section heading shows the total cost of that section.
+- New: three buttons on the spellbook page switch between spells, weapon skills and professions.
+- New command: `/spellefficiency` (the old commands still work).
+- Fixed: the license file again carries jezzi23's original copyright notice.

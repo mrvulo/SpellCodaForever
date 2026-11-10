@@ -45,3 +45,4 @@ Format: date · decision · source · feature
 - 2026-10-31 · Profession data: recipe list from the client tables via our generator, trainer skill/price recorded in game on trainer visits; the reference's hand-kept recipe data is not taken · user: "Beim Lehrer lernen (Empfohlen)" · F050
 - 2026-10-31 · The profession list is a third view of our spellbook page, not a tab in the professions window · assumed (one page, one search, no covering of the professions window) · F050
 - 2026-11-10 · Rename to SpellEfficiency Forever (display only; folder and saved variables stay), restore jezzi23's copyright line in LICENSE, mark the addon as an unofficial fork in TOC and README, after SpellCoda's author objected · user: "adde das in die copy right datei und nenn das addon in SpellefficiencyForever um" · I-32
+- 2026-11-10 · Release 0.64 (rename, view options, profession view) on the user's word, F049 and F050 stay test-in-game · user: "release" · F049, F050, I-32
